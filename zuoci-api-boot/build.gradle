@@ -1,0 +1,89 @@
+version 'unspecified'
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.4.RELEASE'
+    }
+
+    repositories {
+        maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+//		jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+
+checkstyle {
+    toolVersion = '7.8.2'
+}
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/jacocoReport")
+}
+
+jacocoTestReport {
+    reports
+//    xml.enabled false
+//    csv.enabled false
+//    html.destination "${buildDir}/jacocoHtml"
+}
+
+//test {
+//    jacoco
+////    append = false
+//    destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+//    classDumpFile = file("$buildDir/jacoco/classpathdumps")
+//}
+
+jacoco {
+    applyTo run
+}
+task applicationCodeCoverageReport(type:JacocoReport){
+    executionData run
+    sourceSets sourceSets.main
+}
+
+
+//project.version = 1.0
+//project.group = 'xx.com.xxxxxxx.'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+checkstyle {
+    configProperties.projectDir = project.projectDir
+    checkstyleMain.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-main.xml')
+    checkstyleTest.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-test.xml')
+//    checkstyleIntegrationTest.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-test.xml')
+}
+
+dependencies {
+
+    compile 'joda-time:joda-time:2.9.9'
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework:spring-jdbc")
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+springBoot {
+    mainClass = "Application"
+}
