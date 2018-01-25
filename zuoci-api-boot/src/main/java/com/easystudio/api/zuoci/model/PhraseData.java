@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -20,9 +21,20 @@ public class PhraseData {
     @ApiModelProperty(value = "Content", required = true, example = "")
     private String content;
 
-    @ApiModelProperty(value = "location", example = "beijing")
+    @ApiModelProperty(value = "Location", example = "beijing")
     private String location;
 
+    @ApiModelProperty(value = "Object Id", example = "123")
+    private Long objectId;
+
+    @ApiModelProperty(value = "View Count", example = "100")
+    private Long viewCount;
+
+    @ApiModelProperty(value = "Last Modified Time", example = "")
+    private DateTime lastModifiedTime;
+
+    @ApiModelProperty(value = "Created Time", example = "")
+    private DateTime createdTime;
 
     public String getAuthorId() {
         return authorId;
@@ -46,5 +58,37 @@ public class PhraseData {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(Long objectId) {
+        this.objectId = objectId;
+    }
+
+    public Long getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Long viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    public DateTime getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
+    public void setLastModifiedTime(DateTime lastModifiedTime) {
+        this.lastModifiedTime = lastModifiedTime;
+    }
+
+    public DateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(DateTime createdTime) {
+        this.createdTime = createdTime;
     }
 }

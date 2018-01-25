@@ -4,14 +4,20 @@ import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.PhraseResponse;
+import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.service.PhraseService;
+import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -28,14 +34,19 @@ public class PhraseController {
 
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrases", notes = "Supports searching phrases based on time")
-    public ResponseEntity<PhraseResponse> searchPhrase() {
-//        return service.searchPhrase();
-        PhraseResponse response = new PhraseResponse();
+    public ResponseEntity<Phrases> searchPhrase(
+            @ApiParam(value = "limit") @RequestParam(required = false) int limit) {
+        Phrases response = new Phrases();
         PhraseData data = new PhraseData();
         data.setContent("content");
-        data.setAuthorId("123");
-        response.setData(data);
-        return new ResponseEntity<PhraseResponse>(response, HttpStatus.OK);
+        data.setAuthorId(String.valueOf(limit));
+        data.setLocation("chengdu");
+        data.setViewCount(100L);
+        data.setObjectId(123L);
+        data.setCreatedTime(DateTime.now());
+        data.setLastModifiedTime(DateTime.now());
+        response.setData(Lists.newArrayList(data));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = POST)
