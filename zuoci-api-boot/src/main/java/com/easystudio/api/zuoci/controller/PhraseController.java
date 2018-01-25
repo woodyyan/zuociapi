@@ -1,15 +1,18 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.exception.ErrorException;
+import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.PhraseRequest;
+import com.easystudio.api.zuoci.model.PhraseResponse;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.service.PhraseService;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.util.StringUtils.isEmpty;
@@ -25,10 +28,14 @@ public class PhraseController {
 
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrases", notes = "Supports searching phrases based on time")
-
-    public ResponseEntity<PhraseRequest> searchPhrase(@PathVariable @ApiParam(value = "Brand", required = true) String brand,
-                                                      @ApiParam(value = "First Name") @RequestParam(value = "firstName") String firstName) {
-        return service.searchPhrase();
+    public ResponseEntity<PhraseResponse> searchPhrase() {
+//        return service.searchPhrase();
+        PhraseResponse response = new PhraseResponse();
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        data.setAuthorId("123");
+        response.setData(data);
+        return new ResponseEntity<PhraseResponse>(response, HttpStatus.OK);
     }
 
     @RequestMapping(method = POST)
