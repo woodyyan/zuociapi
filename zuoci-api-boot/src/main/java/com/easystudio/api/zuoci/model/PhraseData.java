@@ -20,7 +20,7 @@ public class PhraseData {
     @ApiModelProperty(value = "Content", required = true, example = "")
     private String content;
 
-    @ApiModelProperty(value = "location", required = false, example = "北京")
+    @ApiModelProperty(value = "location", example = "beijing")
     private String location;
 
 
