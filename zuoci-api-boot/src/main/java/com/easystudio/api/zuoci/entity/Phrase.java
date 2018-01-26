@@ -1,6 +1,5 @@
 package com.easystudio.api.zuoci.entity;
 
-import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;

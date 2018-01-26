@@ -18,11 +18,22 @@ public class Phrases {
     @ApiModelProperty(value = "Phrase data", required = true)
     private List<PhraseData> data = new ArrayList<>();
 
+    @ApiModelProperty(value = "Pagination information", required = true, readOnly = true)
+    private PagingMeta meta = new PagingMeta();
+
     public List<PhraseData> getData() {
         return data;
     }
 
     public void setData(List<PhraseData> data) {
         this.data = data;
+    }
+
+    public PagingMeta getMeta() {
+        return meta;
+    }
+
+    public void setMeta(PagingMeta meta) {
+        this.meta = meta;
     }
 }
