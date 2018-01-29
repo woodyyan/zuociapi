@@ -1,5 +1,6 @@
 package com.easystudio.api.zuoci.translator;
 
+import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PagingMeta;
 import com.easystudio.api.zuoci.model.PhraseData;
@@ -58,5 +59,17 @@ public class PhraseTranslator {
         data.setPoint(phrase.getPoint());
 
         return data;
+    }
+
+    public DeletedPhrase toDeletedPhrase(Phrase phrase) {
+        DeletedPhrase deletedPhrase = new DeletedPhrase();
+        deletedPhrase.setAuthorId(phrase.getAuthorId());
+        deletedPhrase.setContent(phrase.getContent());
+        deletedPhrase.setCreatedTime(phrase.getCreatedTime());
+        deletedPhrase.setLastModifiedTime(phrase.getLastModifiedTime());
+        deletedPhrase.setLocation(phrase.getLocation());
+        deletedPhrase.setPoint(phrase.getPoint());
+        deletedPhrase.setViewCount(phrase.getViewCount());
+        return deletedPhrase;
     }
 }

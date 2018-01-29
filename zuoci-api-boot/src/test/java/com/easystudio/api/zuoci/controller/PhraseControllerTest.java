@@ -1,7 +1,6 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
@@ -80,8 +79,16 @@ public class PhraseControllerTest extends EasyMockSupport {
 
         validator.validate(phraseRequest);
 
-        ResponseEntity<?> actual =  controller.createPhrase(phraseRequest);
+        ResponseEntity<?> actual = controller.createPhrase(phraseRequest);
 
         Assert.assertThat(actual.getStatusCode(), is(HttpStatus.CREATED));
+    }
+
+    @Test
+    public void shouldDeletePhraseGivenPhraseId() {
+        Long objectId = 123L;
+        ResponseEntity<?> actual = controller.deletePhrase(objectId);
+
+        Assert.assertThat(actual.getStatusCode(), is(HttpStatus.NO_CONTENT));
     }
 }

@@ -1,5 +1,6 @@
 package com.easystudio.api.zuoci.translator;
 
+import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.Phrases;
@@ -78,5 +79,31 @@ public class PhraseTranslatorTest {
         Assert.assertThat(actual.getBody().getMeta().getPageSize(), is(20L));
         Assert.assertThat(actual.getBody().getMeta().getTotalElements(), is(1L));
         Assert.assertThat(actual.getBody().getMeta().getTotalPages(), is(1L));
+    }
+
+    @Test
+    public void shouldTranslateToDeletedPhraseGivenPhrase() {
+        Phrase phrase = new Phrase();
+        phrase.setPoint(new Point(50, 50));
+        phrase.setObjectId(123L);
+        phrase.setVisible(true);
+        phrase.setViewCount(100L);
+        phrase.setAuthorId("111");
+        phrase.setLocation("chengdu");
+        phrase.setLastModifiedTime(LocalDateTime.now());
+        phrase.setCreatedTime(LocalDateTime.now());
+        phrase.setContent("content");
+
+        DeletedPhrase deletedPhrase = translator.toDeletedPhrase(phrase);
+
+        Assert.assertNull(deletedPhrase.getObjectId());
+        Assert.assertThat(deletedPhrase.getAuthorId(), is("111"));
+        Assert.assertThat(deletedPhrase.getContent(), is("content"));
+        Assert.assertThat(deletedPhrase.getLocation(), is("chengdu"));
+        Assert.assertThat(deletedPhrase.getViewCount(), is(100L));
+        Assert.assertThat(deletedPhrase.getPoint().getX(), is(50.0));
+        Assert.assertThat(deletedPhrase.getPoint().getY(), is(50.0));
+        Assert.assertThat(deletedPhrase.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
+        Assert.assertThat(deletedPhrase.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
 }

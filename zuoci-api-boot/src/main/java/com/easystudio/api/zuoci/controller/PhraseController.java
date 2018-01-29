@@ -1,10 +1,8 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
-import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
@@ -16,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.util.StringUtils.isEmpty;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(value = "/phrase", produces = "application/vnd.api+json")
@@ -60,5 +55,13 @@ public class PhraseController {
         service.createPhrase(phraseRequest.getData());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{objectId}", method = DELETE)
+    @ApiOperation(value = "Delete phrase", notes = "Delete a phrase from DB")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deletePhrase(@PathVariable(value = "objectId") Long objectId) {
+        service.deletePhrase(objectId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,7 +1,10 @@
 package com.easystudio.api.zuoci.service;
 
+import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
+import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import org.easymock.EasyMockRunner;
@@ -27,6 +30,9 @@ public class PhraseServiceTest extends EasyMockSupport {
 
     @Mock
     private PhraseRepository repository;
+
+    @Mock
+    private DeletedPhraseRepository deleteRepository;
 
     @Mock
     private PhraseTranslator translator;
@@ -64,6 +70,33 @@ public class PhraseServiceTest extends EasyMockSupport {
 
         replayAll();
         service.createPhrase(data);
+        verifyAll();
+    }
+
+    @Test
+    public void shouldDeletePhraseGivenPhraseId() {
+        Long objectId = 123L;
+        Phrase phrase = new Phrase();
+        DeletedPhrase deletedPhrase = new DeletedPhrase();
+
+        expect(repository.findOne(objectId)).andReturn(phrase);
+        repository.delete(objectId);
+        expect(translator.toDeletedPhrase(phrase)).andReturn(deletedPhrase);
+        expect(deleteRepository.save(deletedPhrase)).andReturn(deletedPhrase);
+
+        replayAll();
+        service.deletePhrase(objectId);
+        verifyAll();
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowExceptionWhenPhraseIdIsNotExist() {
+        Long objectId = 123L;
+
+        expect(repository.findOne(objectId)).andReturn(null);
+
+        replayAll();
+        service.deletePhrase(objectId);
         verifyAll();
     }
 }
