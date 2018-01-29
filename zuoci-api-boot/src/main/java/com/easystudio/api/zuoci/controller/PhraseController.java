@@ -7,6 +7,7 @@ import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
+import com.easystudio.api.zuoci.validate.PhraseValidator;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +32,9 @@ public class PhraseController {
     @Autowired
     private PhraseTranslator translator;
 
+    @Autowired
+    private PhraseValidator validator;
+
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrases", notes = "Supports searching phrases based on time")
     @ApiImplicitParams({
@@ -51,30 +55,10 @@ public class PhraseController {
     @ApiOperation(value = "Create phraseRequest", notes = "Create phraseRequest by content")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<?> createPhrase(@RequestBody PhraseRequest phraseRequest) {
-        validate(phraseRequest);
+        validator.validate(phraseRequest);
 
         service.createPhrase(phraseRequest.getData());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    private void validate(PhraseRequest phraseRequest) {
-
-        if (isEmpty(phraseRequest.getData().getAuthorId())) {
-            Error error = buildInvalidParameterError("authorId", "authorId is a required field");
-            throw new ErrorException(BAD_REQUEST, error);
-        }
-        if (isEmpty(phraseRequest.getData().getContent())) {
-            Error error = buildInvalidParameterError("content", "Content is a required field");
-            throw new ErrorException(BAD_REQUEST, error);
-        }
-    }
-
-    private Error buildInvalidParameterError(String parameterName, String details) {
-        Error error = new Error();
-        error.setStatus(BAD_REQUEST.name());
-        error.setTitle("Bad request");
-        error.setDetails(details);
-        return error;
     }
 }

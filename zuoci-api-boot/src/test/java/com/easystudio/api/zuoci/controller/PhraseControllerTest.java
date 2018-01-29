@@ -7,6 +7,7 @@ import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
+import com.easystudio.api.zuoci.validate.PhraseValidator;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -38,6 +39,9 @@ public class PhraseControllerTest extends EasyMockSupport {
 
     @Mock
     private PhraseTranslator translator;
+
+    @Mock
+    private PhraseValidator validator;
 
     @Test
     public void shouldGetPhrasesGivenLimit() throws Exception {
@@ -74,26 +78,10 @@ public class PhraseControllerTest extends EasyMockSupport {
         data.setAuthorId("123");
         phraseRequest.setData(data);
 
+        validator.validate(phraseRequest);
+
         ResponseEntity<?> actual =  controller.createPhrase(phraseRequest);
 
         Assert.assertThat(actual.getStatusCode(), is(HttpStatus.CREATED));
-    }
-
-    @Test(expected = ErrorException.class)
-    public void shouldThrowErrorExceptionIfContentIsMissing() throws Exception {
-        PhraseRequest phraserequest = new PhraseRequest();
-        PhraseData data = new PhraseData();
-        data.setAuthorId("123");
-        phraserequest.setData(data);
-        controller.createPhrase(phraserequest);
-    }
-
-    @Test(expected = ErrorException.class)
-    public void shouldThrowErrorExceptionIfAuthorIdIsMissing() throws Exception {
-        PhraseRequest phraserequest = new PhraseRequest();
-        PhraseData data = new PhraseData();
-        data.setContent("content");
-        phraserequest.setData(data);
-        controller.createPhrase(phraserequest);
     }
 }
