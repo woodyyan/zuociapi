@@ -18,7 +18,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(value = "/phrase", produces = "application/vnd.api+json")
-@Api(tags = "Phrase Resource", description = "Operations on Customer")
+@Api(tags = "Phrase Resource", description = "Operations on Phrase")
 public class PhraseController {
 
     @Autowired
