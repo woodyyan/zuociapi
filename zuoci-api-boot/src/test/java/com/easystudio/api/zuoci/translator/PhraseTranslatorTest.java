@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 public class PhraseTranslatorTest {
@@ -34,6 +34,7 @@ public class PhraseTranslatorTest {
         data.setAuthorId(authorId);
         data.setLocation(location);
         data.setContent(content);
+        data.setPoint(new Point(80.0, 90.0));
 
         Phrase phrase = translator.toPhraseEntity(data);
 
@@ -41,6 +42,8 @@ public class PhraseTranslatorTest {
         Assert.assertThat(phrase.getContent(), is(content));
         Assert.assertThat(phrase.getLocation(), is(location));
         Assert.assertThat(phrase.getViewCount(), is(0L));
+        Assert.assertThat(phrase.getPoint().getX(), is(80.0));
+        Assert.assertThat(phrase.getPoint().getY(), is(90.0));
         Assert.assertThat(phrase.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(phrase.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
@@ -50,6 +53,11 @@ public class PhraseTranslatorTest {
         List<Phrase> content = new ArrayList<>();
         Phrase phrase = new Phrase();
         phrase.setContent("content");
+        phrase.setPoint(new Point(80.0, 90.0));
+        phrase.setLocation("chengdu");
+        phrase.setAuthorId("123");
+        phrase.setViewCount(100L);
+        phrase.setObjectId(111L);
         phrase.setCreatedTime(LocalDateTime.now());
         phrase.setLastModifiedTime(LocalDateTime.now());
         content.add(phrase);
@@ -60,6 +68,12 @@ public class PhraseTranslatorTest {
         Assert.assertThat(actual.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(actual.getBody().getData().size(), is(1));
         Assert.assertThat(actual.getBody().getData().get(0).getContent(), is("content"));
+        Assert.assertThat(actual.getBody().getData().get(0).getAuthorId(), is("123"));
+        Assert.assertThat(actual.getBody().getData().get(0).getPoint().getX(), is(80.0));
+        Assert.assertThat(actual.getBody().getData().get(0).getPoint().getY(), is(90.0));
+        Assert.assertThat(actual.getBody().getData().get(0).getLocation(), is("chengdu"));
+        Assert.assertThat(actual.getBody().getData().get(0).getViewCount(), is(100L));
+        Assert.assertThat(actual.getBody().getData().get(0).getObjectId(), is(111L));
         Assert.assertThat(actual.getBody().getMeta().getPageNumber(), is(0L));
         Assert.assertThat(actual.getBody().getMeta().getPageSize(), is(20L));
         Assert.assertThat(actual.getBody().getMeta().getTotalElements(), is(1L));

@@ -17,8 +17,10 @@ public class PhraseService {
     @Autowired
     private PhraseRepository repository;
 
+    @Autowired
+    private PhraseTranslator translator;
+
     public void createPhrase(PhraseData data) {
-        PhraseTranslator translator = new PhraseTranslator();
         Phrase phrase = translator.toPhraseEntity(data);
         repository.save(phrase);
     }

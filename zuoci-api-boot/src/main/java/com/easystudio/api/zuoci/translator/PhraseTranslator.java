@@ -21,7 +21,7 @@ public class PhraseTranslator {
         phrase.setAuthorId(data.getAuthorId());
         phrase.setContent(data.getContent());
         phrase.setCreatedTime(LocalDateTime.now());
-        phrase.setDeleted(false);
+        phrase.setPoint(data.getPoint());
         phrase.setLastModifiedTime(LocalDateTime.now());
         phrase.setValid(true);
         phrase.setViewCount(0L);
@@ -55,6 +55,7 @@ public class PhraseTranslator {
         data.setCreatedTime(phrase.getCreatedTime().toDateTime());
         data.setLastModifiedTime(phrase.getLastModifiedTime().toDateTime());
         data.setLocation(phrase.getLocation());
+        data.setPoint(phrase.getPoint());
 
         return data;
     }

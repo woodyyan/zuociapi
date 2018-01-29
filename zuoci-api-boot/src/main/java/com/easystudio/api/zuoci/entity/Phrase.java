@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.entity;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
+import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 
@@ -16,9 +17,6 @@ public class Phrase {
 
     @Column(name = "author_id", nullable = false)
     private String authorId;
-
-    @Column(name = "deleted", nullable = false)
-    private boolean isDeleted;
 
     @Column(name = "content", nullable = false)
     private String content;
@@ -36,8 +34,11 @@ public class Phrase {
     @Column(name = "visible", nullable = false)
     private boolean isVisible;
 
-    @Column(name = "location", nullable = true)
+    @Column(name = "location")
     private String location;
+
+    @Column(name = "point")
+    private Point point;
 
     @Column(name = "created_time", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
@@ -57,14 +58,6 @@ public class Phrase {
 
     public void setAuthorId(String authorId) {
         this.authorId = authorId;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 
     public String getContent() {
@@ -121,5 +114,13 @@ public class Phrase {
 
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Point getPoint() {
+        return point;
+    }
+
+    public void setPoint(Point point) {
+        this.point = point;
     }
 }

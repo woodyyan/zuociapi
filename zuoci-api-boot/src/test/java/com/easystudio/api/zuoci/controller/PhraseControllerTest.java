@@ -66,6 +66,19 @@ public class PhraseControllerTest extends EasyMockSupport {
         Assert.assertThat(actual.getBody().getData().get(0).getContent(), is("content"));
     }
 
+    @Test
+    public void shouldCreatePhraseGivenPhrase() {
+        PhraseRequest phraseRequest = new PhraseRequest();
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        data.setAuthorId("123");
+        phraseRequest.setData(data);
+
+        ResponseEntity<?> actual =  controller.createPhrase(phraseRequest);
+
+        Assert.assertThat(actual.getStatusCode(), is(HttpStatus.CREATED));
+    }
+
     @Test(expected = ErrorException.class)
     public void shouldThrowErrorExceptionIfContentIsMissing() throws Exception {
         PhraseRequest phraserequest = new PhraseRequest();
