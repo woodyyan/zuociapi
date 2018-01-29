@@ -33,5 +33,4 @@ public class PhraseTranslatorTest {
         Assert.assertThat(phrase.getCreatedTime(), lessThan(LocalDateTime.now()));
         Assert.assertThat(phrase.getLastModifiedTime(), lessThan(LocalDateTime.now()));
     }
-
 }
