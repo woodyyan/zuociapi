@@ -5,8 +5,6 @@ import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.error.Error;
 import org.springframework.data.geo.Point;
 
-import java.awt.*;
-
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.util.StringUtils.isEmpty;
 
