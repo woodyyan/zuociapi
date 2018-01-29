@@ -7,10 +7,7 @@ import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
@@ -42,8 +40,13 @@ public class PhraseController {
             @ApiImplicitParam(name = "page", value = "The index of the page requested", defaultValue = "0", dataType = "integer", paramType = "query"),
             @ApiImplicitParam(name = "size", value = "The number of elements per page", defaultValue = "20", dataType = "integer", paramType = "query")
     })
-    public ResponseEntity<Phrases> searchPhrase(Pageable page) {
-        Page<Phrase> pagedPhrases = service.searchPhrase(page);
+    public ResponseEntity<Phrases> searchPhrase(
+            @ApiParam(value = "Phrase is valid", defaultValue = "true")
+            @RequestParam(required = false, defaultValue = "true") boolean isValid,
+            @ApiParam(value = "Phrase is visible")
+            @RequestParam(required = false, defaultValue = "true") boolean isVisible, Pageable page) {
+
+        Page<Phrase> pagedPhrases = service.searchPhrase(isValid, isVisible, page);
         return translator.toPhraseResponse(pagedPhrases);
     }
 

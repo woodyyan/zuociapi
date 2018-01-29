@@ -1,7 +1,6 @@
 package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -38,10 +37,10 @@ public class PhraseServiceTest extends EasyMockSupport {
         content.add(phrase);
         Page<Phrase> pagedPhrases = new PageImpl<>(content);
 
-        expect(repository.findAll(pageable)).andReturn(pagedPhrases);
+        expect(repository.findByIsValidAndIsVisible(true, true, pageable)).andReturn(pagedPhrases);
 
         replayAll();
-        Page<Phrase> actual = service.searchPhrase(pageable);
+        Page<Phrase> actual = service.searchPhrase(true, true, pageable);
         verifyAll();
 
         Assert.assertThat(actual.getContent().size(), is(1));

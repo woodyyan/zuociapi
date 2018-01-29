@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.translator;
 
 import com.easystudio.api.zuoci.entity.Phrase;
+import com.easystudio.api.zuoci.model.PagingMeta;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.Phrases;
 import org.joda.time.LocalDateTime;
@@ -36,6 +37,12 @@ public class PhraseTranslator {
             data.add(phraseData);
         }
         phrases.setData(data);
+        PagingMeta meta = new PagingMeta();
+        meta.setPageNumber(pagedPhrases.getNumber());
+        meta.setPageSize(pagedPhrases.getSize());
+        meta.setTotalElements(pagedPhrases.getTotalElements());
+        meta.setTotalPages(pagedPhrases.getTotalPages());
+        phrases.setMeta(meta);
         return new ResponseEntity<>(phrases, HttpStatus.OK);
     }
 

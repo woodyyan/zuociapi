@@ -52,12 +52,12 @@ public class PhraseControllerTest extends EasyMockSupport {
         List<Phrase> content = new ArrayList<>();
         Page<Phrase> pagedPhrases = new PageImpl<>(content, page, 100);
 
-        expect(service.searchPhrase(page)).andReturn(pagedPhrases);
+        expect(service.searchPhrase(true, true, page)).andReturn(pagedPhrases);
         ResponseEntity<Phrases> response = new ResponseEntity<>(phrases, HttpStatus.OK);
         expect(translator.toPhraseResponse(pagedPhrases)).andReturn(response);
 
         replayAll();
-        ResponseEntity<Phrases> actual = controller.searchPhrase(page);
+        ResponseEntity<Phrases> actual = controller.searchPhrase(true, true, page);
         verifyAll();
 
         Assert.assertThat(actual.getStatusCode(), is(HttpStatus.OK));

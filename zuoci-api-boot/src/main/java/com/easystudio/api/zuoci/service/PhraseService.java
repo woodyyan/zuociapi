@@ -23,9 +23,9 @@ public class PhraseService {
         repository.save(phrase);
     }
 
-    public Page<Phrase> searchPhrase(Pageable page) {
+    public Page<Phrase> searchPhrase(boolean isValid, boolean isVisible, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findAll(pageable);
+        return repository.findByIsValidAndIsVisible(isValid, isVisible, pageable);
     }
 }
