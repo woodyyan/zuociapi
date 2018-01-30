@@ -54,6 +54,10 @@ public class PhraseServiceTest extends EasyMockSupport {
         Page<Phrase> actual = service.searchPhrase(true, true, pageable);
         verifyAll();
 
+        Assert.assertThat(actual.getTotalElements(), is(1L));
+        Assert.assertThat(actual.getTotalPages(), is(1));
+        Assert.assertThat(actual.getNumber(), is(0));
+        Assert.assertThat(actual.getNumberOfElements(), is(1));
         Assert.assertThat(actual.getContent().size(), is(1));
         Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
     }
