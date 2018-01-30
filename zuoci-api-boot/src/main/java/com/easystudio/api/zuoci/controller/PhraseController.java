@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
+import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
@@ -62,6 +63,14 @@ public class PhraseController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deletePhrase(@PathVariable(value = "objectId") Long objectId) {
         service.deletePhrase(objectId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/{objectId}", method = PATCH)
+    @ApiOperation(value = "Update view count", notes = "Update view count for a phrase")
+    public ResponseEntity<?> updateViewCount(@PathVariable(value = "objectId") Long objectId,
+                                             @RequestBody ViewCountRequest viewCountRequest) {
+        service.updateViewCount(objectId, viewCountRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

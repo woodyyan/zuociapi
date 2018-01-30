@@ -4,6 +4,7 @@ import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
+import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
@@ -90,5 +91,14 @@ public class PhraseControllerTest extends EasyMockSupport {
         ResponseEntity<?> actual = controller.deletePhrase(objectId);
 
         Assert.assertThat(actual.getStatusCode(), is(HttpStatus.NO_CONTENT));
+    }
+
+    @Test
+    public void shouldUpdatePhraseViewCountGivenViewCountRequest() {
+        ViewCountRequest request = new ViewCountRequest();
+        Long objectId = 123L;
+        service.updateViewCount(objectId, request);
+        ResponseEntity<?> responseEntity = controller.updateViewCount(objectId, request);
+        Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
     }
 }

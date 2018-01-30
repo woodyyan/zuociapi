@@ -4,6 +4,7 @@ import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
@@ -57,5 +58,17 @@ public class PhraseService {
         error.setTitle("Phrase not found");
         error.setDetails("Phrase not found");
         throw new ErrorException(HttpStatus.NOT_FOUND, error);
+    }
+
+    public void updateViewCount(Long objectId, ViewCountRequest viewCountRequest) {
+        Phrase phrase = repository.findOne(objectId);
+        if (phrase != null) {
+            Long viewCount = phrase.getViewCount();
+            Long amount = viewCountRequest.getAmount();
+            phrase.setViewCount(viewCount + amount);
+            repository.save(phrase);
+        } else {
+            buildNotFoundError();
+        }
     }
 }

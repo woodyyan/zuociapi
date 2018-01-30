@@ -4,6 +4,8 @@ import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.model.ViewCountOperation;
+import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
@@ -102,5 +104,36 @@ public class PhraseServiceTest extends EasyMockSupport {
         replayAll();
         service.deletePhrase(objectId);
         verifyAll();
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowErrorExceptionGivenObjectIdIsNotExits() {
+        ViewCountRequest request = new ViewCountRequest();
+        Long objectId = 123L;
+
+        expect(repository.findOne(objectId)).andReturn(null);
+
+        replayAll();
+        service.updateViewCount(objectId, request);
+        verifyAll();
+    }
+
+    @Test
+    public void shouldIncrementViewCountGivenObjectIdAndViewCount() {
+        ViewCountRequest request = new ViewCountRequest();
+        request.setAmount(10L);
+        request.setOperation(ViewCountOperation.Increment);
+        Long objectId = 123L;
+        Phrase phrase = new Phrase();
+        phrase.setViewCount(0L);
+
+        expect(repository.findOne(objectId)).andReturn(phrase);
+        expect(repository.save(phrase)).andReturn(phrase);
+
+        replayAll();
+        service.updateViewCount(objectId, request);
+        verifyAll();
+
+        Assert.assertThat(phrase.getViewCount(), is(10L));
     }
 }
