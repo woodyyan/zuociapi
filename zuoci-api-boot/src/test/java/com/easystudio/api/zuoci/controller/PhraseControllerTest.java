@@ -1,10 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.model.PhraseData;
-import com.easystudio.api.zuoci.model.PhraseRequest;
-import com.easystudio.api.zuoci.model.Phrases;
-import com.easystudio.api.zuoci.model.ViewCountRequest;
+import com.easystudio.api.zuoci.model.*;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
@@ -100,5 +97,20 @@ public class PhraseControllerTest extends EasyMockSupport {
         service.updateViewCount(objectId, request);
         ResponseEntity<?> responseEntity = controller.updateViewCount(objectId, request);
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.NO_CONTENT));
+    }
+
+    @Test
+    public void shouldGetPhraseCountGivenPhraseContentInToday() {
+        String content = "content";
+
+        expect(service.getPhraseCountByContentInToday(content)).andReturn(10L);
+
+        replayAll();
+        ResponseEntity<PhraseCountResponse> responseEntity = controller.getPhraseCountByContentInToday(content);
+        verifyAll();
+
+        Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+        Assert.assertThat(responseEntity.getBody().getContent(), is("content"));
+        Assert.assertThat(responseEntity.getBody().getCount(), is(10L));
     }
 }

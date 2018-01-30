@@ -9,6 +9,7 @@ import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -70,5 +71,15 @@ public class PhraseService {
         } else {
             buildNotFoundError();
         }
+    }
+
+    public Long getPhraseCountByContentInToday(String content) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime yesterday = new LocalDateTime(
+                now.getYear(),
+                now.getMonthOfYear(),
+                now.getDayOfMonth(),
+                0, 0, 0);
+        return repository.countByContentInToday(content, yesterday);
     }
 }

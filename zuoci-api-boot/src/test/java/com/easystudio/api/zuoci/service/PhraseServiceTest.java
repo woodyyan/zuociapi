@@ -13,6 +13,7 @@ import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
+import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -135,5 +136,24 @@ public class PhraseServiceTest extends EasyMockSupport {
         verifyAll();
 
         Assert.assertThat(phrase.getViewCount(), is(10L));
+    }
+
+    @Test
+    public void shouldGetPhraseCountGivenContentInToday() {
+        String content = "content";
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = new LocalDateTime(
+                now.getYear(),
+                now.getMonthOfYear(),
+                now.getDayOfMonth(),
+                0, 0, 0);
+
+        expect(repository.countByContentInToday(content, dateTime)).andReturn(10L);
+
+        replayAll();
+        Long count = service.getPhraseCountByContentInToday(content);
+        verifyAll();
+
+        Assert.assertThat(count, is(10L));
     }
 }

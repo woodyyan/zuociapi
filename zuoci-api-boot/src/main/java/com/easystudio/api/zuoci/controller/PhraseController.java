@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
+import com.easystudio.api.zuoci.model.PhraseCountResponse;
 import com.easystudio.api.zuoci.model.PhraseRequest;
 import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.ViewCountRequest;
@@ -72,5 +73,15 @@ public class PhraseController {
                                              @RequestBody ViewCountRequest viewCountRequest) {
         service.updateViewCount(objectId, viewCountRequest);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/count", method = GET)
+    @ApiOperation(value = "Get phrase count", notes = "Return phrase count with same content by today")
+    public ResponseEntity<PhraseCountResponse> getPhraseCountByContentInToday(@RequestParam String content) {
+        Long count = service.getPhraseCountByContentInToday(content);
+        PhraseCountResponse response = new PhraseCountResponse();
+        response.setCount(count);
+        response.setContent(content);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
