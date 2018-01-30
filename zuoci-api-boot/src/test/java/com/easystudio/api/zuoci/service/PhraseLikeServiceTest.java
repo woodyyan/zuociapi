@@ -5,6 +5,7 @@ import com.easystudio.api.zuoci.entity.InterestingLike;
 import com.easystudio.api.zuoci.entity.NormalLike;
 import com.easystudio.api.zuoci.model.LikeType;
 import com.easystudio.api.zuoci.model.PhraseLikeRequest;
+import com.easystudio.api.zuoci.model.PhraseLikeResponse;
 import com.easystudio.api.zuoci.repository.PhraseFeelingLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseInterestingLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseNormalLikeRepository;
@@ -16,6 +17,8 @@ import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,5 +112,24 @@ public class PhraseLikeServiceTest extends EasyMockSupport {
 
         Assert.assertThat(feelingLike.getLikeCount(), is(2L));
         Assert.assertThat(feelingLike.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
+    }
+
+    @Test
+    public void shouldGetPhraseLikeCountGivenPhraseId() {
+        Long phraseId = 123L;
+
+        expect(normalLikeRepository.countByPhraseId(phraseId)).andReturn(10L);
+        expect(feelingLikeRepository.countByPhraseId(phraseId)).andReturn(11L);
+        expect(interestingLikeRepository.countByPhraseId(phraseId)).andReturn(12L);
+
+        replayAll();
+        ResponseEntity<PhraseLikeResponse> responseEntity = service.getLikeCount(phraseId);
+        verifyAll();
+
+        Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+        Assert.assertThat(responseEntity.getBody().getPhraseId(), is(phraseId));
+        Assert.assertThat(responseEntity.getBody().getNormalLike().getCount(), is(10L));
+        Assert.assertThat(responseEntity.getBody().getFeelingLike().getCount(), is(11L));
+        Assert.assertThat(responseEntity.getBody().getInterestingLike().getCount(), is(12L));
     }
 }

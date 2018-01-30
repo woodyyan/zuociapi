@@ -10,4 +10,6 @@ import java.util.List;
 public interface PhraseNormalLikeRepository extends JpaRepository<NormalLike, Long> {
 
     List<NormalLike> findByPhraseId(Long phraseId);
+
+    Long countByPhraseId(Long phraseId);
 }

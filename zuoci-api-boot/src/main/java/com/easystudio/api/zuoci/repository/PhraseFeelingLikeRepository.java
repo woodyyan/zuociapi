@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface PhraseFeelingLikeRepository extends JpaRepository<FeelingLike, Long> {
     List<FeelingLike> findByPhraseId(Long phraseId);
+
+    Long countByPhraseId(Long phraseId);
 }

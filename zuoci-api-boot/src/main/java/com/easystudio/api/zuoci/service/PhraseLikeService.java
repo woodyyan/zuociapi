@@ -4,11 +4,14 @@ import com.easystudio.api.zuoci.entity.FeelingLike;
 import com.easystudio.api.zuoci.entity.InterestingLike;
 import com.easystudio.api.zuoci.entity.NormalLike;
 import com.easystudio.api.zuoci.model.PhraseLikeRequest;
+import com.easystudio.api.zuoci.model.PhraseLikeResponse;
 import com.easystudio.api.zuoci.repository.PhraseFeelingLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseInterestingLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseNormalLikeRepository;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -91,5 +94,24 @@ public class PhraseLikeService {
             normalLike.setLastModifiedTime(LocalDateTime.now());
             normalLikeRepository.save(normalLike);
         }
+    }
+
+    public ResponseEntity<PhraseLikeResponse> getLikeCount(Long phraseId) {
+        Long normalCount = normalLikeRepository.countByPhraseId(phraseId);
+        Long feelingCount = feelingLikeRepository.countByPhraseId(phraseId);
+        Long interestingCount = interestingLikeRepository.countByPhraseId(phraseId);
+        PhraseLikeResponse response = new PhraseLikeResponse();
+        response.setPhraseId(phraseId);
+        com.easystudio.api.zuoci.model.NormalLike normalLike = new com.easystudio.api.zuoci.model.NormalLike();
+        normalLike.setCount(normalCount);
+        response.setNormalLike(normalLike);
+        com.easystudio.api.zuoci.model.InterestingLike interestingLike =
+                new com.easystudio.api.zuoci.model.InterestingLike();
+        interestingLike.setCount(interestingCount);
+        response.setInterestingLike(interestingLike);
+        com.easystudio.api.zuoci.model.FeelingLike feelingLike = new com.easystudio.api.zuoci.model.FeelingLike();
+        feelingLike.setCount(feelingCount);
+        response.setFeelingLike(feelingLike);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
