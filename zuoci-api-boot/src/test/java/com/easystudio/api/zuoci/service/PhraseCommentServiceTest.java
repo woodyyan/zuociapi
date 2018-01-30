@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.PhraseComment;
+import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.CommentData;
 import com.easystudio.api.zuoci.repository.PhraseCommentRepository;
 import com.easystudio.api.zuoci.translator.PhraseCommentTranslator;
@@ -70,5 +71,27 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         Assert.assertThat(comments.getContent().size(), is(2));
         Assert.assertThat(comments.getContent().get(0).getContent(), is("content1"));
         Assert.assertThat(comments.getContent().get(1).getContent(), is("content2"));
+    }
+
+    @Test
+    public void shouldDeletePhraseCommentGivenCommentObjectIdExists() {
+        Long objectId = 123L;
+
+        PhraseComment comment = new PhraseComment();
+        expect(repository.findOne(objectId)).andReturn(comment);
+        repository.delete(objectId);
+
+        replayAll();
+        service.deleteComment(objectId);
+        verifyAll();
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowNotFoundExceptionWhenCommentObjectIdNotExists() {
+        Long objectId = 123L;
+
+        expect(repository.findOne(objectId)).andReturn(null);
+
+        service.deleteComment(objectId);
     }
 }

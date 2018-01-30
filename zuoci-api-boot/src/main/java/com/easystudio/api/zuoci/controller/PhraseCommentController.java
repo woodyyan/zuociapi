@@ -14,13 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 @RequestMapping(value = "/phrase/comment", produces = "application/vnd.api+json")
@@ -53,5 +49,13 @@ public class PhraseCommentController {
     public ResponseEntity<PhraseComments> searchComment(Pageable page) {
         Page<PhraseComment> pagedComments = service.searchComment(page);
         return translator.toPhraseCommentResponse(pagedComments);
+    }
+
+    @RequestMapping(value = "/{objectId}", method = DELETE)
+    @ApiOperation(value = "Delete phrase comment", notes = "Delete a phrase comment from DB")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public ResponseEntity<?> deleteComment(@PathVariable(value = "objectId") Long objectId) {
+        service.deleteComment(objectId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

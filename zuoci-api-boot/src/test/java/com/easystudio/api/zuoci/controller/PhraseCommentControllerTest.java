@@ -72,4 +72,13 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
 
         Assert.assertThat(comments.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    public void shouldDeleteCommentGivenObjectId() {
+        Long objectId = 123L;
+
+        service.deleteComment(objectId);
+
+        controller.deleteComment(objectId);
+    }
 }
