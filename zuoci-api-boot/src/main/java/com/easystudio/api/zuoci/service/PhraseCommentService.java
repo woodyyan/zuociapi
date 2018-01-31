@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
+
 @Service
 public class PhraseCommentService {
 
@@ -39,15 +41,8 @@ public class PhraseCommentService {
         if (comment != null) {
             repository.delete(objectId);
         } else {
-            buildNotFoundError();
+            Error error = buildNotFoundError("Phrase comment not found");
+            throw new ErrorException(HttpStatus.NOT_FOUND, error);
         }
-    }
-
-    private void buildNotFoundError() {
-        Error error = new Error();
-        error.setStatus(HttpStatus.NOT_FOUND.name());
-        error.setTitle("Phrase comment not found");
-        error.setDetails("Phrase comment not found");
-        throw new ErrorException(HttpStatus.NOT_FOUND, error);
     }
 }

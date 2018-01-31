@@ -18,6 +18,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
+
 @Service
 public class PhraseService {
 
@@ -49,16 +51,9 @@ public class PhraseService {
             DeletedPhrase deletedPhrase = translator.toDeletedPhrase(phrase);
             deleteRepository.save(deletedPhrase);
         } else {
-            buildNotFoundError();
+            Error error = buildNotFoundError("Phrase not found");
+            throw new ErrorException(HttpStatus.NOT_FOUND, error);
         }
-    }
-
-    private void buildNotFoundError() {
-        Error error = new Error();
-        error.setStatus(HttpStatus.NOT_FOUND.name());
-        error.setTitle("Phrase not found");
-        error.setDetails("Phrase not found");
-        throw new ErrorException(HttpStatus.NOT_FOUND, error);
     }
 
     public void updateViewCount(Long objectId, ViewCountRequest viewCountRequest) {
@@ -69,7 +64,8 @@ public class PhraseService {
             phrase.setViewCount(viewCount + amount);
             repository.save(phrase);
         } else {
-            buildNotFoundError();
+            Error error = buildNotFoundError("Phrase not found");
+            throw new ErrorException(HttpStatus.NOT_FOUND, error);
         }
     }
 

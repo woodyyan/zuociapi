@@ -6,6 +6,7 @@ import com.easystudio.api.zuoci.model.error.Error;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 
+import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildInvalidParameterError;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.util.StringUtils.isEmpty;
 
@@ -35,13 +36,5 @@ public class PhraseValidator {
                 throw new ErrorException(BAD_REQUEST, error);
             }
         }
-    }
-
-    private Error buildInvalidParameterError(String details) {
-        Error error = new Error();
-        error.setStatus(BAD_REQUEST.name());
-        error.setTitle("Bad request");
-        error.setDetails(details);
-        return error;
     }
 }

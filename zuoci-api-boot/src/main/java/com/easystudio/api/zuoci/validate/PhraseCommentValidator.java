@@ -5,6 +5,7 @@ import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.error.Error;
 import org.springframework.stereotype.Service;
 
+import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildInvalidParameterError;
 import static org.jadira.usertype.spi.utils.lang.StringUtils.isEmpty;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -23,13 +24,5 @@ public class PhraseCommentValidator {
             Error error = buildInvalidParameterError("Phrase Id is invalid.");
             throw new ErrorException(BAD_REQUEST, error);
         }
-    }
-
-    private Error buildInvalidParameterError(String details) {
-        Error error = new Error();
-        error.setStatus(BAD_REQUEST.name());
-        error.setTitle("Bad request");
-        error.setDetails(details);
-        return error;
     }
 }
