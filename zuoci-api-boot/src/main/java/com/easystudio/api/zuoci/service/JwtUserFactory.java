@@ -17,12 +17,12 @@ public final class JwtUserFactory {
     public static JwtUser create(User user) {
         return new JwtUser(
                 user.getId(),
-                user.getUsername(),
+                user.getAppKey(),
                 user.getDescription(),
-                user.getPassword(),
+                user.getAppSecret(),
                 mapToGrantedAuthorities(user.getAuthorities()),
                 user.getEnabled(),
-                user.getLastPasswordResetDate().toDate()
+                user.getLastSecretResetDate().toDate()
         );
     }
 

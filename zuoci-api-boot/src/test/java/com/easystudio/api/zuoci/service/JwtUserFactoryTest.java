@@ -22,18 +22,18 @@ public class JwtUserFactoryTest {
         user.setId(123L);
         user.setEnabled(true);
         user.setDescription("desc");
-        user.setPassword("password");
-        user.setUsername("name");
-        user.setLastPasswordResetDate(LocalDateTime.now());
+        user.setAppSecret("password");
+        user.setAppKey("name");
+        user.setLastSecretResetDate(LocalDateTime.now());
         List<Authority> arthritis = new ArrayList<>();
         user.setAuthorities(arthritis);
         JwtUser jwtUser = JwtUserFactory.create(user);
 
-        Assert.assertThat(jwtUser.getUsername(), is(user.getUsername()));
-        Assert.assertThat(jwtUser.getPassword(), is(user.getPassword()));
+        Assert.assertThat(jwtUser.getUsername(), is(user.getAppKey()));
+        Assert.assertThat(jwtUser.getPassword(), is(user.getAppSecret()));
         Assert.assertThat(jwtUser.getDescription(), is(user.getDescription()));
         Assert.assertThat(jwtUser.getId(), is(user.getId()));
         Assert.assertThat(jwtUser.getAuthorities().size(), is(0));
-        Assert.assertThat(jwtUser.getLastPasswordResetDate(), lessThanOrEqualTo(new Date()));
+        Assert.assertThat(jwtUser.getLastSecretResetDate(), lessThanOrEqualTo(new Date()));
     }
 }

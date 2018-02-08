@@ -34,10 +34,10 @@ public class JwtUserDetailsServiceTest extends EasyMockSupport {
         String username = "name";
         String password = "pass";
         User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
+        user.setAppKey(username);
+        user.setAppSecret(password);
         user.setEnabled(true);
-        user.setLastPasswordResetDate(LocalDateTime.now());
+        user.setLastSecretResetDate(LocalDateTime.now());
         List<Authority> authorites = new ArrayList<>();
         user.setAuthorities(authorites);
 

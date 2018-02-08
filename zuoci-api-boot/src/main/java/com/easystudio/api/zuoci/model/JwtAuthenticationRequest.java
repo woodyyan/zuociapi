@@ -2,35 +2,35 @@ package com.easystudio.api.zuoci.model;
 
 import java.io.Serializable;
 
-public class  JwtAuthenticationRequest implements Serializable {
+public class JwtAuthenticationRequest implements Serializable {
 
     private static final long serialVersionUID = -8445943548965154778L;
 
-    private String username;
-    private String password;
+    private String appKey;
+    private String appSecret;
 
     public JwtAuthenticationRequest() {
         super();
     }
 
-    public JwtAuthenticationRequest(String username, String password) {
-        this.setUsername(username);
-        this.setPassword(password);
+    public JwtAuthenticationRequest(String appKey, String appSecret) {
+        this.setAppKey(appKey);
+        this.setAppSecret(appSecret);
     }
 
-    public String getUsername() {
-        return this.username;
+    public String getAppKey() {
+        return this.appKey;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
-    public String getPassword() {
-        return this.password;
+    public String getAppSecret() {
+        return this.appSecret;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 }

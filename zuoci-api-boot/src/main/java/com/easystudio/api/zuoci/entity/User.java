@@ -6,7 +6,6 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -19,17 +18,17 @@ public class User {
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "username", length = 50, unique = true)
+    @Column(name = "app_key", length = 50, unique = true)
     @NotNull
     @Size(min = 4, max = 50)
-    private String username;
+    private String appKey;
 
-    @Column(name = "password", length = 100)
+    @Column(name = "app_secret")
     @NotNull
     @Size(min = 4, max = 100)
-    private String password;
+    private String appSecret;
 
-    @Column(name = "description", length = 50)
+    @Column(name = "description")
     @NotNull
     private String description;
 
@@ -37,10 +36,10 @@ public class User {
     @NotNull
     private Boolean enabled;
 
-    @Column(name = "lastPasswordResetDate")
+    @Column(name = "last_secret_reset_date")
     @NotNull
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
-    private LocalDateTime lastPasswordResetDate;
+    private LocalDateTime lastSecretResetDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -57,20 +56,20 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getAppKey() {
+        return appKey;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setAppKey(String appKey) {
+        this.appKey = appKey;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAppSecret() {
+        return appSecret;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 
     public Boolean getEnabled() {
@@ -89,12 +88,12 @@ public class User {
         this.authorities = authorities;
     }
 
-    public LocalDateTime getLastPasswordResetDate() {
-        return lastPasswordResetDate;
+    public LocalDateTime getLastSecretResetDate() {
+        return lastSecretResetDate;
     }
 
-    public void setLastPasswordResetDate(LocalDateTime lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
+    public void setLastSecretResetDate(LocalDateTime lastSecretResetDate) {
+        this.lastSecretResetDate = lastSecretResetDate;
     }
 
     public String getDescription() {
