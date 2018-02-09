@@ -31,31 +31,31 @@ public class JwtUserDetailsServiceTest extends EasyMockSupport {
 
     @Test
     public void shouldLoadUserByUsernameGiveUsername() {
-        String username = "name";
-        String password = "pass";
+        String appKey = "key";
+        String appSecret = "secret";
         User user = new User();
-        user.setAppKey(username);
-        user.setAppSecret(password);
+        user.setAppKey(appKey);
+        user.setAppSecret(appSecret);
         user.setEnabled(true);
         user.setLastSecretResetDate(LocalDateTime.now());
-        List<Authority> authorites = new ArrayList<>();
-        user.setAuthorities(authorites);
+        List<Authority> authorities = new ArrayList<>();
+        user.setAuthorities(authorities);
 
-        expect(repository.findByUsername(username)).andReturn(user);
+        expect(repository.findByAppKey(appKey)).andReturn(user);
 
         replayAll();
-        UserDetails userDetails = service.loadUserByUsername(username);
+        UserDetails userDetails = service.loadUserByUsername(appKey);
         verifyAll();
 
-        Assert.assertThat(userDetails.getUsername(), is(username));
+        Assert.assertThat(userDetails.getUsername(), is(appKey));
     }
 
     @Test(expected = UsernameNotFoundException.class)
     public void shouldThrowUsernameNotFoundExceptionWhenUsernameNotExist() {
-        String username = "name";
+        String appKey = "name";
 
-        expect(repository.findByUsername(username)).andReturn(null);
+        expect(repository.findByAppKey(appKey)).andReturn(null);
 
-        service.loadUserByUsername(username);
+        service.loadUserByUsername(appKey);
     }
 }
