@@ -35,8 +35,10 @@ public class PhraseController {
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrases", notes = "Supports searching phrases based on time")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "The index of the page requested", defaultValue = "0", dataType = "integer", paramType = "query"),
-            @ApiImplicitParam(name = "size", value = "The number of elements per page", defaultValue = "20", dataType = "integer", paramType = "query")
+            @ApiImplicitParam(name = "page", value = "The index of the page requested",
+                    defaultValue = "0", dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "The number of elements per page",
+                    defaultValue = "20", dataType = "integer", paramType = "query")
     })
     public ResponseEntity<Phrases> searchPhrase(
             @ApiParam(value = "Phrase is valid", defaultValue = "true")

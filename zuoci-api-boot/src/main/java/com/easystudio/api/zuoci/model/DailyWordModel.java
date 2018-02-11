@@ -3,7 +3,6 @@ package com.easystudio.api.zuoci.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

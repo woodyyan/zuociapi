@@ -1,6 +1,5 @@
 package com.easystudio.api.zuoci.model;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

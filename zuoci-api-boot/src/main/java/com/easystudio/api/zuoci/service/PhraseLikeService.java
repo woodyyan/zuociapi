@@ -39,6 +39,8 @@ public class PhraseLikeService {
             case InterestingLike:
                 addInterestingLike(phraseLikeRequest);
                 break;
+            default:
+                break;
         }
     }
 
@@ -97,19 +99,19 @@ public class PhraseLikeService {
     }
 
     public ResponseEntity<PhraseLikeResponse> getLikeCount(Long phraseId) {
-        Long normalCount = normalLikeRepository.countByPhraseId(phraseId);
-        Long feelingCount = feelingLikeRepository.countByPhraseId(phraseId);
-        Long interestingCount = interestingLikeRepository.countByPhraseId(phraseId);
         PhraseLikeResponse response = new PhraseLikeResponse();
         response.setPhraseId(phraseId);
         com.easystudio.api.zuoci.model.NormalLike normalLike = new com.easystudio.api.zuoci.model.NormalLike();
+        Long normalCount = normalLikeRepository.countByPhraseId(phraseId);
         normalLike.setCount(normalCount);
         response.setNormalLike(normalLike);
         com.easystudio.api.zuoci.model.InterestingLike interestingLike =
                 new com.easystudio.api.zuoci.model.InterestingLike();
+        Long interestingCount = interestingLikeRepository.countByPhraseId(phraseId);
         interestingLike.setCount(interestingCount);
         response.setInterestingLike(interestingLike);
         com.easystudio.api.zuoci.model.FeelingLike feelingLike = new com.easystudio.api.zuoci.model.FeelingLike();
+        Long feelingCount = feelingLikeRepository.countByPhraseId(phraseId);
         feelingLike.setCount(feelingCount);
         response.setFeelingLike(feelingLike);
         return new ResponseEntity<>(response, HttpStatus.OK);
