@@ -44,12 +44,13 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     @Test
     public void createComment() {
         PhraseCommentRequest request = new PhraseCommentRequest();
+        Long phraseId = 1L;
 
-        validator.validate(request);
+        validator.validate(phraseId, request);
         service.createComment(request.getData());
 
         replayAll();
-        ResponseEntity<?> responseEntity = controller.createComment(request);
+        ResponseEntity<?> responseEntity = controller.createComment(phraseId, request);
         verifyAll();
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
@@ -62,12 +63,13 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
         Page<PhraseComment> pagedComments = new PageImpl<>(content);
         PhraseComments phraseComments = new PhraseComments();
         ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
+        Long objectId = 1L;
 
-        expect(service.searchComment(page)).andReturn(pagedComments);
+        expect(service.searchComment(objectId, page)).andReturn(pagedComments);
         expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
 
         replayAll();
-        ResponseEntity<PhraseComments> comments = controller.searchComment(page);
+        ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, page);
         verifyAll();
 
         Assert.assertThat(comments.getStatusCode(), is(HttpStatus.OK));
@@ -76,9 +78,10 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     @Test
     public void shouldDeleteCommentGivenObjectId() {
         Long objectId = 123L;
+        Long phraseId = 1L;
 
-        service.deleteComment(objectId);
+        service.deleteComment(phraseId, objectId);
 
-        controller.deleteComment(objectId);
+        controller.deleteComment(phraseId, objectId);
     }
 }

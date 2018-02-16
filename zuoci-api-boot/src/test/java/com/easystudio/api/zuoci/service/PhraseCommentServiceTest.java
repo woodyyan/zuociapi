@@ -49,6 +49,7 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
     public void shouldSearchPhraseCommentsGivenPage() {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable page = new PageRequest(0, 20, sort);
+        Long objectId = 1L;
 
         List<PhraseComment> content = new ArrayList<>();
         PhraseComment comment1 = new PhraseComment();
@@ -58,10 +59,10 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         comment2.setContent("content2");
         content.add(comment2);
         Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 2);
-        expect(repository.findAll(page)).andReturn(pagedComments);
+        expect(repository.findByPhraseId(objectId, page)).andReturn(pagedComments);
 
         replayAll();
-        Page<PhraseComment> comments = service.searchComment(page);
+        Page<PhraseComment> comments = service.searchComment(objectId, page);
         verifyAll();
 
         Assert.assertThat(comments.getTotalElements(), is(2L));
@@ -76,13 +77,14 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
     @Test
     public void shouldDeletePhraseCommentGivenCommentObjectIdExists() {
         Long objectId = 123L;
+        Long phraseId = 1L;
 
         PhraseComment comment = new PhraseComment();
         expect(repository.findOne(objectId)).andReturn(comment);
         repository.delete(objectId);
 
         replayAll();
-        service.deleteComment(objectId);
+        service.deleteComment(phraseId, objectId);
         verifyAll();
     }
 
@@ -92,6 +94,7 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
 
         expect(repository.findOne(objectId)).andReturn(null);
 
-        service.deleteComment(objectId);
+        Long phraseId = 1L;
+        service.deleteComment(phraseId, objectId);
     }
 }

@@ -30,13 +30,13 @@ public class PhraseCommentService {
         repository.save(phraseComment);
     }
 
-    public Page<PhraseComment> searchComment(Pageable page) {
+    public Page<PhraseComment> searchComment(Long phraseId, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findAll(pageable);
+        return repository.findByPhraseId(phraseId, pageable);
     }
 
-    public void deleteComment(Long objectId) {
+    public void deleteComment(Long phraseId, Long objectId) {
         PhraseComment comment = repository.findOne(objectId);
         if (comment != null) {
             repository.delete(objectId);

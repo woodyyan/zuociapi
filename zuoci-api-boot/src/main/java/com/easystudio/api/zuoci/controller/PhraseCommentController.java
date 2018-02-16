@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping(value = "/phrase/comment", produces = "application/vnd.api+json")
+@RequestMapping(value = "/phrase/{phraseId}/comment", produces = "application/vnd.api+json")
 @Api(tags = "Phrase Comment", description = "Operations on Phrase Comment")
 public class PhraseCommentController {
 
@@ -34,8 +34,9 @@ public class PhraseCommentController {
     @RequestMapping(method = POST)
     @ApiOperation(value = "Create phrase comment", notes = "Create phrase comment")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<?> createComment(@RequestBody PhraseCommentRequest phraseCommentRequest) {
-        validator.validate(phraseCommentRequest);
+    public ResponseEntity<?> createComment(@PathVariable(value = "phraseId") Long phraseId,
+                                           @RequestBody PhraseCommentRequest phraseCommentRequest) {
+        validator.validate(phraseId, phraseCommentRequest);
 
         service.createComment(phraseCommentRequest.getData());
 
@@ -45,16 +46,18 @@ public class PhraseCommentController {
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrase comment", notes = "Search phrase comment")
     @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<PhraseComments> searchComment(Pageable page) {
-        Page<PhraseComment> pagedComments = service.searchComment(page);
+    public ResponseEntity<PhraseComments> searchComment(@PathVariable(value = "phraseId") Long phraseId,
+                                                        Pageable page) {
+        Page<PhraseComment> pagedComments = service.searchComment(phraseId, page);
         return translator.toPhraseCommentResponse(pagedComments);
     }
 
-    @RequestMapping(value = "/{objectId}", method = DELETE)
+    @RequestMapping(value = "/{commentId}", method = DELETE)
     @ApiOperation(value = "Delete phrase comment", notes = "Delete a phrase comment from DB")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteComment(@PathVariable(value = "objectId") Long objectId) {
-        service.deleteComment(objectId);
+    public ResponseEntity<?> deleteComment(@PathVariable(value = "phraseId") Long phraseId,
+                                           @PathVariable(value = "commentId") Long commentId) {
+        service.deleteComment(phraseId, commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
