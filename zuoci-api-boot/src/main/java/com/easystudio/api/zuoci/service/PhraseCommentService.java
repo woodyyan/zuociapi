@@ -30,16 +30,21 @@ public class PhraseCommentService {
         repository.save(phraseComment);
     }
 
-    public Page<PhraseComment> searchComment(Long phraseId, Pageable page) {
+    public Page<PhraseComment> searchComment(Long phraseId, boolean isVisible, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findByPhraseId(phraseId, pageable);
+        return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
     }
 
     public void deleteComment(Long phraseId, Long objectId) {
         PhraseComment comment = repository.findOne(objectId);
         if (comment != null) {
-            repository.delete(objectId);
+            if (comment.getPhraseId().equals(phraseId)) {
+                repository.delete(objectId);
+            } else {
+                Error error = buildNotFoundError("Phrase id is not the same with comment");
+                throw new ErrorException(HttpStatus.BAD_REQUEST, error);
+            }
         } else {
             Error error = buildNotFoundError("Phrase comment not found");
             throw new ErrorException(HttpStatus.NOT_FOUND, error);

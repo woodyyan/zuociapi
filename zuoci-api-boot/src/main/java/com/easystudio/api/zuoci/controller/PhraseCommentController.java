@@ -6,8 +6,7 @@ import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
 import com.easystudio.api.zuoci.translator.PhraseCommentTranslator;
 import com.easystudio.api.zuoci.validate.PhraseCommentValidator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,9 +45,17 @@ public class PhraseCommentController {
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search phrase comment", notes = "Search phrase comment")
     @ResponseStatus(value = HttpStatus.OK)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "The index of the page requested",
+                    defaultValue = "0", dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "The number of elements per page",
+                    defaultValue = "20", dataType = "integer", paramType = "query")
+    })
     public ResponseEntity<PhraseComments> searchComment(@PathVariable(value = "phraseId") Long phraseId,
+                                                        @ApiParam(value = "Phrase is visible", defaultValue = "true")
+                                                        @RequestParam(required = false, defaultValue = "true") boolean isVisible,
                                                         Pageable page) {
-        Page<PhraseComment> pagedComments = service.searchComment(phraseId, page);
+        Page<PhraseComment> pagedComments = service.searchComment(phraseId, isVisible, page);
         return translator.toPhraseCommentResponse(pagedComments);
     }
 

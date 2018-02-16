@@ -59,10 +59,10 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         comment2.setContent("content2");
         content.add(comment2);
         Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 2);
-        expect(repository.findByPhraseId(objectId, page)).andReturn(pagedComments);
+        expect(repository.findByPhraseIdAndIsVisible(objectId, true, page)).andReturn(pagedComments);
 
         replayAll();
-        Page<PhraseComment> comments = service.searchComment(objectId, page);
+        Page<PhraseComment> comments = service.searchComment(objectId, true, page);
         verifyAll();
 
         Assert.assertThat(comments.getTotalElements(), is(2L));
@@ -80,6 +80,7 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         Long phraseId = 1L;
 
         PhraseComment comment = new PhraseComment();
+        comment.setPhraseId(phraseId);
         expect(repository.findOne(objectId)).andReturn(comment);
         repository.delete(objectId);
 
@@ -93,6 +94,18 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         Long objectId = 123L;
 
         expect(repository.findOne(objectId)).andReturn(null);
+
+        Long phraseId = 1L;
+        service.deleteComment(phraseId, objectId);
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowErrorExceptionWhenPhraseIdIsNotSameWithComment() {
+        Long objectId = 123L;
+
+        PhraseComment comment = new PhraseComment();
+        comment.setPhraseId(2L);
+        expect(repository.findOne(objectId)).andReturn(comment);
 
         Long phraseId = 1L;
         service.deleteComment(phraseId, objectId);

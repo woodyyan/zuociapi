@@ -65,11 +65,11 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
         ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
         Long objectId = 1L;
 
-        expect(service.searchComment(objectId, page)).andReturn(pagedComments);
+        expect(service.searchComment(objectId, true, page)).andReturn(pagedComments);
         expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
 
         replayAll();
-        ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, page);
+        ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, true, page);
         verifyAll();
 
         Assert.assertThat(comments.getStatusCode(), is(HttpStatus.OK));

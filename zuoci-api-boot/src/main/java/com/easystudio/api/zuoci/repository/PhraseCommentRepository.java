@@ -6,5 +6,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PhraseCommentRepository extends JpaRepository<PhraseComment, Long> {
-    Page<PhraseComment> findByPhraseId(Long phraseId, Pageable page);
+    Page<PhraseComment> findByPhraseIdAndIsVisible(Long phraseId, boolean isVisible, Pageable page);
 }
