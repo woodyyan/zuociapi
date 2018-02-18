@@ -42,6 +42,9 @@ public class PhraseComment {
     @Column(name = "replied_user_id")
     private String repliedUserId;
 
+    @Column(name = "visible")
+    private boolean isVisible;
+
     public void setContent(String content) {
         this.content = content;
     }
@@ -120,5 +123,13 @@ public class PhraseComment {
 
     public void setObjectId(Long objectId) {
         this.objectId = objectId;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

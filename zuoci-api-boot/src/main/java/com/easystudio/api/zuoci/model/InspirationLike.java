@@ -7,10 +7,10 @@ import io.swagger.annotations.ApiModelProperty;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel(value = "Phrase feeling like")
-public class FeelingLike {
+@ApiModel(value = "Phrase inspiration like")
+public class InspirationLike {
 
-    @ApiModelProperty(value = "Phrase feeling like count", required = true)
+    @ApiModelProperty(value = "Phrase inspiration like count", required = true)
     private Long count;
 
     public Long getCount() {

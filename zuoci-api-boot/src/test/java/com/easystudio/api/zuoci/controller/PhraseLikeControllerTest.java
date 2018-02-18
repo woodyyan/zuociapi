@@ -32,10 +32,10 @@ public class PhraseLikeControllerTest extends EasyMockSupport {
     public void shouldAddFeelingLikeGivenLikeRequest() {
         PhraseLikeRequest request = new PhraseLikeRequest();
 
-        validator.validate(request);
+        validator.validate(1L, request);
         service.addLike(request);
 
-        controller.addLike(request);
+        controller.addLike(1L, request);
     }
 
     @Test
@@ -43,15 +43,15 @@ public class PhraseLikeControllerTest extends EasyMockSupport {
         Long phraseId = 123L;
         PhraseLikeResponse body = new PhraseLikeResponse();
         body.setPhraseId(phraseId);
-        FeelingLike feelingLike = new FeelingLike();
-        feelingLike.setCount(10L);
-        body.setFeelingLike(feelingLike);
+        InspirationLike inspirationLike = new InspirationLike();
+        inspirationLike.setCount(10L);
+        body.setInspirationLike(inspirationLike);
         InterestingLike interestingLike = new InterestingLike();
         interestingLike.setCount(12L);
         body.setInterestingLike(interestingLike);
-        NormalLike normalLike = new NormalLike();
-        normalLike.setCount(13L);
-        body.setNormalLike(normalLike);
+        ResonanceLike resonanceLike = new ResonanceLike();
+        resonanceLike.setCount(13L);
+        body.setResonanceLike(resonanceLike);
         ResponseEntity<PhraseLikeResponse> response = new ResponseEntity<>(body, HttpStatus.OK);
 
         expect(service.getLikeCount(phraseId)).andReturn(response);
@@ -62,8 +62,8 @@ public class PhraseLikeControllerTest extends EasyMockSupport {
 
         Assert.assertThat(responseResponseEntity.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(responseResponseEntity.getBody().getPhraseId(), is(123L));
-        Assert.assertThat(responseResponseEntity.getBody().getFeelingLike().getCount(), is(10L));
+        Assert.assertThat(responseResponseEntity.getBody().getInspirationLike().getCount(), is(10L));
         Assert.assertThat(responseResponseEntity.getBody().getInterestingLike().getCount(), is(12L));
-        Assert.assertThat(responseResponseEntity.getBody().getNormalLike().getCount(), is(13L));
+        Assert.assertThat(responseResponseEntity.getBody().getResonanceLike().getCount(), is(13L));
     }
 }

@@ -1,14 +1,14 @@
 package com.easystudio.api.zuoci.service;
 
-import com.easystudio.api.zuoci.entity.FeelingLike;
+import com.easystudio.api.zuoci.entity.InspirationLike;
 import com.easystudio.api.zuoci.entity.InterestingLike;
-import com.easystudio.api.zuoci.entity.NormalLike;
+import com.easystudio.api.zuoci.entity.ResonanceLike;
 import com.easystudio.api.zuoci.model.LikeType;
 import com.easystudio.api.zuoci.model.PhraseLikeRequest;
 import com.easystudio.api.zuoci.model.PhraseLikeResponse;
-import com.easystudio.api.zuoci.repository.PhraseFeelingLikeRepository;
+import com.easystudio.api.zuoci.repository.PhraseInspirationLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseInterestingLikeRepository;
-import com.easystudio.api.zuoci.repository.PhraseNormalLikeRepository;
+import com.easystudio.api.zuoci.repository.PhraseResonanceLikeRepository;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -34,36 +34,36 @@ public class PhraseLikeServiceTest extends EasyMockSupport {
     private PhraseLikeService service = new PhraseLikeService();
 
     @Mock
-    private PhraseNormalLikeRepository normalLikeRepository;
+    private PhraseResonanceLikeRepository resonanceLikeRepository;
 
     @Mock
     private PhraseInterestingLikeRepository interestingLikeRepository;
 
     @Mock
-    private PhraseFeelingLikeRepository feelingLikeRepository;
+    private PhraseInspirationLikeRepository inspirationLikeRepository;
 
     @Test
-    public void shouldAddLikeCountGivenExistingNormalLikeWhenNormalLike() {
+    public void shouldAddLikeCountGivenExistingResonanceLikeWhenResonanceLike() {
         PhraseLikeRequest request = new PhraseLikeRequest();
         request.setUserId("123");
         request.setPhraseId(1L);
-        request.setLikeType(LikeType.NormalLike);
+        request.setLikeType(LikeType.ResonanceLike);
 
-        List<NormalLike> normalLikes = new ArrayList<>();
-        NormalLike normalLike = new NormalLike();
-        normalLike.setUserId("userId");
-        normalLike.setPhraseId(1L);
-        normalLike.setLikeCount(1L);
-        normalLikes.add(normalLike);
-        expect(normalLikeRepository.findByPhraseId(request.getPhraseId())).andReturn(normalLikes);
-        expect(normalLikeRepository.save(normalLike)).andReturn(normalLike);
+        List<ResonanceLike> resonanceLikes = new ArrayList<>();
+        ResonanceLike resonanceLike = new ResonanceLike();
+        resonanceLike.setUserId("userId");
+        resonanceLike.setPhraseId(1L);
+        resonanceLike.setLikeCount(1L);
+        resonanceLikes.add(resonanceLike);
+        expect(resonanceLikeRepository.findByPhraseId(request.getPhraseId())).andReturn(resonanceLikes);
+        expect(resonanceLikeRepository.save(resonanceLike)).andReturn(resonanceLike);
 
         replayAll();
         service.addLike(request);
         verifyAll();
 
-        Assert.assertThat(normalLike.getLikeCount(), is(2L));
-        Assert.assertThat(normalLike.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
+        Assert.assertThat(resonanceLike.getLikeCount(), is(2L));
+        Assert.assertThat(resonanceLike.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
 
     @Test
@@ -91,35 +91,35 @@ public class PhraseLikeServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void shouldAddLikeCountGivenExistingFeelingLikeWhenFeelingLike() {
+    public void shouldAddLikeCountGivenExistingFeelingLikeWhenInspirationLike() {
         PhraseLikeRequest request = new PhraseLikeRequest();
         request.setUserId("123");
         request.setPhraseId(1L);
-        request.setLikeType(LikeType.FeelingLike);
+        request.setLikeType(LikeType.InspirationLike);
 
-        List<FeelingLike> feelingLikes = new ArrayList<>();
-        FeelingLike feelingLike = new FeelingLike();
-        feelingLike.setUserId("userId");
-        feelingLike.setPhraseId(1L);
-        feelingLike.setLikeCount(1L);
-        feelingLikes.add(feelingLike);
-        expect(feelingLikeRepository.findByPhraseId(request.getPhraseId())).andReturn(feelingLikes);
-        expect(feelingLikeRepository.save(feelingLike)).andReturn(feelingLike);
+        List<InspirationLike> inspirationLikes = new ArrayList<>();
+        InspirationLike inspirationLike = new InspirationLike();
+        inspirationLike.setUserId("userId");
+        inspirationLike.setPhraseId(1L);
+        inspirationLike.setLikeCount(1L);
+        inspirationLikes.add(inspirationLike);
+        expect(inspirationLikeRepository.findByPhraseId(request.getPhraseId())).andReturn(inspirationLikes);
+        expect(inspirationLikeRepository.save(inspirationLike)).andReturn(inspirationLike);
 
         replayAll();
         service.addLike(request);
         verifyAll();
 
-        Assert.assertThat(feelingLike.getLikeCount(), is(2L));
-        Assert.assertThat(feelingLike.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
+        Assert.assertThat(inspirationLike.getLikeCount(), is(2L));
+        Assert.assertThat(inspirationLike.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
 
     @Test
     public void shouldGetPhraseLikeCountGivenPhraseId() {
         Long phraseId = 123L;
 
-        expect(normalLikeRepository.countByPhraseId(phraseId)).andReturn(10L);
-        expect(feelingLikeRepository.countByPhraseId(phraseId)).andReturn(11L);
+        expect(resonanceLikeRepository.countByPhraseId(phraseId)).andReturn(10L);
+        expect(inspirationLikeRepository.countByPhraseId(phraseId)).andReturn(11L);
         expect(interestingLikeRepository.countByPhraseId(phraseId)).andReturn(12L);
 
         replayAll();
@@ -128,8 +128,8 @@ public class PhraseLikeServiceTest extends EasyMockSupport {
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
         Assert.assertThat(responseEntity.getBody().getPhraseId(), is(phraseId));
-        Assert.assertThat(responseEntity.getBody().getNormalLike().getCount(), is(10L));
-        Assert.assertThat(responseEntity.getBody().getFeelingLike().getCount(), is(11L));
+        Assert.assertThat(responseEntity.getBody().getResonanceLike().getCount(), is(10L));
+        Assert.assertThat(responseEntity.getBody().getInspirationLike().getCount(), is(11L));
         Assert.assertThat(responseEntity.getBody().getInterestingLike().getCount(), is(12L));
     }
 }

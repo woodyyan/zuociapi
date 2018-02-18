@@ -1,13 +1,13 @@
 package com.easystudio.api.zuoci.service;
 
-import com.easystudio.api.zuoci.entity.FeelingLike;
+import com.easystudio.api.zuoci.entity.InspirationLike;
 import com.easystudio.api.zuoci.entity.InterestingLike;
-import com.easystudio.api.zuoci.entity.NormalLike;
+import com.easystudio.api.zuoci.entity.ResonanceLike;
 import com.easystudio.api.zuoci.model.PhraseLikeRequest;
 import com.easystudio.api.zuoci.model.PhraseLikeResponse;
-import com.easystudio.api.zuoci.repository.PhraseFeelingLikeRepository;
+import com.easystudio.api.zuoci.repository.PhraseInspirationLikeRepository;
 import com.easystudio.api.zuoci.repository.PhraseInterestingLikeRepository;
-import com.easystudio.api.zuoci.repository.PhraseNormalLikeRepository;
+import com.easystudio.api.zuoci.repository.PhraseResonanceLikeRepository;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,21 +20,21 @@ import java.util.List;
 public class PhraseLikeService {
 
     @Autowired
-    private PhraseFeelingLikeRepository feelingLikeRepository;
+    private PhraseInspirationLikeRepository inspirationLikeRepository;
 
     @Autowired
-    private PhraseNormalLikeRepository normalLikeRepository;
+    private PhraseResonanceLikeRepository resonanceLikeRepository;
 
     @Autowired
     private PhraseInterestingLikeRepository interestingLikeRepository;
 
     public void addLike(PhraseLikeRequest phraseLikeRequest) {
         switch (phraseLikeRequest.getLikeType()) {
-            case NormalLike:
-                addNormalLike(phraseLikeRequest);
+            case ResonanceLike:
+                addResonanceLike(phraseLikeRequest);
                 break;
-            case FeelingLike:
-                addFeelingLike(phraseLikeRequest);
+            case InspirationLike:
+                addInspirationLike(phraseLikeRequest);
                 break;
             case InterestingLike:
                 addInterestingLike(phraseLikeRequest);
@@ -62,58 +62,58 @@ public class PhraseLikeService {
         }
     }
 
-    private void addFeelingLike(PhraseLikeRequest phraseLikeRequest) {
-        List<FeelingLike> feelingLikes = feelingLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
-        if (feelingLikes.isEmpty()) {
-            FeelingLike feelingLike = new FeelingLike();
-            feelingLike.setLikeCount(1L);
-            feelingLike.setUserId(phraseLikeRequest.getUserId());
-            feelingLike.setPhraseId(phraseLikeRequest.getPhraseId());
-            feelingLike.setCreatedTime(LocalDateTime.now());
-            feelingLike.setLastModifiedTime(LocalDateTime.now());
-            feelingLikeRepository.save(feelingLike);
+    private void addInspirationLike(PhraseLikeRequest phraseLikeRequest) {
+        List<InspirationLike> inspirationLikes = inspirationLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
+        if (inspirationLikes.isEmpty()) {
+            InspirationLike inspirationLike = new InspirationLike();
+            inspirationLike.setLikeCount(1L);
+            inspirationLike.setUserId(phraseLikeRequest.getUserId());
+            inspirationLike.setPhraseId(phraseLikeRequest.getPhraseId());
+            inspirationLike.setCreatedTime(LocalDateTime.now());
+            inspirationLike.setLastModifiedTime(LocalDateTime.now());
+            inspirationLikeRepository.save(inspirationLike);
         } else {
-            FeelingLike feelingLike = feelingLikes.get(0);
-            feelingLike.setLikeCount(feelingLike.getLikeCount() + 1);
-            feelingLike.setLastModifiedTime(LocalDateTime.now());
-            feelingLikeRepository.save(feelingLike);
+            InspirationLike inspirationLike = inspirationLikes.get(0);
+            inspirationLike.setLikeCount(inspirationLike.getLikeCount() + 1);
+            inspirationLike.setLastModifiedTime(LocalDateTime.now());
+            inspirationLikeRepository.save(inspirationLike);
         }
     }
 
-    private void addNormalLike(PhraseLikeRequest phraseLikeRequest) {
-        List<NormalLike> normalLikes = normalLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
-        if (normalLikes.isEmpty()) {
-            NormalLike normalLike = new NormalLike();
-            normalLike.setLikeCount(1L);
-            normalLike.setPhraseId(phraseLikeRequest.getPhraseId());
-            normalLike.setUserId(phraseLikeRequest.getUserId());
-            normalLike.setCreatedTime(LocalDateTime.now());
-            normalLike.setLastModifiedTime(LocalDateTime.now());
-            normalLikeRepository.save(normalLike);
+    private void addResonanceLike(PhraseLikeRequest phraseLikeRequest) {
+        List<ResonanceLike> resonanceLikes = resonanceLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
+        if (resonanceLikes.isEmpty()) {
+            ResonanceLike resonanceLike = new ResonanceLike();
+            resonanceLike.setLikeCount(1L);
+            resonanceLike.setPhraseId(phraseLikeRequest.getPhraseId());
+            resonanceLike.setUserId(phraseLikeRequest.getUserId());
+            resonanceLike.setCreatedTime(LocalDateTime.now());
+            resonanceLike.setLastModifiedTime(LocalDateTime.now());
+            resonanceLikeRepository.save(resonanceLike);
         } else {
-            NormalLike normalLike = normalLikes.get(0);
-            normalLike.setLikeCount(normalLike.getLikeCount() + 1);
-            normalLike.setLastModifiedTime(LocalDateTime.now());
-            normalLikeRepository.save(normalLike);
+            ResonanceLike resonanceLike = resonanceLikes.get(0);
+            resonanceLike.setLikeCount(resonanceLike.getLikeCount() + 1);
+            resonanceLike.setLastModifiedTime(LocalDateTime.now());
+            resonanceLikeRepository.save(resonanceLike);
         }
     }
 
     public ResponseEntity<PhraseLikeResponse> getLikeCount(Long phraseId) {
         PhraseLikeResponse response = new PhraseLikeResponse();
         response.setPhraseId(phraseId);
-        com.easystudio.api.zuoci.model.NormalLike normalLike = new com.easystudio.api.zuoci.model.NormalLike();
-        Long normalCount = normalLikeRepository.countByPhraseId(phraseId);
-        normalLike.setCount(normalCount);
-        response.setNormalLike(normalLike);
+        com.easystudio.api.zuoci.model.ResonanceLike resonanceLike = new com.easystudio.api.zuoci.model.ResonanceLike();
+        Long normalCount = resonanceLikeRepository.countByPhraseId(phraseId);
+        resonanceLike.setCount(normalCount);
+        response.setResonanceLike(resonanceLike);
         com.easystudio.api.zuoci.model.InterestingLike interestingLike =
                 new com.easystudio.api.zuoci.model.InterestingLike();
         Long interestingCount = interestingLikeRepository.countByPhraseId(phraseId);
         interestingLike.setCount(interestingCount);
         response.setInterestingLike(interestingLike);
-        com.easystudio.api.zuoci.model.FeelingLike feelingLike = new com.easystudio.api.zuoci.model.FeelingLike();
-        Long feelingCount = feelingLikeRepository.countByPhraseId(phraseId);
-        feelingLike.setCount(feelingCount);
-        response.setFeelingLike(feelingLike);
+        com.easystudio.api.zuoci.model.InspirationLike inspirationLike = new com.easystudio.api.zuoci.model.InspirationLike();
+        Long feelingCount = inspirationLikeRepository.countByPhraseId(phraseId);
+        inspirationLike.setCount(feelingCount);
+        response.setInspirationLike(inspirationLike);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

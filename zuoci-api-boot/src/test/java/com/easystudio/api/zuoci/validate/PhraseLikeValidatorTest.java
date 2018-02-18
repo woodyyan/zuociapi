@@ -12,17 +12,26 @@ public class PhraseLikeValidatorTest {
     @Test
     public void shouldValidateUserIdGivenValidLikeRequest() {
         PhraseLikeRequest request = new PhraseLikeRequest();
-        request.setLikeType(LikeType.FeelingLike);
+        request.setLikeType(LikeType.InspirationLike);
         request.setPhraseId(1L);
         request.setUserId("userid");
-        validator.validate(request);
+        validator.validate(1L, request);
     }
 
     @Test(expected = ErrorException.class)
     public void shouldThrowErrorExceptionWhenUserIdIsMissing() {
         PhraseLikeRequest request = new PhraseLikeRequest();
-        request.setLikeType(LikeType.FeelingLike);
+        request.setLikeType(LikeType.InspirationLike);
         request.setPhraseId(1L);
-        validator.validate(request);
+        validator.validate(1L, request);
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowErrorExceptionWhenPhraseIdsAreNotMatch() {
+        PhraseLikeRequest request = new PhraseLikeRequest();
+        request.setLikeType(LikeType.InspirationLike);
+        request.setPhraseId(1L);
+        request.setUserId("userid");
+        validator.validate(2L, request);
     }
 }

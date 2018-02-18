@@ -6,8 +6,8 @@ import org.joda.time.LocalDateTime;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "phrase_normal_like")
-public class NormalLike {
+@Table(name = "phrase_inspiration_like")
+public class InspirationLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "object_id", nullable = false)

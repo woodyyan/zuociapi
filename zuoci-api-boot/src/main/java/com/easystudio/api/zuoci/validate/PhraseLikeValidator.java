@@ -11,7 +11,11 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Service
 public class PhraseLikeValidator {
-    public void validate(PhraseLikeRequest phraseLikeRequest) {
+    public void validate(Long phraseId, PhraseLikeRequest phraseLikeRequest) {
+        if (!phraseLikeRequest.getPhraseId().equals(phraseId)) {
+            Error error = buildInvalidParameterError("Phrase Ids are not match.");
+            throw new ErrorException(BAD_REQUEST, error);
+        }
         if (isEmpty(phraseLikeRequest.getUserId())) {
             Error error = buildInvalidParameterError("User Id is required.");
             throw new ErrorException(BAD_REQUEST, error);

@@ -15,7 +15,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
-@RequestMapping(value = "/phrase/like", produces = "application/vnd.api+json")
+@RequestMapping(value = "/phrase/{phraseId}/like", produces = "application/vnd.api+json")
 @Api(tags = "Phrase like", description = "Like for Phrase")
 public class PhraseLikeController {
 
@@ -28,15 +28,16 @@ public class PhraseLikeController {
     @RequestMapping(method = POST)
     @ApiOperation(value = "Add phrase like", notes = "Add phrase like")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<?> addLike(@RequestBody PhraseLikeRequest phraseLikeRequest) {
-        validator.validate(phraseLikeRequest);
+    public ResponseEntity<?> addLike(@PathVariable Long phraseId,
+                                     @RequestBody PhraseLikeRequest phraseLikeRequest) {
+        validator.validate(phraseId, phraseLikeRequest);
 
         service.addLike(phraseLikeRequest);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @RequestMapping(value = "/{phraseId}", method = GET)
+    @RequestMapping(method = GET)
     @ApiOperation(value = "Get phrase like count", notes = "Get phrase like count")
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<PhraseLikeResponse> getLikeCount(@PathVariable Long phraseId) {

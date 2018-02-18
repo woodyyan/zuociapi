@@ -12,13 +12,13 @@ public class PhraseLikeResponse {
     private Long phraseId;
 
     @ApiModelProperty(value = "Phrase normal like", required = true)
-    private NormalLike normalLike;
+    private ResonanceLike resonanceLike;
 
     @ApiModelProperty(value = "Phrase interesting like", required = true)
     private InterestingLike interestingLike;
 
     @ApiModelProperty(value = "Phrase feeling like", required = true)
-    private FeelingLike feelingLike;
+    private InspirationLike inspirationLike;
 
     public Long getPhraseId() {
         return phraseId;
@@ -28,12 +28,12 @@ public class PhraseLikeResponse {
         this.phraseId = phraseId;
     }
 
-    public NormalLike getNormalLike() {
-        return normalLike;
+    public ResonanceLike getResonanceLike() {
+        return resonanceLike;
     }
 
-    public void setNormalLike(NormalLike normalLike) {
-        this.normalLike = normalLike;
+    public void setResonanceLike(ResonanceLike resonanceLike) {
+        this.resonanceLike = resonanceLike;
     }
 
     public InterestingLike getInterestingLike() {
@@ -44,11 +44,11 @@ public class PhraseLikeResponse {
         this.interestingLike = interestingLike;
     }
 
-    public FeelingLike getFeelingLike() {
-        return feelingLike;
+    public InspirationLike getInspirationLike() {
+        return inspirationLike;
     }
 
-    public void setFeelingLike(FeelingLike feelingLike) {
-        this.feelingLike = feelingLike;
+    public void setInspirationLike(InspirationLike inspirationLike) {
+        this.inspirationLike = inspirationLike;
     }
 }
