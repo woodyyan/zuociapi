@@ -14,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class PhraseLikeService {
 
@@ -45,57 +43,33 @@ public class PhraseLikeService {
     }
 
     private void addInterestingLike(PhraseLikeRequest phraseLikeRequest) {
-        List<InterestingLike> interestingLikes = interestingLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
-        if (interestingLikes.isEmpty()) {
-            InterestingLike interestingLike = new InterestingLike();
-            interestingLike.setLikeCount(1L);
-            interestingLike.setUserId(phraseLikeRequest.getUserId());
-            interestingLike.setPhraseId(phraseLikeRequest.getPhraseId());
-            interestingLike.setCreatedTime(LocalDateTime.now());
-            interestingLike.setLastModifiedTime(LocalDateTime.now());
-            interestingLikeRepository.save(interestingLike);
-        } else {
-            InterestingLike interestingLike = interestingLikes.get(0);
-            interestingLike.setLikeCount(interestingLike.getLikeCount() + 1);
-            interestingLike.setLastModifiedTime(LocalDateTime.now());
-            interestingLikeRepository.save(interestingLike);
-        }
+        InterestingLike interestingLike = new InterestingLike();
+        interestingLike.setLikeCount(1L);
+        interestingLike.setUserId(phraseLikeRequest.getUserId());
+        interestingLike.setPhraseId(phraseLikeRequest.getPhraseId());
+        interestingLike.setCreatedTime(LocalDateTime.now());
+        interestingLike.setLastModifiedTime(LocalDateTime.now());
+        interestingLikeRepository.save(interestingLike);
     }
 
     private void addInspirationLike(PhraseLikeRequest phraseLikeRequest) {
-        List<InspirationLike> inspirationLikes = inspirationLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
-        if (inspirationLikes.isEmpty()) {
-            InspirationLike inspirationLike = new InspirationLike();
-            inspirationLike.setLikeCount(1L);
-            inspirationLike.setUserId(phraseLikeRequest.getUserId());
-            inspirationLike.setPhraseId(phraseLikeRequest.getPhraseId());
-            inspirationLike.setCreatedTime(LocalDateTime.now());
-            inspirationLike.setLastModifiedTime(LocalDateTime.now());
-            inspirationLikeRepository.save(inspirationLike);
-        } else {
-            InspirationLike inspirationLike = inspirationLikes.get(0);
-            inspirationLike.setLikeCount(inspirationLike.getLikeCount() + 1);
-            inspirationLike.setLastModifiedTime(LocalDateTime.now());
-            inspirationLikeRepository.save(inspirationLike);
-        }
+        InspirationLike inspirationLike = new InspirationLike();
+        inspirationLike.setLikeCount(1L);
+        inspirationLike.setUserId(phraseLikeRequest.getUserId());
+        inspirationLike.setPhraseId(phraseLikeRequest.getPhraseId());
+        inspirationLike.setCreatedTime(LocalDateTime.now());
+        inspirationLike.setLastModifiedTime(LocalDateTime.now());
+        inspirationLikeRepository.save(inspirationLike);
     }
 
     private void addResonanceLike(PhraseLikeRequest phraseLikeRequest) {
-        List<ResonanceLike> resonanceLikes = resonanceLikeRepository.findByPhraseId(phraseLikeRequest.getPhraseId());
-        if (resonanceLikes.isEmpty()) {
-            ResonanceLike resonanceLike = new ResonanceLike();
-            resonanceLike.setLikeCount(1L);
-            resonanceLike.setPhraseId(phraseLikeRequest.getPhraseId());
-            resonanceLike.setUserId(phraseLikeRequest.getUserId());
-            resonanceLike.setCreatedTime(LocalDateTime.now());
-            resonanceLike.setLastModifiedTime(LocalDateTime.now());
-            resonanceLikeRepository.save(resonanceLike);
-        } else {
-            ResonanceLike resonanceLike = resonanceLikes.get(0);
-            resonanceLike.setLikeCount(resonanceLike.getLikeCount() + 1);
-            resonanceLike.setLastModifiedTime(LocalDateTime.now());
-            resonanceLikeRepository.save(resonanceLike);
-        }
+        ResonanceLike resonanceLike = new ResonanceLike();
+        resonanceLike.setLikeCount(1L);
+        resonanceLike.setPhraseId(phraseLikeRequest.getPhraseId());
+        resonanceLike.setUserId(phraseLikeRequest.getUserId());
+        resonanceLike.setCreatedTime(LocalDateTime.now());
+        resonanceLike.setLastModifiedTime(LocalDateTime.now());
+        resonanceLikeRepository.save(resonanceLike);
     }
 
     public ResponseEntity<PhraseLikeResponse> getLikeCount(Long phraseId) {
