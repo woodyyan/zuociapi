@@ -3,9 +3,11 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PagingMeta;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
+import com.easystudio.api.zuoci.validate.PhraseStarValidator;
 import javassist.NotFoundException;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -28,10 +30,10 @@ import static org.easymock.EasyMock.expect;
 import static org.hamcrest.Matchers.is;
 
 @RunWith(EasyMockRunner.class)
-public class StarredPhraseControllerTest extends EasyMockSupport {
+public class PhraseStarControllerTest extends EasyMockSupport {
 
     @TestSubject
-    private StarredPhraseController controller = new StarredPhraseController();
+    private PhraseStarController controller = new PhraseStarController();
 
     @Mock
     private StarredPhraseService service;
@@ -39,14 +41,21 @@ public class StarredPhraseControllerTest extends EasyMockSupport {
     @Mock
     private PhraseTranslator translator;
 
+    @Mock
+    private PhraseStarValidator validator;
+
     @Test
     public void shouldAddStarGivenPhraseIdAndUserId() throws NotFoundException {
         Long phraseId = 1L;
         String userId = "abc";
 
-        service.addStar(phraseId, userId);
+        PhraseStarRequest request = new PhraseStarRequest();
+        request.setUserId(userId);
+        request.setPhraseId(phraseId);
+        validator.validate(request);
+        service.addStar(request);
 
-        controller.addStar(phraseId, userId);
+        controller.addStar(request);
     }
 
     @Test

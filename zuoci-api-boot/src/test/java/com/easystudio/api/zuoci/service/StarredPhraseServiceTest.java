@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.entity.StarredPhrase;
+import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.repository.StarredPhraseRepository;
 import javassist.NotFoundException;
@@ -36,11 +37,14 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
     public void shouldThrowNotFoundExceptionWhenPhraseIdIsNotExist() throws NotFoundException {
         Long phraseId = 1L;
         String userId = "abc";
+        PhraseStarRequest request = new PhraseStarRequest();
+        request.setPhraseId(phraseId);
+        request.setUserId(userId);
 
         expect(phraseRepository.findOne(phraseId)).andReturn(null);
 
         replayAll();
-        service.addStar(phraseId, userId);
+        service.addStar(request);
         verifyAll();
     }
 

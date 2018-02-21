@@ -1,49 +1,49 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
+import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import com.easystudio.api.zuoci.validate.PhraseStarValidator;
+import io.swagger.annotations.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping(value = "/star/user/{userId}", produces = "application/vnd.api+json")
-@Api(tags = "Starred Phrase", description = "Star a Phrase")
-public class StarredPhraseController {
+@RequestMapping(value = "/phrase/star", produces = "application/vnd.api+json")
+@Api(tags = "Phrase Stars", description = "Phrase stars")
+public class PhraseStarController {
 
     @Autowired
     private StarredPhraseService service;
+
+    @Autowired
     private PhraseTranslator translator;
 
-    @RequestMapping(value = "/phrase/{phraseId}", method = POST)
+    @Autowired
+    private PhraseStarValidator validator;
+
+    @RequestMapping(method = POST)
     @ApiOperation(value = "Star phrase", notes = "Star a phrase")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<?> addStar(@PathVariable Long phraseId,
-                                     @PathVariable String userId) throws NotFoundException {
-        service.addStar(phraseId, userId);
+    public ResponseEntity<?> addStar(@RequestBody PhraseStarRequest request) throws NotFoundException {
+        validator.validate(request);
+
+        service.addStar(request);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @RequestMapping(method = GET)
-    @ApiOperation(value = "Get star", notes = "Get star for given user")
+    @ApiOperation(value = "Get stars", notes = "Get stars for given user")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "The index of the page requested",
                     defaultValue = "0", dataType = "integer", paramType = "query"),
@@ -51,7 +51,8 @@ public class StarredPhraseController {
                     defaultValue = "20", dataType = "integer", paramType = "query")
     })
     @ResponseStatus(value = HttpStatus.OK)
-    public ResponseEntity<Phrases> searchStar(@PathVariable String userId, Pageable page) {
+    public ResponseEntity<Phrases> searchStar(@ApiParam(value = "User ID")
+            @RequestParam String userId, Pageable page) {
         Page<Phrase> pagedPhrases = service.searchStar(userId, page);
         return translator.toPhraseResponse(pagedPhrases);
     }

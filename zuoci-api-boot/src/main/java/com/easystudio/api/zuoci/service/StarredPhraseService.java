@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.entity.StarredPhrase;
+import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.repository.StarredPhraseRepository;
 import javassist.NotFoundException;
@@ -22,13 +23,13 @@ public class StarredPhraseService {
     @Autowired
     private PhraseRepository phraseRepository;
 
-    public void addStar(Long phraseId, String userId) throws NotFoundException {
-        Phrase phrase = phraseRepository.findOne(phraseId);
+    public void addStar(PhraseStarRequest request) throws NotFoundException {
+        Phrase phrase = phraseRepository.findOne(request.getPhraseId());
         if (phrase != null) {
             StarredPhrase starredPhrase = new StarredPhrase();
             starredPhrase.setCreatedTime(LocalDateTime.now());
             starredPhrase.setLastModifiedTime(LocalDateTime.now());
-            starredPhrase.setUserId(userId);
+            starredPhrase.setUserId(request.getUserId());
             starredPhrase.setPhrase(phrase);
             repository.save(starredPhrase);
         } else {
