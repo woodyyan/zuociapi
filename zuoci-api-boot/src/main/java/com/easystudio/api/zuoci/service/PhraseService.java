@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Service
 public class PhraseService {
@@ -38,10 +39,14 @@ public class PhraseService {
         repository.save(phrase);
     }
 
-    public Page<Phrase> searchPhrase(boolean isValid, boolean isVisible, Pageable page) {
+    public Page<Phrase> searchPhrase(boolean isValid, boolean isVisible, String authorId, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findByIsValidAndIsVisible(isValid, isVisible, pageable);
+        if (isNullOrEmpty(authorId)) {
+            return repository.findByIsValidAndIsVisible(isValid, isVisible, pageable);
+        } else {
+            return repository.findByIsValidAndIsVisibleAndAuthorId(isValid, isVisible, authorId, pageable);
+        }
     }
 
     public void deletePhrase(Long objectId) {

@@ -41,7 +41,7 @@ public class PhraseServiceTest extends EasyMockSupport {
     private PhraseTranslator translator;
 
     @Test
-    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPage() throws Exception {
+    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsNull() throws Exception {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(0, 20, sort);
 
@@ -54,7 +54,59 @@ public class PhraseServiceTest extends EasyMockSupport {
         expect(repository.findByIsValidAndIsVisible(true, true, pageable)).andReturn(pagedPhrases);
 
         replayAll();
-        Page<Phrase> actual = service.searchPhrase(true, true, pageable);
+        Page<Phrase> actual = service.searchPhrase(true, true, null, pageable);
+        verifyAll();
+
+        Assert.assertThat(actual.getTotalElements(), is(1L));
+        Assert.assertThat(actual.getTotalPages(), is(1));
+        Assert.assertThat(actual.getNumber(), is(0));
+        Assert.assertThat(actual.getNumberOfElements(), is(1));
+        Assert.assertThat(actual.getContent().size(), is(1));
+        Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
+    }
+
+    @Test
+    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsEmpty() throws Exception {
+        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = new PageRequest(0, 20, sort);
+
+        List<Phrase> content = new ArrayList<>();
+        Phrase phrase = new Phrase();
+        phrase.setContent("content");
+        content.add(phrase);
+        Page<Phrase> pagedPhrases = new PageImpl<>(content);
+
+        expect(repository.findByIsValidAndIsVisible(true, true, pageable)).andReturn(pagedPhrases);
+
+        replayAll();
+        Page<Phrase> actual = service.searchPhrase(true, true, "", pageable);
+        verifyAll();
+
+        Assert.assertThat(actual.getTotalElements(), is(1L));
+        Assert.assertThat(actual.getTotalPages(), is(1));
+        Assert.assertThat(actual.getNumber(), is(0));
+        Assert.assertThat(actual.getNumberOfElements(), is(1));
+        Assert.assertThat(actual.getContent().size(), is(1));
+        Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
+    }
+
+    @Test
+    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndUserIdAndPage() throws Exception {
+        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = new PageRequest(0, 20, sort);
+        String authorId = "abc";
+
+        List<Phrase> content = new ArrayList<>();
+        Phrase phrase = new Phrase();
+        phrase.setContent("content");
+        content.add(phrase);
+        Page<Phrase> pagedPhrases = new PageImpl<>(content);
+
+        expect(repository.findByIsValidAndIsVisibleAndAuthorId(true, true, authorId, pageable))
+                .andReturn(pagedPhrases);
+
+        replayAll();
+        Page<Phrase> actual = service.searchPhrase(true, true, authorId, pageable);
         verifyAll();
 
         Assert.assertThat(actual.getTotalElements(), is(1L));

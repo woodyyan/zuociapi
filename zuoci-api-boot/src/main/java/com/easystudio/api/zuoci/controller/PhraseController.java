@@ -44,9 +44,11 @@ public class PhraseController {
             @ApiParam(value = "Phrase is valid", defaultValue = "true")
             @RequestParam(required = false, defaultValue = "true") boolean isValid,
             @ApiParam(value = "Phrase is visible")
-            @RequestParam(required = false, defaultValue = "true") boolean isVisible, Pageable page) {
+            @RequestParam(required = false, defaultValue = "true") boolean isVisible,
+            @ApiParam(value = "Phrase's author id")
+            @RequestParam(required = false) String authorId, Pageable page) {
 
-        Page<Phrase> pagedPhrases = service.searchPhrase(isValid, isVisible, page);
+        Page<Phrase> pagedPhrases = service.searchPhrase(isValid, isVisible, authorId, page);
         return translator.toPhraseResponse(pagedPhrases);
     }
 

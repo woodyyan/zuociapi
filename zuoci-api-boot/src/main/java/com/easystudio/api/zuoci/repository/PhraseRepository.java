@@ -14,6 +14,8 @@ public interface PhraseRepository extends PagingAndSortingRepository<Phrase, Lon
 
     Page<Phrase> findByIsValidAndIsVisible(boolean isValid, boolean isVisible, Pageable page);
 
+    Page<Phrase> findByIsValidAndIsVisibleAndAuthorId(boolean isValid, boolean isVisible, String authorId, Pageable pageable);
+
     @Query("SELECT COUNT(*) FROM Phrase p WHERE p.content=:content AND p.createdTime > :dateTime")
     Long countByContentInToday(@Param("content") String content, @Param("dateTime") LocalDateTime dateTime);
 }
