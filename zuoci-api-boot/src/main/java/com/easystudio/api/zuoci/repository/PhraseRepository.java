@@ -19,6 +19,6 @@ public interface PhraseRepository extends PagingAndSortingRepository<Phrase, Lon
     @Query("SELECT COUNT(*) FROM Phrase p WHERE p.content=:content AND p.createdTime > :dateTime")
     Long countByContentInToday(@Param("content") String content, @Param("dateTime") LocalDateTime dateTime);
 
-    @Query("SELECT COUNT(*) FROM Phrase p WHERE p.authorId=:authorId AND p.visible=true AND p.valid=true")
+    @Query("SELECT COUNT(*) FROM Phrase p WHERE p.authorId=:authorId AND p.isVisible=true AND p.isValid=true")
     Long countByAuthorId(@Param("authorId") String authorId);
 }
