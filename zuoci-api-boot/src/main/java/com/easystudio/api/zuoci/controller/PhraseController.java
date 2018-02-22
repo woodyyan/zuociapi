@@ -80,12 +80,14 @@ public class PhraseController {
     }
 
     @RequestMapping(value = "/count", method = GET)
-    @ApiOperation(value = "Get phrase count", notes = "Return phrase count with same content by today")
-    public ResponseEntity<PhraseCountResponse> getPhraseCountByContentInToday(@RequestParam String content) {
-        Long count = service.getPhraseCountByContentInToday(content);
+    @ApiOperation(value = "Get phrase count", notes = "Return phrase count")
+    public ResponseEntity<PhraseCountResponse> countPhrase(@RequestParam String content,
+                                                           @RequestParam String authorId) {
+        Long count = service.countPhrase(content, authorId);
         PhraseCountResponse response = new PhraseCountResponse();
         response.setCount(count);
         response.setContent(content);
+        response.setAuthorId(authorId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

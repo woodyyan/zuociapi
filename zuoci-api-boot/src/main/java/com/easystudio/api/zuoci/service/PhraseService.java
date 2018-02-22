@@ -74,13 +74,17 @@ public class PhraseService {
         }
     }
 
-    public Long getPhraseCountByContentInToday(String content) {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime yesterday = new LocalDateTime(
-                now.getYear(),
-                now.getMonthOfYear(),
-                now.getDayOfMonth(),
-                0, 0, 0);
-        return repository.countByContentInToday(content, yesterday);
+    public Long countPhrase(String content, String authorId) {
+        if (!isNullOrEmpty(authorId)) {
+            return repository.countByAuthorId(authorId);
+        } else {
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime yesterday = new LocalDateTime(
+                    now.getYear(),
+                    now.getMonthOfYear(),
+                    now.getDayOfMonth(),
+                    0, 0, 0);
+            return repository.countByContentInToday(content, yesterday);
+        }
     }
 }

@@ -13,8 +13,11 @@ public class PhraseCountResponse {
     @ApiModelProperty(value = "Count", required = true)
     private Long count;
 
-    @ApiModelProperty(value = "Phrase content", required = true)
+    @ApiModelProperty(value = "Phrase content")
     private String content;
+
+    @ApiModelProperty(value = "Phrase author id")
+    private String authorId;
 
     public void setCount(Long count) {
         this.count = count;
@@ -30,5 +33,13 @@ public class PhraseCountResponse {
 
     public String getContent() {
         return content;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 }
