@@ -1,10 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.model.PagingMeta;
-import com.easystudio.api.zuoci.model.PhraseData;
-import com.easystudio.api.zuoci.model.PhraseStarRequest;
-import com.easystudio.api.zuoci.model.Phrases;
+import com.easystudio.api.zuoci.model.*;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseStarValidator;
@@ -92,6 +89,20 @@ public class PhraseStarControllerTest extends EasyMockSupport {
         Assert.assertThat(phrases.getBody().getMeta().getPageNumber(), is(0L));
         Assert.assertThat(phrases.getBody().getData().size(), is(1));
         Assert.assertThat(phrases.getBody().getData().get(0).getObjectId(), is(1L));
+    }
+
+    @Test
+    public void shouldCountStarGivenUserId() {
+        String userId = "abc";
+
+        expect(service.countStar(userId)).andReturn(1L);
+
+        replayAll();
+        ResponseEntity<StarCountResponse> responseEntity = controller.countStar(userId);
+        verifyAll();
+
+        Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+        Assert.assertThat(responseEntity.getBody().getCount(), is(1L));
     }
 
     @Test

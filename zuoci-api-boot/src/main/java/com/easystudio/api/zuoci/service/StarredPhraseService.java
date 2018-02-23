@@ -48,4 +48,8 @@ public class StarredPhraseService {
     public void deleteStar(String userId, Long objectId) {
         repository.delete(objectId);
     }
+
+    public Long countStar(String userId) {
+        return repository.countByUserId(userId);
+    }
 }

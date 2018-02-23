@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.model.Phrases;
+import com.easystudio.api.zuoci.model.StarCountResponse;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseStarValidator;
@@ -52,7 +53,7 @@ public class PhraseStarController {
     })
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Phrases> searchStar(@ApiParam(value = "User ID")
-            @RequestParam String userId, Pageable page) {
+                                              @RequestParam String userId, Pageable page) {
         Page<Phrase> pagedPhrases = service.searchStar(userId, page);
         return translator.toPhraseResponse(pagedPhrases);
     }
@@ -64,5 +65,14 @@ public class PhraseStarController {
                                         @PathVariable(value = "objectId") Long objectId) {
         service.deleteStar(userId, objectId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/count", method = GET)
+    @ApiOperation(value = "Get star count", notes = "Return star count")
+    public ResponseEntity<StarCountResponse> countStar(@RequestParam String userId) {
+        Long count = service.countStar(userId);
+        StarCountResponse response = new StarCountResponse();
+        response.setCount(count);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
