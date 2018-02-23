@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.PhraseComment;
+import com.easystudio.api.zuoci.model.CommentData;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
@@ -45,15 +46,19 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     public void createComment() {
         PhraseCommentRequest request = new PhraseCommentRequest();
         Long phraseId = 1L;
+        PhraseComment comment = new PhraseComment();
+        CommentData data = new CommentData();
 
         validator.validate(phraseId, request);
-        service.createComment(request.getData());
+        expect(service.createComment(request.getData())).andReturn(comment);
+        expect(translator.toCommentData(comment)).andReturn(data);
 
         replayAll();
         ResponseEntity<?> responseEntity = controller.createComment(phraseId, request);
         verifyAll();
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.CREATED));
+        Assert.assertThat(responseEntity.getBody(), is(data));
     }
 
     @Test

@@ -25,9 +25,9 @@ public class PhraseCommentService {
     @Autowired
     private PhraseCommentTranslator translator;
 
-    public void createComment(CommentData data) {
+    public PhraseComment createComment(CommentData data) {
         PhraseComment phraseComment = translator.toPhraseComment(data);
-        repository.save(phraseComment);
+        return repository.save(phraseComment);
     }
 
     public Page<PhraseComment> searchComment(Long phraseId, boolean isVisible, Pageable page) {

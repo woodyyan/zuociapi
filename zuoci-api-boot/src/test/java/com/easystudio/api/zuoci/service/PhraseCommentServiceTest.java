@@ -36,13 +36,16 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
     public void shouldCreatePhraseCommentGivenCommentData() {
         CommentData data = new CommentData();
         PhraseComment phraseComment = new PhraseComment();
+        phraseComment.setObjectId(1L);
 
         expect(translator.toPhraseComment(data)).andReturn(phraseComment);
         expect(repository.save(phraseComment)).andReturn(phraseComment);
 
         replayAll();
-        service.createComment(data);
+        PhraseComment comment = service.createComment(data);
         verifyAll();
+
+        Assert.assertThat(comment.getObjectId(), is(1L));
     }
 
     @Test

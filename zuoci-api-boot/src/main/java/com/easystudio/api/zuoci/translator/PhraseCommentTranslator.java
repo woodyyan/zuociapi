@@ -48,7 +48,7 @@ public class PhraseCommentTranslator {
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
-    private CommentData toCommentData(PhraseComment comment) {
+    public CommentData toCommentData(PhraseComment comment) {
         CommentData data = new CommentData();
         data.setRepliedUserId(comment.getRepliedUserId());
         data.setPhraseId(comment.getPhraseId());

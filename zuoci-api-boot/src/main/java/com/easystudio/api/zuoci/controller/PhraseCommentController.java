@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.PhraseComment;
+import com.easystudio.api.zuoci.model.CommentData;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
@@ -33,13 +34,14 @@ public class PhraseCommentController {
     @RequestMapping(method = POST)
     @ApiOperation(value = "Create phrase comment", notes = "Create phrase comment")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<?> createComment(@PathVariable(value = "phraseId") Long phraseId,
-                                           @RequestBody PhraseCommentRequest phraseCommentRequest) {
+    public ResponseEntity<CommentData> createComment(@PathVariable(value = "phraseId") Long phraseId,
+                                                     @RequestBody PhraseCommentRequest phraseCommentRequest) {
         validator.validate(phraseId, phraseCommentRequest);
 
-        service.createComment(phraseCommentRequest.getData());
+        PhraseComment comment = service.createComment(phraseCommentRequest.getData());
+        CommentData commentData = translator.toCommentData(comment);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(commentData, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = GET)
@@ -57,6 +59,10 @@ public class PhraseCommentController {
                                                         Pageable page) {
         Page<PhraseComment> pagedComments = service.searchComment(phraseId, isVisible, page);
         return translator.toPhraseCommentResponse(pagedComments);
+    }
+
+    public ResponseEntity<PhraseComment> getComment() {
+        return null;
     }
 
     @RequestMapping(value = "/{commentId}", method = DELETE)
