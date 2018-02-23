@@ -115,4 +115,23 @@ public class PhraseControllerTest extends EasyMockSupport {
         Assert.assertThat(responseEntity.getBody().getContent(), is("content"));
         Assert.assertThat(responseEntity.getBody().getCount(), is(10L));
     }
+
+    @Test
+    public void shouldGetPhraseGivenObjectId() {
+        Long objectId = 1L;
+
+        Phrase phrase = new Phrase();
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+
+        expect(service.getPhrase(objectId)).andReturn(phrase);
+        expect(translator.toPhraseData(phrase)).andReturn(data);
+
+        replayAll();
+        ResponseEntity<PhraseData> phraseEntity = controller.getPhrase(objectId);
+        verifyAll();
+
+        Assert.assertThat(phraseEntity.getStatusCode(), is(HttpStatus.OK));
+        Assert.assertThat(phraseEntity.getBody().getContent(), is("content"));
+    }
 }

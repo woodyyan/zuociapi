@@ -4,6 +4,7 @@ import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.Phrases;
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -105,5 +106,32 @@ public class PhraseTranslatorTest {
         Assert.assertThat(deletedPhrase.getPoint().getY(), is(50.0));
         Assert.assertThat(deletedPhrase.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(deletedPhrase.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
+    }
+
+    @Test
+    public void shouldTranslateToPhraseDataGivenPhrase() {
+        Phrase phrase = new Phrase();
+        phrase.setObjectId(1L);
+        phrase.setViewCount(2L);
+        phrase.setContent("content");
+        phrase.setCreatedTime(LocalDateTime.now());
+        phrase.setLocation("location");
+        phrase.setAuthorId("abc");
+        phrase.setVisible(true);
+        phrase.setPoint(new Point(1, 2));
+        phrase.setValid(true);
+        phrase.setLastModifiedTime(LocalDateTime.now());
+
+        PhraseData phraseData = translator.toPhraseData(phrase);
+
+        Assert.assertThat(phraseData.getObjectId(), is(1L));
+        Assert.assertThat(phraseData.getPoint().getX(), is(1.0));
+        Assert.assertThat(phraseData.getPoint().getY(), is(2.0));
+        Assert.assertThat(phraseData.getViewCount(), is(2L));
+        Assert.assertThat(phraseData.getLocation(), is("location"));
+        Assert.assertThat(phraseData.getAuthorId(), is("abc"));
+        Assert.assertThat(phraseData.getContent(), is("content"));
+        Assert.assertThat(phraseData.getCreatedTime(), lessThanOrEqualTo(DateTime.now()));
+        Assert.assertThat(phraseData.getLastModifiedTime(), lessThanOrEqualTo(DateTime.now()));
     }
 }

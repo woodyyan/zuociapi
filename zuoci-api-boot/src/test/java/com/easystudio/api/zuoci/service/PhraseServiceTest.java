@@ -220,4 +220,19 @@ public class PhraseServiceTest extends EasyMockSupport {
 
         Assert.assertThat(count, is(10L));
     }
+
+    @Test
+    public void shouldGetPhraseGivenObjectId() {
+        Long objectId = 1L;
+
+        Phrase value = new Phrase();
+        value.setContent("content");
+        expect(repository.findOne(objectId)).andReturn(value);
+
+        replayAll();
+        Phrase phrase = service.getPhrase(objectId);
+        verifyAll();
+
+        Assert.assertThat(phrase.getContent(), is("content"));
+    }
 }

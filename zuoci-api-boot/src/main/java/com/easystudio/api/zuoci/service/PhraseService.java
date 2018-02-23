@@ -87,4 +87,8 @@ public class PhraseService {
             return repository.countByContentInToday(content, yesterday);
         }
     }
+
+    public Phrase getPhrase(Long objectId) {
+        return repository.findOne(objectId);
+    }
 }

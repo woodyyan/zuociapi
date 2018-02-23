@@ -1,10 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.Phrase;
-import com.easystudio.api.zuoci.model.PhraseCountResponse;
-import com.easystudio.api.zuoci.model.PhraseRequest;
-import com.easystudio.api.zuoci.model.Phrases;
-import com.easystudio.api.zuoci.model.ViewCountRequest;
+import com.easystudio.api.zuoci.model.*;
 import com.easystudio.api.zuoci.service.PhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
@@ -50,6 +47,17 @@ public class PhraseController {
 
         Page<Phrase> pagedPhrases = service.searchPhrase(isValid, isVisible, authorId, page);
         return translator.toPhraseResponse(pagedPhrases);
+    }
+
+    @RequestMapping(value = "/{objectId}", method = GET)
+    @ApiOperation(value = "Get phrase", notes = "Get a phrase by id")
+    public ResponseEntity<PhraseData> getPhrase(
+            @ApiParam(value = "Phrase id")
+            @RequestParam(required = false) Long objectId) {
+
+        Phrase phrase = service.getPhrase(objectId);
+        PhraseData phraseData = translator.toPhraseData(phrase);
+        return new ResponseEntity<>(phraseData, HttpStatus.OK);
     }
 
     @RequestMapping(method = POST)

@@ -47,7 +47,7 @@ public class PhraseTranslator {
         return new ResponseEntity<>(phrases, HttpStatus.OK);
     }
 
-    private PhraseData toPhraseData(Phrase phrase) {
+    public PhraseData toPhraseData(Phrase phrase) {
         PhraseData data = new PhraseData();
         data.setContent(phrase.getContent());
         data.setObjectId(phrase.getObjectId());
