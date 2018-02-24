@@ -88,7 +88,7 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         repository.delete(objectId);
 
         replayAll();
-        service.deleteComment(phraseId, objectId);
+        service.deleteComment(objectId);
         verifyAll();
     }
 
@@ -98,8 +98,22 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
 
         expect(repository.findOne(objectId)).andReturn(null);
 
-        Long phraseId = 1L;
-        service.deleteComment(phraseId, objectId);
+        service.deleteComment(objectId);
+    }
+
+    @Test
+    public void shouldGetCommentGivenObjectId() {
+        Long objectId = 1L;
+
+        PhraseComment phraseComment = new PhraseComment();
+        phraseComment.setContent("content");
+        expect(repository.findOne(objectId)).andReturn(phraseComment);
+
+        replayAll();
+        PhraseComment comment = service.getComment(objectId);
+        verifyAll();
+
+        Assert.assertThat(comment.getContent(), is("content"));
     }
 
     @Test(expected = ErrorException.class)
@@ -111,6 +125,6 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         expect(repository.findOne(objectId)).andReturn(comment);
 
         Long phraseId = 1L;
-        service.deleteComment(phraseId, objectId);
+        service.deleteComment(objectId);
     }
 }

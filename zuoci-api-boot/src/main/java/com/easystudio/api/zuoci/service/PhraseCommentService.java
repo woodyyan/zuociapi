@@ -36,18 +36,17 @@ public class PhraseCommentService {
         return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
     }
 
-    public void deleteComment(Long phraseId, Long objectId) {
+    public void deleteComment(Long objectId) {
         PhraseComment comment = repository.findOne(objectId);
         if (comment != null) {
-            if (comment.getPhraseId().equals(phraseId)) {
-                repository.delete(objectId);
-            } else {
-                Error error = buildNotFoundError("Phrase id is not the same with comment");
-                throw new ErrorException(HttpStatus.BAD_REQUEST, error);
-            }
+            repository.delete(objectId);
         } else {
             Error error = buildNotFoundError("Phrase comment not found");
             throw new ErrorException(HttpStatus.NOT_FOUND, error);
         }
+    }
+
+    public PhraseComment getComment(Long objectId) {
+        return repository.findOne(objectId);
     }
 }

@@ -16,20 +16,7 @@ public class PhraseCommentValidatorTest {
         data.setCommentatorId("123");
         data.setPhraseId(2L);
         request.setData(data);
-        Long phraseId = 1L;
-        validator.validate(phraseId, request);
-    }
-
-    @Test(expected = ErrorException.class)
-    public void shouldThrowExceptionWhenPhraseIdsAreNotSame() {
-        PhraseCommentRequest request = new PhraseCommentRequest();
-        CommentData data = new CommentData();
-        data.setContent("content");
-        data.setCommentatorId("123");
-        data.setPhraseId(2L);
-        request.setData(data);
-        Long phraseId = 1L;
-        validator.validate(phraseId, request);
+        validator.validate(request);
     }
 
     @Test(expected = ErrorException.class)
@@ -39,15 +26,13 @@ public class PhraseCommentValidatorTest {
         data.setContent("content");
         data.setPhraseId(1L);
         request.setData(data);
-        Long phraseId = 1L;
-        validator.validate(phraseId, request);
+        validator.validate(request);
     }
 
     @Test(expected = ErrorException.class)
     public void shouldThrowExceptionWhenPhraseDataIsNull() {
         PhraseCommentRequest request = new PhraseCommentRequest();
-        Long phraseId = 1L;
-        validator.validate(phraseId, request);
+        validator.validate(request);
     }
 
     @Test(expected = ErrorException.class)
@@ -57,7 +42,6 @@ public class PhraseCommentValidatorTest {
         data.setContent("content");
         data.setCommentatorId("123");
         request.setData(data);
-        Long phraseId = 1L;
-        validator.validate(phraseId, request);
+        validator.validate(request);
     }
 }

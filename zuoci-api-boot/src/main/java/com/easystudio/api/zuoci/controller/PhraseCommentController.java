@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
-@RequestMapping(value = "/phrase/{phraseId}/comment", produces = "application/vnd.api+json")
+@RequestMapping(value = "/phraseComment", produces = "application/vnd.api+json")
 @Api(tags = "Phrase Comment", description = "Operations on Phrase Comment")
 public class PhraseCommentController {
 
@@ -34,9 +34,8 @@ public class PhraseCommentController {
     @RequestMapping(method = POST)
     @ApiOperation(value = "Create phrase comment", notes = "Create phrase comment")
     @ResponseStatus(value = HttpStatus.CREATED)
-    public ResponseEntity<CommentData> createComment(@PathVariable(value = "phraseId") Long phraseId,
-                                                     @RequestBody PhraseCommentRequest phraseCommentRequest) {
-        validator.validate(phraseId, phraseCommentRequest);
+    public ResponseEntity<CommentData> createComment(@RequestBody PhraseCommentRequest phraseCommentRequest) {
+        validator.validate(phraseCommentRequest);
 
         PhraseComment comment = service.createComment(phraseCommentRequest.getData());
         CommentData commentData = translator.toCommentData(comment);
@@ -53,7 +52,8 @@ public class PhraseCommentController {
             @ApiImplicitParam(name = "size", value = "The number of elements per page",
                     defaultValue = "20", dataType = "integer", paramType = "query")
     })
-    public ResponseEntity<PhraseComments> searchComment(@PathVariable(value = "phraseId") Long phraseId,
+    public ResponseEntity<PhraseComments> searchComment(@ApiParam(value = "Phrase id")
+                                                        @RequestParam(value = "phraseId") Long phraseId,
                                                         @ApiParam(value = "Phrase is visible", defaultValue = "true")
                                                         @RequestParam(required = false, defaultValue = "true") boolean isVisible,
                                                         Pageable page) {
@@ -61,16 +61,22 @@ public class PhraseCommentController {
         return translator.toPhraseCommentResponse(pagedComments);
     }
 
-    public ResponseEntity<PhraseComment> getComment() {
-        return null;
+    @RequestMapping(value = "/{objectId}", method = GET)
+    @ApiOperation(value = "Get Comment", notes = "Get a phrase comment by id")
+    public ResponseEntity<CommentData> getComment(
+            @ApiParam(value = "Phrase id")
+            @RequestParam(required = false) Long objectId) {
+
+        PhraseComment comment = service.getComment(objectId);
+        CommentData commentData = translator.toCommentData(comment);
+        return new ResponseEntity<>(commentData, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{commentId}", method = DELETE)
     @ApiOperation(value = "Delete phrase comment", notes = "Delete a phrase comment from DB")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteComment(@PathVariable(value = "phraseId") Long phraseId,
-                                           @PathVariable(value = "commentId") Long commentId) {
-        service.deleteComment(phraseId, commentId);
+    public ResponseEntity<?> deleteComment(@PathVariable(value = "commentId") Long commentId) {
+        service.deleteComment(commentId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

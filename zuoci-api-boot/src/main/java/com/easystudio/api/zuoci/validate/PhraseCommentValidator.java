@@ -11,7 +11,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 public class PhraseCommentValidator {
-    public void validate(Long phraseId, PhraseCommentRequest phraseCommentRequest) {
+    public void validate(PhraseCommentRequest phraseCommentRequest) {
         if (phraseCommentRequest.getData() == null) {
             Error error = buildInvalidParameterError("Data should not be empty.");
             throw new ErrorException(BAD_REQUEST, error);
@@ -27,10 +27,6 @@ public class PhraseCommentValidator {
         if (phraseCommentRequest.getData().getPhraseId() == null
                 || phraseCommentRequest.getData().getPhraseId() <= 0) {
             Error error = buildInvalidParameterError("Phrase Id is invalid.");
-            throw new ErrorException(BAD_REQUEST, error);
-        }
-        if (!phraseId.equals(phraseCommentRequest.getData().getPhraseId())) {
-            Error error = buildInvalidParameterError("Phrase Id should not be the same.");
             throw new ErrorException(BAD_REQUEST, error);
         }
     }
