@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
+import static com.google.common.base.Strings.isNullOrEmpty;
 
 @Service
 public class PhraseCommentService {
@@ -30,10 +31,14 @@ public class PhraseCommentService {
         return repository.save(phraseComment);
     }
 
-    public Page<PhraseComment> searchComment(Long phraseId, boolean isVisible, Pageable page) {
+    public Page<PhraseComment> searchComment(Long phraseId, String userId, boolean isVisible, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
+        if (isNullOrEmpty(userId)) {
+            return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
+        } else {
+            return repository.findAllByRepliedUserIdOrPhraseAuthorId(userId, userId, pageable);
+        }
     }
 
     public void deleteComment(Long objectId) {

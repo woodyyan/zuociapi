@@ -54,10 +54,12 @@ public class PhraseCommentController {
     })
     public ResponseEntity<PhraseComments> searchComment(@ApiParam(value = "Phrase id")
                                                         @RequestParam(value = "phraseId") Long phraseId,
+                                                        @ApiParam(value = "User id")
+                                                        @RequestParam(value = "userId") String userId,
                                                         @ApiParam(value = "Phrase is visible", defaultValue = "true")
                                                         @RequestParam(required = false, defaultValue = "true") boolean isVisible,
                                                         Pageable page) {
-        Page<PhraseComment> pagedComments = service.searchComment(phraseId, isVisible, page);
+        Page<PhraseComment> pagedComments = service.searchComment(phraseId, userId, isVisible, page);
         return translator.toPhraseCommentResponse(pagedComments);
     }
 

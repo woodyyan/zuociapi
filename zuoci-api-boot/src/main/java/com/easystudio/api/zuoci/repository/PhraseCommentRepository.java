@@ -7,4 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PhraseCommentRepository extends JpaRepository<PhraseComment, Long> {
     Page<PhraseComment> findByPhraseIdAndIsVisible(Long phraseId, boolean isVisible, Pageable page);
+
+    Page<PhraseComment> findAllByRepliedUserIdOrPhraseAuthorId(String repliedUserId, String phraseAuthorId, Pageable page);
 }

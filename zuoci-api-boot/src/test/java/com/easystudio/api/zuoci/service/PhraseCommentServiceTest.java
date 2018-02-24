@@ -49,7 +49,7 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
     }
 
     @Test
-    public void shouldSearchPhraseCommentsGivenPage() {
+    public void shouldSearchPhraseCommentsGivenPhraseIdAndPage() {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable page = new PageRequest(0, 20, sort);
         Long objectId = 1L;
@@ -65,7 +65,36 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         expect(repository.findByPhraseIdAndIsVisible(objectId, true, page)).andReturn(pagedComments);
 
         replayAll();
-        Page<PhraseComment> comments = service.searchComment(objectId, true, page);
+        Page<PhraseComment> comments = service.searchComment(objectId, null, true, page);
+        verifyAll();
+
+        Assert.assertThat(comments.getTotalElements(), is(2L));
+        Assert.assertThat(comments.getTotalPages(), is(1));
+        Assert.assertThat(comments.getNumberOfElements(), is(2));
+        Assert.assertThat(comments.getNumber(), is(0));
+        Assert.assertThat(comments.getContent().size(), is(2));
+        Assert.assertThat(comments.getContent().get(0).getContent(), is("content1"));
+        Assert.assertThat(comments.getContent().get(1).getContent(), is("content2"));
+    }
+
+    @Test
+    public void shouldSearchPhraseCommentsGivenUserIdAndPage() {
+        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
+        Pageable page = new PageRequest(0, 20, sort);
+        String userId = "abc";
+
+        List<PhraseComment> content = new ArrayList<>();
+        PhraseComment comment1 = new PhraseComment();
+        comment1.setContent("content1");
+        content.add(comment1);
+        PhraseComment comment2 = new PhraseComment();
+        comment2.setContent("content2");
+        content.add(comment2);
+        Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 2);
+        expect(repository.findAllByRepliedUserIdOrPhraseAuthorId(userId, userId, page)).andReturn(pagedComments);
+
+        replayAll();
+        Page<PhraseComment> comments = service.searchComment(0L, userId, true, page);
         verifyAll();
 
         Assert.assertThat(comments.getTotalElements(), is(2L));

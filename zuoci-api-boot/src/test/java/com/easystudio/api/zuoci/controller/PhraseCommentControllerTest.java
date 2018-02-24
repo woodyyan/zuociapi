@@ -61,7 +61,7 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     }
 
     @Test
-    public void shouldSearchCommentGivenPage() {
+    public void shouldSearchCommentGivenPhraseIdAndPage() {
         Pageable page = new PageRequest(0, 20);
         List<PhraseComment> content = new ArrayList<>();
         Page<PhraseComment> pagedComments = new PageImpl<>(content);
@@ -69,11 +69,30 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
         ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
         Long objectId = 1L;
 
-        expect(service.searchComment(objectId, true, page)).andReturn(pagedComments);
+        expect(service.searchComment(objectId, null, true, page)).andReturn(pagedComments);
         expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
 
         replayAll();
-        ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, true, page);
+        ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, null, true, page);
+        verifyAll();
+
+        Assert.assertThat(comments.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldSearchCommentGivenUserIdAndPage() {
+        Pageable page = new PageRequest(0, 20);
+        List<PhraseComment> content = new ArrayList<>();
+        Page<PhraseComment> pagedComments = new PageImpl<>(content);
+        PhraseComments phraseComments = new PhraseComments();
+        ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
+        String userId = "abc";
+
+        expect(service.searchComment(0L, userId, true, page)).andReturn(pagedComments);
+        expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
+
+        replayAll();
+        ResponseEntity<PhraseComments> comments = controller.searchComment(0L, userId, true, page);
         verifyAll();
 
         Assert.assertThat(comments.getStatusCode(), is(HttpStatus.OK));
