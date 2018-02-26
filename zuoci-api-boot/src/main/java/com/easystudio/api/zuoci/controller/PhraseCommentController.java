@@ -54,9 +54,9 @@ public class PhraseCommentController {
                     defaultValue = "20", dataType = "integer", paramType = "query")
     })
     public ResponseEntity<PhraseComments> searchComment(@ApiParam(value = "Phrase id")
-                                                        @RequestParam(value = "phraseId") Long phraseId,
+                                                        @RequestParam(value = "phraseId", required = false) Long phraseId,
                                                         @ApiParam(value = "User id")
-                                                        @RequestParam(value = "userId") String userId,
+                                                        @RequestParam(value = "userId", required = false) String userId,
                                                         @ApiParam(value = "Phrase is visible", defaultValue = "true")
                                                         @RequestParam(required = false, defaultValue = "true") boolean isVisible,
                                                         Pageable page) {
@@ -78,9 +78,9 @@ public class PhraseCommentController {
     @RequestMapping(value = "/count", method = GET)
     @ApiOperation(value = "Get phrase comment count", notes = "Return phrase comment count")
     public ResponseEntity<CountResponse> countComment(@ApiParam(value = "Phrase id")
-                                                      @RequestParam(value = "phraseId") Long phraseId,
+                                                      @RequestParam(value = "phraseId", required = false) Long phraseId,
                                                       @ApiParam(value = "User id")
-                                                      @RequestParam(value = "userId") String userId,
+                                                      @RequestParam(value = "userId", required = false) String userId,
                                                       @ApiParam(value = "Phrase is visible", defaultValue = "true")
                                                       @RequestParam(required = false, defaultValue = "true")
                                                               boolean isVisible) {
