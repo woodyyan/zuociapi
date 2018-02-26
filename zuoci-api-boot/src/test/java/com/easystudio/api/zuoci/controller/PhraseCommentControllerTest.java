@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.PhraseComment;
 import com.easystudio.api.zuoci.model.CommentData;
+import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
@@ -123,5 +124,19 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
         service.deleteComment(objectId);
 
         controller.deleteComment(objectId);
+    }
+
+    @Test
+    public void shouldCountCommentGivenPhraseId() {
+        Long phraseId = 1L;
+
+        expect(service.countComment(phraseId, null, true)).andReturn(1L);
+
+        replayAll();
+        ResponseEntity<CountResponse> responseEntity = controller.countComment(phraseId, null, true);
+        verifyAll();
+
+        Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+        Assert.assertThat(responseEntity.getBody().getCount(), is(1L));
     }
 }

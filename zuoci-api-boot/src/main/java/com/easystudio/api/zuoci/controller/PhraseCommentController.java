@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.controller;
 
 import com.easystudio.api.zuoci.entity.PhraseComment;
 import com.easystudio.api.zuoci.model.CommentData;
+import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
@@ -72,6 +73,21 @@ public class PhraseCommentController {
         PhraseComment comment = service.getComment(objectId);
         CommentData commentData = translator.toCommentData(comment);
         return new ResponseEntity<>(commentData, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/count", method = GET)
+    @ApiOperation(value = "Get phrase comment count", notes = "Return phrase comment count")
+    public ResponseEntity<CountResponse> countComment(@ApiParam(value = "Phrase id")
+                                                      @RequestParam(value = "phraseId") Long phraseId,
+                                                      @ApiParam(value = "User id")
+                                                      @RequestParam(value = "userId") String userId,
+                                                      @ApiParam(value = "Phrase is visible", defaultValue = "true")
+                                                      @RequestParam(required = false, defaultValue = "true")
+                                                              boolean isVisible) {
+        Long count = service.countComment(phraseId, userId, isVisible);
+        CountResponse response = new CountResponse();
+        response.setCount(count);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{commentId}", method = DELETE)

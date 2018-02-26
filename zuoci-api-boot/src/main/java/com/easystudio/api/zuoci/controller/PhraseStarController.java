@@ -3,7 +3,7 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.model.Phrases;
-import com.easystudio.api.zuoci.model.StarCountResponse;
+import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
 import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseStarValidator;
@@ -69,9 +69,9 @@ public class PhraseStarController {
 
     @RequestMapping(value = "/count", method = GET)
     @ApiOperation(value = "Get star count", notes = "Return star count")
-    public ResponseEntity<StarCountResponse> countStar(@RequestParam String userId) {
+    public ResponseEntity<CountResponse> countStar(@RequestParam String userId) {
         Long count = service.countStar(userId);
-        StarCountResponse response = new StarCountResponse();
+        CountResponse response = new CountResponse();
         response.setCount(count);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

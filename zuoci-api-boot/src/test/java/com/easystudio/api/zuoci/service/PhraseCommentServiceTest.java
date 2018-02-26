@@ -153,7 +153,32 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
         comment.setPhraseId(2L);
         expect(repository.findOne(objectId)).andReturn(comment);
 
-        Long phraseId = 1L;
         service.deleteComment(objectId);
+    }
+
+    @Test
+    public void shouldCountCommentGivenPhraseId() {
+        Long phraseId = 1L;
+
+        expect(repository.countByPhraseId(phraseId, true)).andReturn(2L);
+
+        replayAll();
+        Long count = service.countComment(phraseId, null, true);
+        verifyAll();
+
+        Assert.assertThat(count, is(2L));
+    }
+
+    @Test
+    public void shouldCountCommentGivenUserId() {
+        String userId = "abc";
+
+        expect(repository.countByUserId(userId, true)).andReturn(2L);
+
+        replayAll();
+        Long count = service.countComment(0L, userId, true);
+        verifyAll();
+
+        Assert.assertThat(count, is(2L));
     }
 }

@@ -98,7 +98,7 @@ public class PhraseStarControllerTest extends EasyMockSupport {
         expect(service.countStar(userId)).andReturn(1L);
 
         replayAll();
-        ResponseEntity<StarCountResponse> responseEntity = controller.countStar(userId);
+        ResponseEntity<CountResponse> responseEntity = controller.countStar(userId);
         verifyAll();
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));

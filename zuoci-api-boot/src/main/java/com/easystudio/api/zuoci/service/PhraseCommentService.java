@@ -54,4 +54,12 @@ public class PhraseCommentService {
     public PhraseComment getComment(Long objectId) {
         return repository.findOne(objectId);
     }
+
+    public Long countComment(Long phraseId, String userId, boolean isVisible) {
+        if (isNullOrEmpty(userId)) {
+            return repository.countByPhraseId(phraseId, isVisible);
+        } else {
+            return repository.countByUserId(userId, isVisible);
+        }
+    }
 }
