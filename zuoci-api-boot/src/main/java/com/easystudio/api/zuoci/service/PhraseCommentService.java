@@ -11,8 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 
 import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -37,8 +41,20 @@ public class PhraseCommentService {
         if (isNullOrEmpty(userId)) {
             return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
         } else {
-            return repository.findAllByRepliedUserIdOrPhraseAuthorId(userId, userId, pageable);
+            return repository.findAll(getCommentSpec(userId, isVisible), pageable);
         }
+    }
+
+    private Specification<PhraseComment> getCommentSpec(String userId, boolean isVisible) {
+        return (root, query, cb) -> {
+            Path<Object> repliedUserId = root.get("repliedUserId");
+            Path<Object> authorId = root.get("phraseAuthorId");
+            Path<Boolean> visible = root.get("isVisible");
+            Predicate repliedUserPredicate = cb.equal(repliedUserId, userId);
+            Predicate authorPredicate = cb.equal(authorId, userId);
+            Predicate visiblePredicate = cb.equal(visible, isVisible);
+            return cb.and(cb.or(repliedUserPredicate, authorPredicate), visiblePredicate);
+        };
     }
 
     public void deleteComment(Long objectId) {

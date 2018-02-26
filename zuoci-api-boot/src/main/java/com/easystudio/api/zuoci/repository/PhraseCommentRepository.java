@@ -4,13 +4,12 @@ import com.easystudio.api.zuoci.entity.PhraseComment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface PhraseCommentRepository extends JpaRepository<PhraseComment, Long> {
+public interface PhraseCommentRepository extends JpaRepository<PhraseComment, Long>, JpaSpecificationExecutor<PhraseComment> {
     Page<PhraseComment> findByPhraseIdAndIsVisible(Long phraseId, boolean isVisible, Pageable page);
-
-    Page<PhraseComment> findAllByRepliedUserIdOrPhraseAuthorId(String repliedUserId, String phraseAuthorId, Pageable page);
 
     @Query("SELECT COUNT(*) FROM PhraseComment p WHERE p.phraseId=:phraseId AND p.isVisible=:isVisible")
     Long countByPhraseId(@Param("phraseId") Long phraseId, @Param("isVisible") boolean isVisible);
