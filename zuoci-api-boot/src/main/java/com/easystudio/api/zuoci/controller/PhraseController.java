@@ -89,9 +89,11 @@ public class PhraseController {
 
     @RequestMapping(value = "/count", method = GET)
     @ApiOperation(value = "Get phrase count", notes = "Return phrase count")
-    public ResponseEntity<PhraseCountResponse> countPhrase(@RequestParam String content,
-                                                           @RequestParam String authorId) {
-        Long count = service.countPhrase(content, authorId);
+    public ResponseEntity<PhraseCountResponse> countPhrase(@RequestParam(required = false) String content,
+                                                           @RequestParam(required = false) String authorId,
+                                                           @RequestParam(required = false, defaultValue = "true")
+                                                                   boolean isVisible) {
+        Long count = service.countPhrase(content, authorId, isVisible);
         PhraseCountResponse response = new PhraseCountResponse();
         response.setCount(count);
         response.setContent(content);

@@ -200,10 +200,10 @@ public class PhraseServiceTest extends EasyMockSupport {
                 now.getDayOfMonth(),
                 0, 0, 0);
 
-        expect(repository.countByContentInToday(content, dateTime)).andReturn(10L);
+        expect(repository.countByContentInToday(content, dateTime, true)).andReturn(10L);
 
         replayAll();
-        Long count = service.countPhrase(content, null);
+        Long count = service.countPhrase(content, null, true);
         verifyAll();
 
         Assert.assertThat(count, is(10L));
@@ -212,10 +212,10 @@ public class PhraseServiceTest extends EasyMockSupport {
     @Test
     public void shouldGetPhraseCountGivenAuthorId() {
         String authorId = "123";
-        expect(repository.countByAuthorId(authorId)).andReturn(10L);
+        expect(repository.countByAuthorId(authorId, true)).andReturn(10L);
 
         replayAll();
-        Long count = service.countPhrase(null, authorId);
+        Long count = service.countPhrase(null, authorId, true);
         verifyAll();
 
         Assert.assertThat(count, is(10L));

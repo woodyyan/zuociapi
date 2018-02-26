@@ -74,9 +74,9 @@ public class PhraseService {
         }
     }
 
-    public Long countPhrase(String content, String authorId) {
+    public Long countPhrase(String content, String authorId, boolean isVisible) {
         if (!isNullOrEmpty(authorId)) {
-            return repository.countByAuthorId(authorId);
+            return repository.countByAuthorId(authorId, isVisible);
         } else {
             LocalDateTime now = LocalDateTime.now();
             LocalDateTime yesterday = new LocalDateTime(
@@ -84,7 +84,7 @@ public class PhraseService {
                     now.getMonthOfYear(),
                     now.getDayOfMonth(),
                     0, 0, 0);
-            return repository.countByContentInToday(content, yesterday);
+            return repository.countByContentInToday(content, yesterday, isVisible);
         }
     }
 

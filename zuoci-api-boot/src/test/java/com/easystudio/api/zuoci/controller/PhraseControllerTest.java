@@ -105,10 +105,10 @@ public class PhraseControllerTest extends EasyMockSupport {
         String content = "content";
         String authorId = "123";
 
-        expect(service.countPhrase(content, authorId)).andReturn(10L);
+        expect(service.countPhrase(content, authorId, true)).andReturn(10L);
 
         replayAll();
-        ResponseEntity<PhraseCountResponse> responseEntity = controller.countPhrase(content, authorId);
+        ResponseEntity<PhraseCountResponse> responseEntity = controller.countPhrase(content, authorId, true);
         verifyAll();
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
