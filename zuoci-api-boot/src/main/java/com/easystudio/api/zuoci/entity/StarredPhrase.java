@@ -20,6 +20,9 @@ public class StarredPhrase {
     @PrimaryKeyJoinColumn
     private Phrase phrase;
 
+    @Column(name = "phrase_id", nullable = false)
+    private Long phraseId;
+
     @Column(name = "last_modified_time", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
     private LocalDateTime lastModifiedTime;
@@ -66,5 +69,13 @@ public class StarredPhrase {
 
     public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Long getPhraseId() {
+        return phraseId;
+    }
+
+    public void setPhraseId(Long phraseId) {
+        this.phraseId = phraseId;
     }
 }

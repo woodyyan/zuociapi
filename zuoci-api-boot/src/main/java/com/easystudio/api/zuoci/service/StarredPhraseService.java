@@ -30,7 +30,7 @@ public class StarredPhraseService {
             starredPhrase.setCreatedTime(LocalDateTime.now());
             starredPhrase.setLastModifiedTime(LocalDateTime.now());
             starredPhrase.setUserId(request.getUserId());
-            starredPhrase.setPhrase(phrase);
+            starredPhrase.setPhraseId(phrase.getObjectId());
             repository.save(starredPhrase);
         } else {
             throw new NotFoundException("Phrase Id is not found.");
