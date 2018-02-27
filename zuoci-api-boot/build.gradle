@@ -6,7 +6,7 @@ buildscript {
     }
 
     repositories {
-        maven {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
 //		jcenter()
     }
     dependencies {
@@ -20,6 +20,15 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'application'
 apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
+
+jar {
+    baseName = 'zuoci-api'
+    version = '1.0.0'
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'com.easystudio.api.zuoci.ZuociApplication'
+    }
+}
 
 checkstyle {
     toolVersion = '7.8.2'
@@ -47,7 +56,7 @@ jacocoTestReport {
 jacoco {
     applyTo run
 }
-task applicationCodeCoverageReport(type:JacocoReport){
+task applicationCodeCoverageReport(type: JacocoReport) {
     executionData run
     sourceSets sourceSets.main
 }
@@ -92,5 +101,5 @@ dependencies {
 }
 
 springBoot {
-    mainClass = "ZuociApplication"
+    mainClass = "com.easystudio.api.zuoci.ZuociApplication"
 }
