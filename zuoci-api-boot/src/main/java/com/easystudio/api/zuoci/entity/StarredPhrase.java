@@ -17,7 +17,7 @@ public class StarredPhrase {
     private String userId;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "phrase_id", referencedColumnName = "object_id", insertable = false, updatable = false)
     private Phrase phrase;
 
     @Column(name = "phrase_id", nullable = false)
