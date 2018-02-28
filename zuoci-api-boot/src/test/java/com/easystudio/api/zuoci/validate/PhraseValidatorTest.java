@@ -61,4 +61,9 @@ public class PhraseValidatorTest {
 
         validator.validate(phraseRequest);
     }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowBadRequestGivenObjectIsNull() {
+        validator.validate((Long) null);
+    }
 }

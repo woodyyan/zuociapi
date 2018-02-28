@@ -37,4 +37,11 @@ public class PhraseValidator {
             }
         }
     }
+
+    public void validate(Long objectId) {
+        if (objectId == null) {
+            Error error = buildInvalidParameterError("The objectId must not be null.");
+            throw new ErrorException(BAD_REQUEST, error);
+        }
+    }
 }

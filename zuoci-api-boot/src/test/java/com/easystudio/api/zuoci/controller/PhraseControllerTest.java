@@ -124,6 +124,7 @@ public class PhraseControllerTest extends EasyMockSupport {
         PhraseData data = new PhraseData();
         data.setContent("content");
 
+        validator.validate(objectId);
         expect(service.getPhrase(objectId)).andReturn(phrase);
         expect(translator.toPhraseData(phrase)).andReturn(data);
 

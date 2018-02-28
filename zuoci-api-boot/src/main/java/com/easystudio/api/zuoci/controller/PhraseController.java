@@ -53,8 +53,9 @@ public class PhraseController {
     @ApiOperation(value = "Get phrase", notes = "Get a phrase by id")
     public ResponseEntity<PhraseData> getPhrase(
             @ApiParam(value = "Phrase id")
-            @RequestParam(required = false) Long objectId) {
+            @PathVariable(required = false) Long objectId) {
 
+        validator.validate(objectId);
         Phrase phrase = service.getPhrase(objectId);
         PhraseData phraseData = translator.toPhraseData(phrase);
         return new ResponseEntity<>(phraseData, HttpStatus.OK);
