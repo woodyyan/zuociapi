@@ -47,6 +47,7 @@ public class PhraseCommentTranslatorTest {
         Assert.assertThat(comment.getPhraseAuthorId(), is("2"));
         Assert.assertThat(comment.getPhraseId(), is(456L));
         Assert.assertThat(comment.getRepliedUserId(), is("3"));
+        Assert.assertTrue(comment.isVisible());
     }
 
     @Test

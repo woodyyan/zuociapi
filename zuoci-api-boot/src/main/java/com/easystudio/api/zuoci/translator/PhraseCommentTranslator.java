@@ -26,6 +26,7 @@ public class PhraseCommentTranslator {
         comment.setPhraseAuthorId(data.getPhraseAuthorId());
         comment.setPhraseId(data.getPhraseId());
         comment.setRepliedUserId(data.getRepliedUserId());
+        comment.setVisible(true);
         return comment;
     }
 
