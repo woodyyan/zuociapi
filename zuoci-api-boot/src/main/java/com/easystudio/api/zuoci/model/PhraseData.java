@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.joda.time.DateTime;
-import org.springframework.data.geo.Point;
 
 import javax.validation.constraints.NotNull;
 
@@ -36,9 +35,6 @@ public class PhraseData {
 
     @ApiModelProperty(value = "Created Time", example = "")
     private DateTime createdTime;
-
-    @ApiModelProperty(value = "Point")
-    private Point point;
 
     public String getAuthorId() {
         return authorId;
@@ -94,13 +90,5 @@ public class PhraseData {
 
     public void setCreatedTime(DateTime createdTime) {
         this.createdTime = createdTime;
-    }
-
-    public Point getPoint() {
-        return point;
-    }
-
-    public void setPoint(Point point) {
-        this.point = point;
     }
 }

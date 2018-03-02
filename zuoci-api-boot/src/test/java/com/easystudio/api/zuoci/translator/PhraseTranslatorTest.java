@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -36,7 +35,6 @@ public class PhraseTranslatorTest {
         data.setAuthorId(authorId);
         data.setLocation(location);
         data.setContent(content);
-        data.setPoint(new Point(80.0, 90.0));
 
         Phrase phrase = translator.toPhraseEntity(data);
 
@@ -44,8 +42,6 @@ public class PhraseTranslatorTest {
         Assert.assertThat(phrase.getContent(), is(content));
         Assert.assertThat(phrase.getLocation(), is(location));
         Assert.assertThat(phrase.getViewCount(), is(0L));
-        Assert.assertThat(phrase.getPoint().getX(), is(80.0));
-        Assert.assertThat(phrase.getPoint().getY(), is(90.0));
         Assert.assertThat(phrase.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(phrase.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
@@ -55,7 +51,6 @@ public class PhraseTranslatorTest {
         List<Phrase> content = new ArrayList<>();
         Phrase phrase = new Phrase();
         phrase.setContent("content");
-        phrase.setPoint(new Point(80.0, 90.0));
         phrase.setLocation("chengdu");
         phrase.setAuthorId("123");
         phrase.setViewCount(100L);
@@ -71,8 +66,6 @@ public class PhraseTranslatorTest {
         Assert.assertThat(actual.getBody().getData().size(), is(1));
         Assert.assertThat(actual.getBody().getData().get(0).getContent(), is("content"));
         Assert.assertThat(actual.getBody().getData().get(0).getAuthorId(), is("123"));
-        Assert.assertThat(actual.getBody().getData().get(0).getPoint().getX(), is(80.0));
-        Assert.assertThat(actual.getBody().getData().get(0).getPoint().getY(), is(90.0));
         Assert.assertThat(actual.getBody().getData().get(0).getLocation(), is("chengdu"));
         Assert.assertThat(actual.getBody().getData().get(0).getViewCount(), is(100L));
         Assert.assertThat(actual.getBody().getData().get(0).getObjectId(), is(111L));
@@ -85,7 +78,6 @@ public class PhraseTranslatorTest {
     @Test
     public void shouldTranslateToDeletedPhraseGivenPhrase() {
         Phrase phrase = new Phrase();
-        phrase.setPoint(new Point(50, 50));
         phrase.setObjectId(123L);
         phrase.setVisible(true);
         phrase.setViewCount(100L);
@@ -102,8 +94,6 @@ public class PhraseTranslatorTest {
         Assert.assertThat(deletedPhrase.getContent(), is("content"));
         Assert.assertThat(deletedPhrase.getLocation(), is("chengdu"));
         Assert.assertThat(deletedPhrase.getViewCount(), is(100L));
-        Assert.assertThat(deletedPhrase.getPoint().getX(), is(50.0));
-        Assert.assertThat(deletedPhrase.getPoint().getY(), is(50.0));
         Assert.assertThat(deletedPhrase.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(deletedPhrase.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
     }
@@ -118,15 +108,12 @@ public class PhraseTranslatorTest {
         phrase.setLocation("location");
         phrase.setAuthorId("abc");
         phrase.setVisible(true);
-        phrase.setPoint(new Point(1, 2));
         phrase.setValid(true);
         phrase.setLastModifiedTime(LocalDateTime.now());
 
         PhraseData phraseData = translator.toPhraseData(phrase);
 
         Assert.assertThat(phraseData.getObjectId(), is(1L));
-        Assert.assertThat(phraseData.getPoint().getX(), is(1.0));
-        Assert.assertThat(phraseData.getPoint().getY(), is(2.0));
         Assert.assertThat(phraseData.getViewCount(), is(2L));
         Assert.assertThat(phraseData.getLocation(), is("location"));
         Assert.assertThat(phraseData.getAuthorId(), is("abc"));

@@ -2,7 +2,6 @@ package com.easystudio.api.zuoci.entity;
 
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.*;
 
@@ -29,9 +28,6 @@ public class DeletedPhrase {
 
     @Column(name = "location")
     private String location;
-
-    @Column(name = "point")
-    private Point point;
 
     @Column(name = "created_time", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
@@ -83,14 +79,6 @@ public class DeletedPhrase {
 
     public void setLocation(String location) {
         this.location = location;
-    }
-
-    public Point getPoint() {
-        return point;
-    }
-
-    public void setPoint(Point point) {
-        this.point = point;
     }
 
     public LocalDateTime getCreatedTime() {
