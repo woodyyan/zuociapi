@@ -30,10 +30,10 @@ public class PhraseData {
     @ApiModelProperty(value = "View Count", example = "100")
     private Long viewCount;
 
-    @ApiModelProperty(value = "Last Modified Time", example = "")
+    @ApiModelProperty(value = "Last Modified Time")
     private DateTime lastModifiedTime;
 
-    @ApiModelProperty(value = "Created Time", example = "")
+    @ApiModelProperty(value = "Created Time")
     private DateTime createdTime;
 
     public String getAuthorId() {
