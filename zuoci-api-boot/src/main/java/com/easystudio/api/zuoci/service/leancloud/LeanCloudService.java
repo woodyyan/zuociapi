@@ -5,6 +5,9 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.easystudio.api.zuoci.entity.leancloud.FeaturedLyric;
 import com.easystudio.api.zuoci.entity.leancloud.Lyric;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.SpringApplication;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,6 +20,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class LeanCloudService {
+    private static final Log logger = LogFactory.getLog(SpringApplication.class);
+
     // 每天凌晨4点更新一次， 取昨天的前5天的lyric, 计算factor(index)并存放到table
     public void updateRecommandLyricListOncePerDay() {
 
@@ -24,6 +29,7 @@ public class LeanCloudService {
             try {
                 startUpdate();
             } catch (AVException | ParseException e) {
+                logger.error("[LEANCLOUD] ---- Update featured lyrics failed.", e);
                 e.printStackTrace();
             }
         };
@@ -48,10 +54,13 @@ public class LeanCloudService {
     }
 
     private void startUpdate() throws AVException, ParseException {
+        logger.info("[LEANCLOUD] ---- Start update featured lyrics");
         List<Lyric> recentLyrics = getRecentLyrics();
+        logger.info("[LEANCLOUD] ---- Get recent lyrics, count: " + recentLyrics.size());
         for (Lyric lyric : recentLyrics) {
             calculateRecommandLyric(lyric);
         }
+        logger.info("[LEANCLOUD] ---- Finished update featured lyrics");
     }
 
     private List<Lyric> getRecentLyrics() throws AVException {
@@ -93,6 +102,8 @@ public class LeanCloudService {
                 + viewCount * 20
                 + shareCount * 10
                 + commentCount * 10;
+        logger.info("[LEANCLOUD] ---- Calculate index, lyric id: " + lyric.getObjectId());
+        logger.info("[LEANCLOUD] ---- Calculate index: " + index);
         saveToRecommandLyric(index, lyric);
     }
 
@@ -105,12 +116,14 @@ public class LeanCloudService {
             if (existingIndex != index) {
                 featuredLyric.setIndex(index);
                 featuredLyric.save();
+                logger.info("[LEANCLOUD] ---- Updated existing index, lyric id: " + lyric.getObjectId());
             }
         } else {
             FeaturedLyric newFeaturedLyric = new FeaturedLyric();
             newFeaturedLyric.setIndex(index);
             newFeaturedLyric.setLyric(lyric);
             newFeaturedLyric.save();
+            logger.info("[LEANCLOUD] ---- Saved new index, lyric id: " + lyric.getObjectId());
         }
     }
 
