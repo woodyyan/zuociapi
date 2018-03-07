@@ -38,7 +38,9 @@ public class User {
 
     @Column(name = "last_secret_reset_date")
     @NotNull
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "Asia/Shanghai")
+    })
     private LocalDateTime lastSecretResetDate;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -22,7 +22,6 @@ public class PhraseCommentTranslator {
         comment.setCreatedTime(LocalDateTime.now());
         comment.setLastModifiedTime(LocalDateTime.now());
         comment.setParentCommentId(data.getParentCommentId());
-        comment.setParentId(data.getParentId());
         comment.setPhraseAuthorId(data.getPhraseAuthorId());
         comment.setPhraseId(data.getPhraseId());
         comment.setRepliedUserId(data.getRepliedUserId());
@@ -54,7 +53,6 @@ public class PhraseCommentTranslator {
         data.setRepliedUserId(comment.getRepliedUserId());
         data.setPhraseId(comment.getPhraseId());
         data.setPhraseAuthorId(comment.getPhraseAuthorId());
-        data.setParentId(comment.getParentId());
         data.setParentCommentId(comment.getParentCommentId());
         data.setObjectId(comment.getObjectId());
         data.setLastModifiedTime(comment.getLastModifiedTime().toDateTime());

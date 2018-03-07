@@ -1,5 +1,6 @@
 package com.easystudio.api.zuoci.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
@@ -19,7 +20,11 @@ public class DailyWordModel {
     private Long viewCount;
     private String pronunciation;
     private String rhyme;
+
+    @JsonFormat(timezone = "Asia/Shanghai")
     private DateTime createdTime;
+
+    @JsonFormat(timezone = "Asia/Shanghai")
     private DateTime lastModifiedTime;
 
     public Long getObjectId() {

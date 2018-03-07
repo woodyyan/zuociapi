@@ -1,5 +1,6 @@
 package com.easystudio.api.zuoci.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
@@ -30,10 +31,6 @@ public class CommentData {
     @ApiModelProperty(value = "Phrase ID", required = true, example = "123")
     private Long phraseId;
 
-    @NotNull(message = "Parent Id is a required field")
-    @ApiModelProperty(value = "Parent ID", required = true)
-    private Long parentId;
-
     @NotNull(message = "Commentator Id is a required field")
     @ApiModelProperty(value = "Commentator ID", required = true, example = "55f95a6360b232fc2aa1f4ca")
     private String commentatorId;
@@ -42,9 +39,11 @@ public class CommentData {
     private String repliedUserId;
 
     @ApiModelProperty(value = "Created Time")
+    @JsonFormat(timezone = "Asia/Shanghai")
     private DateTime createdTime;
 
     @ApiModelProperty(value = "Last Modified Time")
+    @JsonFormat(timezone = "Asia/Shanghai")
     private DateTime lastModifiedTime;
 
     public String getPhraseAuthorId() {
@@ -85,14 +84,6 @@ public class CommentData {
 
     public void setPhraseId(Long phraseId) {
         this.phraseId = phraseId;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
     }
 
     public String getCommentatorId() {

@@ -23,14 +23,18 @@ public class DeletedPhrase {
     private Long viewCount;
 
     @Column(name = "last_modified_time", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "Asia/Shanghai")
+    })
     private LocalDateTime lastModifiedTime;
 
     @Column(name = "location")
     private String location;
 
     @Column(name = "created_time", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "Asia/Shanghai")
+    })
     private LocalDateTime createdTime;
 
     public Long getObjectId() {

@@ -20,18 +20,19 @@ public class PhraseComment {
     private String commentatorId;
 
     @Column(name = "created_time", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "Asia/Shanghai")
+    })
     private LocalDateTime createdTime;
 
     @Column(name = "last_modified_time", nullable = false)
-    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
+            @org.hibernate.annotations.Parameter(name = "databaseZone", value = "Asia/Shanghai")
+    })
     private LocalDateTime lastModifiedTime;
 
     @Column(name = "parent_comment_id")
     private Long parentCommentId;
-
-    @Column(name = "parent_id", nullable = false)
-    private Long parentId;
 
     @Column(name = "phrase_author_id", nullable = false)
     private String phraseAuthorId;
@@ -83,14 +84,6 @@ public class PhraseComment {
 
     public Long getParentCommentId() {
         return parentCommentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public Long getParentId() {
-        return parentId;
     }
 
     public void setPhraseAuthorId(String phraseAuthorId) {

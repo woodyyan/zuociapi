@@ -31,7 +31,6 @@ public class PhraseCommentTranslatorTest {
         data.setLastModifiedTime(DateTime.now());
         data.setObjectId(123L);
         data.setParentCommentId(234L);
-        data.setParentId(345L);
         data.setPhraseAuthorId("2");
         data.setPhraseId(456L);
         data.setRepliedUserId("3");
@@ -43,7 +42,6 @@ public class PhraseCommentTranslatorTest {
         Assert.assertThat(comment.getCreatedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(comment.getLastModifiedTime(), lessThanOrEqualTo(LocalDateTime.now()));
         Assert.assertThat(comment.getParentCommentId(), is(234L));
-        Assert.assertThat(comment.getParentId(), is(345L));
         Assert.assertThat(comment.getPhraseAuthorId(), is("2"));
         Assert.assertThat(comment.getPhraseId(), is(456L));
         Assert.assertThat(comment.getRepliedUserId(), is("3"));
@@ -78,7 +76,6 @@ public class PhraseCommentTranslatorTest {
         comment.setContent("content");
         comment.setLastModifiedTime(LocalDateTime.now());
         comment.setCreatedTime(LocalDateTime.now());
-        comment.setParentId(2L);
         comment.setCommentatorId("a");
         comment.setParentCommentId(3L);
         comment.setPhraseAuthorId("b");
@@ -93,7 +90,6 @@ public class PhraseCommentTranslatorTest {
         Assert.assertThat(commentData.getCommentatorId(), is("a"));
         Assert.assertThat(commentData.getContent(), is("content"));
         Assert.assertThat(commentData.getParentCommentId(), is(3L));
-        Assert.assertThat(commentData.getParentId(), is(2L));
         Assert.assertThat(commentData.getPhraseAuthorId(), is("b"));
         Assert.assertThat(commentData.getCreatedTime(), lessThanOrEqualTo(DateTime.now()));
         Assert.assertThat(commentData.getLastModifiedTime(), lessThanOrEqualTo(DateTime.now()));
