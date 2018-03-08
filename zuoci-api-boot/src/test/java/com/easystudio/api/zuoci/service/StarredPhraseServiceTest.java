@@ -76,11 +76,12 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
     @Test
     public void shouldCountStarGivenUserId() {
         String userId = "abc";
+        Long phraseId = 1L;
 
-        expect(repository.countByUserId(userId)).andReturn(1L);
+        expect(repository.countByUserIdAndPhraseId(userId, phraseId)).andReturn(1L);
 
         replayAll();
-        Long count = service.countStar(userId);
+        Long count = service.countStar(userId, phraseId);
         verifyAll();
 
         Assert.assertThat(count, is(1L));

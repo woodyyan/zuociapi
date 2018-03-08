@@ -49,7 +49,7 @@ public class StarredPhraseService {
         repository.delete(objectId);
     }
 
-    public Long countStar(String userId) {
-        return repository.countByUserId(userId);
+    public Long countStar(String userId, Long phraseId) {
+        return repository.countByUserIdAndPhraseId(userId, phraseId);
     }
 }

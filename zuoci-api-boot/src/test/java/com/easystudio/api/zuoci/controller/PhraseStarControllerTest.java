@@ -94,11 +94,12 @@ public class PhraseStarControllerTest extends EasyMockSupport {
     @Test
     public void shouldCountStarGivenUserId() {
         String userId = "abc";
+        Long phraseId = 1L;
 
-        expect(service.countStar(userId)).andReturn(1L);
+        expect(service.countStar(userId, phraseId)).andReturn(1L);
 
         replayAll();
-        ResponseEntity<CountResponse> responseEntity = controller.countStar(userId);
+        ResponseEntity<CountResponse> responseEntity = controller.countStar(userId, phraseId);
         verifyAll();
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));

@@ -13,6 +13,6 @@ public interface StarredPhraseRepository extends PagingAndSortingRepository<Star
 
     Page<StarredPhrase> findByUserId(String userId, Pageable page);
 
-    @Query("SELECT COUNT(*) FROM StarredPhrase p WHERE p.userId=:userId")
-    Long countByUserId(@Param("userId") String userId);
+    @Query("SELECT COUNT(*) FROM StarredPhrase p WHERE p.userId=:userId AND p.phraseId=:phraseId")
+    Long countByUserIdAndPhraseId(@Param("userId") String userId, @Param("phraseId") Long phraseId);
 }
