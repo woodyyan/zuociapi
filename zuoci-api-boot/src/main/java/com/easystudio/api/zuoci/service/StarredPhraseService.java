@@ -50,6 +50,10 @@ public class StarredPhraseService {
     }
 
     public Long countStar(String userId, Long phraseId) {
-        return repository.countByUserIdAndPhraseId(userId, phraseId);
+        if (phraseId == null || phraseId == 0) {
+            return repository.countByUserId(userId);
+        } else {
+            return repository.countByUserIdAndPhraseId(userId, phraseId);
+        }
     }
 }

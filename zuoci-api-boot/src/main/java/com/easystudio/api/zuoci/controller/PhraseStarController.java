@@ -70,7 +70,7 @@ public class PhraseStarController {
     @RequestMapping(value = "/count", method = GET)
     @ApiOperation(value = "Get star count", notes = "Return star count")
     public ResponseEntity<CountResponse> countStar(@RequestParam String userId,
-                                                   @RequestParam Long phraseId) {
+                                                   @RequestParam(required = false) Long phraseId) {
         Long count = service.countStar(userId, phraseId);
         CountResponse response = new CountResponse();
         response.setCount(count);
