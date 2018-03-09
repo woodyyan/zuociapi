@@ -99,4 +99,30 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
 
         Assert.assertThat(count, is(1L));
     }
+
+    @Test
+    public void shouldDeleteStarGivenUserIdAndPhraseId() {
+        String userId = "123";
+        Long phraseId = 1L;
+
+        StarredPhrase star = new StarredPhrase();
+        expect(repository.findOneByUserIdAndPhraseId(userId, phraseId)).andReturn(star);
+        repository.delete(star);
+
+        replayAll();
+        service.deleteStar(userId, phraseId);
+        verifyAll();
+    }
+
+    @Test
+    public void shouldNotDeleteStarGivenUserIdAndPhraseId() {
+        String userId = "123";
+        Long phraseId = 1L;
+
+        expect(repository.findOneByUserIdAndPhraseId(userId, phraseId)).andReturn(null);
+
+        replayAll();
+        service.deleteStar(userId, phraseId);
+        verifyAll();
+    }
 }

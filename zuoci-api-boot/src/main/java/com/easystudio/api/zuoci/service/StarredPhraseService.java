@@ -45,8 +45,11 @@ public class StarredPhraseService {
         return new PageImpl<>(phraseStream.collect(Collectors.toList()), pageable, pagedStars.getTotalElements());
     }
 
-    public void deleteStar(String userId, Long objectId) {
-        repository.delete(objectId);
+    public void deleteStar(String userId, Long phraseId) {
+        StarredPhrase star = repository.findOneByUserIdAndPhraseId(userId, phraseId);
+        if (star != null) {
+            repository.delete(star);
+        }
     }
 
     public Long countStar(String userId, Long phraseId) {

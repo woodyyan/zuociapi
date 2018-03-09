@@ -58,12 +58,12 @@ public class PhraseStarController {
         return translator.toPhraseResponse(pagedPhrases);
     }
 
-    @RequestMapping(value = "/{objectId}", method = DELETE)
+    @RequestMapping(method = DELETE)
     @ApiOperation(value = "Delete starred phrase", notes = "Delete a star from DB")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ResponseEntity<?> deleteStar(@PathVariable String userId,
-                                        @PathVariable(value = "objectId") Long objectId) {
-        service.deleteStar(userId, objectId);
+    public ResponseEntity<?> deleteStar(@RequestParam String userId,
+                                        @RequestParam Long phraseId) {
+        service.deleteStar(userId, phraseId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
