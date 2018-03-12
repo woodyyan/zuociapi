@@ -15,8 +15,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.easystudio.api.zuoci.model.error.ErrorBuilder.buildNotFoundError;
 import static com.google.common.base.Strings.isNullOrEmpty;
@@ -39,14 +45,34 @@ public class PhraseService {
         repository.save(phrase);
     }
 
-    public Page<Phrase> searchPhrase(boolean isValid, boolean isVisible, String authorId, Pageable page) {
+    public Page<Phrase> searchPhrase(Boolean isValid, Boolean isVisible, String authorId, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        if (isNullOrEmpty(authorId)) {
-            return repository.findByIsValidAndIsVisible(isValid, isVisible, pageable);
-        } else {
-            return repository.findByIsValidAndIsVisibleAndAuthorId(isValid, isVisible, authorId, pageable);
-        }
+        return repository.findAll(getPhraseSpec(isValid, isVisible, authorId), pageable);
+    }
+
+    private Specification<Phrase> getPhraseSpec(Boolean isValid, Boolean isVisible, String authorId) {
+        return (root, query, cb) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+            Path<Boolean> isValidPath = root.get("isValid");
+            Predicate isValidPredicate = cb.equal(isValidPath, isValid);
+            predicates.add(isValidPredicate);
+
+            if (!isNullOrEmpty(authorId)) {
+                Path<Object> authorIdPath = root.get("authorId");
+                Predicate authorPredicate = cb.equal(authorIdPath, authorId);
+                predicates.add(authorPredicate);
+            }
+
+            if (isVisible != null) {
+                Path<Boolean> visiblePath = root.get("isVisible");
+                Predicate visiblePredicate = cb.equal(visiblePath, isVisible);
+                predicates.add(visiblePredicate);
+            }
+
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     public void deletePhrase(Long objectId) {

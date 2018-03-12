@@ -39,9 +39,9 @@ public class PhraseController {
     })
     public ResponseEntity<Phrases> searchPhrase(
             @ApiParam(value = "Phrase is valid", defaultValue = "true")
-            @RequestParam(required = false, defaultValue = "true") boolean isValid,
+            @RequestParam(required = false, defaultValue = "true") Boolean isValid,
             @ApiParam(value = "Phrase is visible")
-            @RequestParam(required = false, defaultValue = "true") boolean isVisible,
+            @RequestParam(required = false) Boolean isVisible,
             @ApiParam(value = "Phrase's author id")
             @RequestParam(required = false) String authorId, Pageable page) {
 
