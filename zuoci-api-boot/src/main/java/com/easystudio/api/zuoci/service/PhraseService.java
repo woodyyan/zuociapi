@@ -51,30 +51,6 @@ public class PhraseService {
         return repository.findAll(getPhraseSpec(isValid, isVisible, authorId), pageable);
     }
 
-    private Specification<Phrase> getPhraseSpec(Boolean isValid, Boolean isVisible, String authorId) {
-        return (root, query, cb) -> {
-
-            List<Predicate> predicates = new ArrayList<>();
-            Path<Boolean> isValidPath = root.get("isValid");
-            Predicate isValidPredicate = cb.equal(isValidPath, isValid);
-            predicates.add(isValidPredicate);
-
-            if (!isNullOrEmpty(authorId)) {
-                Path<Object> authorIdPath = root.get("authorId");
-                Predicate authorPredicate = cb.equal(authorIdPath, authorId);
-                predicates.add(authorPredicate);
-            }
-
-            if (isVisible != null) {
-                Path<Boolean> visiblePath = root.get("isVisible");
-                Predicate visiblePredicate = cb.equal(visiblePath, isVisible);
-                predicates.add(visiblePredicate);
-            }
-
-            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
-        };
-    }
-
     public void deletePhrase(Long objectId) {
         Phrase phrase = repository.findOne(objectId);
         if (phrase != null) {
@@ -100,18 +76,69 @@ public class PhraseService {
         }
     }
 
-    public Long countPhrase(String content, String authorId, boolean isVisible) {
-        if (!isNullOrEmpty(authorId)) {
-            return repository.countByAuthorId(authorId, isVisible);
-        } else {
-            LocalDateTime now = LocalDateTime.now();
-            LocalDateTime yesterday = new LocalDateTime(
-                    now.getYear(),
-                    now.getMonthOfYear(),
-                    now.getDayOfMonth(),
-                    0, 0, 0);
-            return repository.countByContentInToday(content, yesterday, isVisible);
-        }
+    public Long countPhrase(String content, String authorId, Boolean isVisible) {
+        return repository.count(getCountSpec(content, authorId, isVisible));
+    }
+
+    private Specification<Phrase> getCountSpec(String content, String authorId, Boolean isVisible) {
+        return (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (isNullOrEmpty(authorId)) {
+                LocalDateTime now = LocalDateTime.now();
+                LocalDateTime yesterday = new LocalDateTime(
+                        now.getYear(),
+                        now.getMonthOfYear(),
+                        now.getDayOfMonth(),
+                        0, 0, 0);
+                Path<LocalDateTime> createdTimePath = root.get("createdTime");
+                Predicate createdTimePredicate = cb.greaterThan(createdTimePath, yesterday);
+                predicates.add(createdTimePredicate);
+
+                Path<String> contentPath = root.get("content");
+                Predicate contentPredicate = cb.equal(contentPath, content);
+                predicates.add(contentPredicate);
+
+                Path<Boolean> visiblePath = root.get("isVisible");
+                Predicate visiblePredicate = cb.equal(visiblePath, isVisible);
+                predicates.add(visiblePredicate);
+            } else {
+                Path<String> authorIdPath = root.get("authorId");
+                Predicate authorIdPredicate = cb.equal(authorIdPath, authorId);
+                predicates.add(authorIdPredicate);
+
+                if (isVisible != null) {
+                    Path<Boolean> visiblePath = root.get("isVisible");
+                    Predicate visiblePredicate = cb.equal(visiblePath, isVisible);
+                    predicates.add(visiblePredicate);
+                }
+            }
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
+    }
+
+    private Specification<Phrase> getPhraseSpec(Boolean isValid, Boolean isVisible, String authorId) {
+        return (root, query, cb) -> {
+
+            List<Predicate> predicates = new ArrayList<>();
+            Path<Boolean> isValidPath = root.get("isValid");
+            Predicate isValidPredicate = cb.equal(isValidPath, isValid);
+            predicates.add(isValidPredicate);
+
+            if (!isNullOrEmpty(authorId)) {
+                Path<Object> authorIdPath = root.get("authorId");
+                Predicate authorPredicate = cb.equal(authorIdPath, authorId);
+                predicates.add(authorPredicate);
+            }
+
+            if (isVisible != null) {
+                Path<Boolean> visiblePath = root.get("isVisible");
+                Predicate visiblePredicate = cb.equal(visiblePath, isVisible);
+                predicates.add(visiblePredicate);
+            }
+
+            return cb.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     public Phrase getPhrase(Long objectId) {

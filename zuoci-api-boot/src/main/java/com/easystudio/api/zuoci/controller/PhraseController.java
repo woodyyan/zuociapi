@@ -92,8 +92,7 @@ public class PhraseController {
     @ApiOperation(value = "Get phrase count", notes = "Return phrase count")
     public ResponseEntity<PhraseCountResponse> countPhrase(@RequestParam(required = false) String content,
                                                            @RequestParam(required = false) String authorId,
-                                                           @RequestParam(required = false, defaultValue = "true")
-                                                                   boolean isVisible) {
+                                                           @RequestParam(required = false) Boolean isVisible) {
         Long count = service.countPhrase(content, authorId, isVisible);
         PhraseCountResponse response = new PhraseCountResponse();
         response.setCount(count);
