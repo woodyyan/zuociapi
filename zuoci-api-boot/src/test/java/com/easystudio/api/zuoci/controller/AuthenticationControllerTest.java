@@ -1,5 +1,6 @@
 package com.easystudio.api.zuoci.controller;
 
+import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.JwtAuthenticationRequest;
 import com.easystudio.api.zuoci.model.JwtAuthenticationResponse;
 import com.easystudio.api.zuoci.security.JwtTokenUtil;
@@ -89,5 +90,22 @@ public class AuthenticationControllerTest extends EasyMockSupport {
 
         Assert.assertThat(responseEntity.getStatusCode(), is(HttpStatus.BAD_REQUEST));
         Assert.assertThat(responseEntity.hasBody(), is(false));
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldThrowExceptionWhenTokenLengthIsLessThan7() {
+        setField(controller, "tokenHeader", "Authorization");
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("Authorization", "Bearer");
+
+        expect(jwtTokenUtil.getUsernameFromToken("value")).andReturn("username");
+        Date date = new Date();
+        UserDetails user = new JwtUser(1L, "key", "description", "secret", null, true, date);
+        expect(userDetailsService.loadUserByUsername("username")).andReturn(user);
+        expect(jwtTokenUtil.canTokenBeRefreshed("value", date)).andReturn(false);
+
+        replayAll();
+        ResponseEntity<?> responseEntity = controller.refreshAndGetAuthenticationToken(request);
+        verifyAll();
     }
 }
