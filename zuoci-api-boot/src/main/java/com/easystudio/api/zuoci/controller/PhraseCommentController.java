@@ -68,7 +68,7 @@ public class PhraseCommentController {
     @ApiOperation(value = "Get Comment", notes = "Get a phrase comment by id")
     public ResponseEntity<CommentData> getComment(
             @ApiParam(value = "Phrase id")
-            @RequestParam(required = false) Long objectId) {
+            @PathVariable Long objectId) {
 
         PhraseComment comment = service.getComment(objectId);
         CommentData commentData = translator.toCommentData(comment);

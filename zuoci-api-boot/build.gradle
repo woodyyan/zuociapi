@@ -71,6 +71,7 @@ dependencies {
     compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: '2.9.4'
     compile 'com.fasterxml.jackson.core:jackson-databind'
     compile 'com.fasterxml.jackson.core:jackson-annotations'
+    runtime('org.hsqldb:hsqldb')
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.easymock:easymock:3.5.1')

@@ -3,3 +3,4 @@
 .idea/
 build/
 zuoci-api-boot/out/
+zuoci-api-boot/logs/
