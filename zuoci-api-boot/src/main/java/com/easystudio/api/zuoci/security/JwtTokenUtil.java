@@ -24,7 +24,6 @@ public class JwtTokenUtil implements Serializable {
     static final String CLAIM_KEY_AUDIENCE = "aud";
     static final String CLAIM_KEY_CREATED = "iat";
 
-    //    @SuppressFBWarnings(value = "SE_BAD_FIELD", justification = "It's okay here")
     private Clock clock = DefaultClock.INSTANCE;
 
     @Value("${jwt.secret}")

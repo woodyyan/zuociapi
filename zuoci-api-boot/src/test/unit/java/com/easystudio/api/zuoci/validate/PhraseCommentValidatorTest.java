@@ -44,4 +44,15 @@ public class PhraseCommentValidatorTest {
         request.setData(data);
         validator.validate(request);
     }
+
+    @Test
+    public void shouldNoThingGivenContentIsNotEmpty() {
+        PhraseCommentRequest request = new PhraseCommentRequest();
+        CommentData data = new CommentData();
+        data.setPhraseId(1L);
+        data.setContent("content");
+        data.setCommentatorId("123");
+        request.setData(data);
+        validator.validate(request);
+    }
 }

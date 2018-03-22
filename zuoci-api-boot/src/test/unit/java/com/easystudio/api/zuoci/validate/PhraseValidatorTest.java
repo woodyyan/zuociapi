@@ -41,4 +41,19 @@ public class PhraseValidatorTest {
     public void shouldThrowBadRequestGivenObjectIsNull() {
         validator.validate((Long) null);
     }
+
+    @Test
+    public void shouldDoNothingGivenContentAndAuthorId() {
+        PhraseRequest request = new PhraseRequest();
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        data.setAuthorId("123");
+        request.setData(data);
+        validator.validate(request);
+    }
+
+    @Test
+    public void shouldDoNothingGivenObjectIdIsNotNull() {
+        validator.validate(1L);
+    }
 }

@@ -22,4 +22,12 @@ public class PhraseStarValidatorTest {
         request.setPhraseId(0L);
         validator.validate(request);
     }
+
+    @Test
+    public void shouldDoNothingGivenUserIdAndPhraseId() {
+        PhraseStarRequest request = new PhraseStarRequest();
+        request.setUserId("123");
+        request.setPhraseId(1L);
+        validator.validate(request);
+    }
 }
