@@ -2,7 +2,7 @@ apply plugin: 'jacoco'
 
 ext {
     limits = [
-            'instruction': 55,
+            'instruction': 50,
             'branch'     : 44,
             'line'       : 60,
             'complexity' : 60,
@@ -29,7 +29,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: ['**/ZuociApplication**',
-                                        'com.easystudio.api.zuoci.service.leancloud/**'])
+                                        '**/leancloud/**'])
         })
     }
 

@@ -32,6 +32,7 @@ public class PhraseCommentValidatorTest {
     @Test(expected = ErrorException.class)
     public void shouldThrowExceptionWhenPhraseDataIsNull() {
         PhraseCommentRequest request = new PhraseCommentRequest();
+        request.setData(null);
         validator.validate(request);
     }
 
@@ -50,6 +51,17 @@ public class PhraseCommentValidatorTest {
         PhraseCommentRequest request = new PhraseCommentRequest();
         CommentData data = new CommentData();
         data.setPhraseId(1L);
+        data.setContent("content");
+        data.setCommentatorId("123");
+        request.setData(data);
+        validator.validate(request);
+    }
+
+    @Test(expected = ErrorException.class)
+    public void shouldNoThingGivenInvalidPhraseId() {
+        PhraseCommentRequest request = new PhraseCommentRequest();
+        CommentData data = new CommentData();
+        data.setPhraseId(-1L);
         data.setContent("content");
         data.setCommentatorId("123");
         request.setData(data);

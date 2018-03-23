@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static org.hamcrest.Matchers.greaterThan;
@@ -72,6 +73,12 @@ public class JwtTokenUtilTest {
     }
 
     @Test
+    public void shouldCanTokenBeRefreshed() {
+        Boolean canTokenBeRefreshed = util.canTokenBeRefreshed(validToken, getValidLastResetPasswordDate());
+        Assert.assertTrue(canTokenBeRefreshed);
+    }
+
+    @Test
     public void shouldRefreshTokenGivenValidToken() {
         String token = util.refreshToken(validToken);
         Assert.assertNotNull(token);
@@ -80,10 +87,26 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    public void shouldNotValidateToken() {
+    public void shouldNotValidateTokenWhenLastResetPasswordDateIsLater() {
         UserDetails user = new JwtUser(1L, "user", "", "password", null, true, new Date());
         Boolean isValid = util.validateToken(validToken, user);
         Assert.assertFalse(isValid);
+    }
+
+    @Test
+    public void shouldNotValidateTokenWhenUsernameIsWrong() {
+        Date date = getValidLastResetPasswordDate();
+        UserDetails user = new JwtUser(1L, "wrong", "", "password", null, true, date);
+        Boolean isValid = util.validateToken(validToken, user);
+        Assert.assertFalse(isValid);
+    }
+
+    @Test
+    public void shouldValidateToken() {
+        Date date = getValidLastResetPasswordDate();
+        UserDetails user = new JwtUser(1L, "user", "", "password", null, true, date);
+        Boolean isValid = util.validateToken(validToken, user);
+        Assert.assertTrue(isValid);
     }
 
     @Test(expected = ExpiredJwtException.class)
@@ -99,5 +122,11 @@ public class JwtTokenUtilTest {
     @Test(expected = ExpiredJwtException.class)
     public void shouldThrowExpiredExceptionWhenGetExpirationDateFromTokenGivenExpiredToken() {
         util.getExpirationDateFromToken(expiredtoken);
+    }
+
+    private Date getValidLastResetPasswordDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2017, 1, 1);
+        return calendar.getTime();
     }
 }
