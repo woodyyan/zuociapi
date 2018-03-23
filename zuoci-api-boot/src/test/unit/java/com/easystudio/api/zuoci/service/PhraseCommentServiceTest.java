@@ -18,6 +18,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.Matchers.is;
 
@@ -80,32 +81,31 @@ public class PhraseCommentServiceTest extends EasyMockSupport {
 
     @Test
     public void shouldSearchPhraseCommentsGivenUserIdAndPage() {
-//        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
-//        Pageable page = new PageRequest(0, 20, sort);
-//        String userId = "abc";
-//
-//        List<PhraseComment> content = new ArrayList<>();
-//        PhraseComment comment1 = new PhraseComment();
-//        comment1.setContent("content1");
-//        content.add(comment1);
-//        PhraseComment comment2 = new PhraseComment();
-//        comment2.setContent("content2");
-//        content.add(comment2);
-//        Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 2);
-//        Specification<PhraseComment> spec = null;
-//        expect(repository.findAll(spec, page)).andReturn(pagedComments);
-//
-//        replayAll();
-//        Page<PhraseComment> comments = service.searchComment(0L, userId, true, page);
-//        verifyAll();
-//
-//        Assert.assertThat(comments.getTotalElements(), is(2L));
-//        Assert.assertThat(comments.getTotalPages(), is(1));
-//        Assert.assertThat(comments.getNumberOfElements(), is(2));
-//        Assert.assertThat(comments.getNumber(), is(0));
-//        Assert.assertThat(comments.getContent().size(), is(2));
-//        Assert.assertThat(comments.getContent().get(0).getContent(), is("content1"));
-//        Assert.assertThat(comments.getContent().get(1).getContent(), is("content2"));
+        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
+        Pageable page = new PageRequest(0, 20, sort);
+        String userId = "abc";
+
+        List<PhraseComment> content = new ArrayList<>();
+        PhraseComment comment1 = new PhraseComment();
+        comment1.setContent("content1");
+        content.add(comment1);
+        PhraseComment comment2 = new PhraseComment();
+        comment2.setContent("content2");
+        content.add(comment2);
+        Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 2);
+        expect(repository.findAll((Specification<PhraseComment>) anyObject(), (Pageable) anyObject())).andReturn(pagedComments);
+
+        replayAll();
+        Page<PhraseComment> comments = service.searchComment(0L, userId, true, page);
+        verifyAll();
+
+        Assert.assertThat(comments.getTotalElements(), is(2L));
+        Assert.assertThat(comments.getTotalPages(), is(1));
+        Assert.assertThat(comments.getNumberOfElements(), is(2));
+        Assert.assertThat(comments.getNumber(), is(0));
+        Assert.assertThat(comments.getContent().size(), is(2));
+        Assert.assertThat(comments.getContent().get(0).getContent(), is("content1"));
+        Assert.assertThat(comments.getContent().get(1).getContent(), is("content2"));
     }
 
     @Test

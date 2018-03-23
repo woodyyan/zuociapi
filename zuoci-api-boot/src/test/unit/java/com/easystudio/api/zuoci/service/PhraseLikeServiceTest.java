@@ -60,4 +60,31 @@ public class PhraseLikeServiceTest extends EasyMockSupport {
         Assert.assertThat(responseEntity.getBody().getInspirationLike().getCount(), is(11L));
         Assert.assertThat(responseEntity.getBody().getInterestingLike().getCount(), is(12L));
     }
+
+    @Test
+    public void shouldAddLikeGivenResonanceLike() {
+        PhraseLikeRequest request = new PhraseLikeRequest();
+        request.setLikeType(LikeType.ResonanceLike);
+        request.setPhraseId(1L);
+        request.setUserId("123");
+        service.addLike(request);
+    }
+
+    @Test
+    public void shouldAddLikeGivenInterestingLike() {
+        PhraseLikeRequest request = new PhraseLikeRequest();
+        request.setLikeType(LikeType.InterestingLike);
+        request.setPhraseId(1L);
+        request.setUserId("123");
+        service.addLike(request);
+    }
+
+    @Test
+    public void shouldAddLikeGivenInspirationLike() {
+        PhraseLikeRequest request = new PhraseLikeRequest();
+        request.setLikeType(LikeType.InspirationLike);
+        request.setPhraseId(1L);
+        request.setUserId("123");
+        service.addLike(request);
+    }
 }

@@ -18,6 +18,7 @@ import org.springframework.data.domain.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.Matchers.is;
 
@@ -46,6 +47,27 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
         replayAll();
         service.addStar(request);
         verifyAll();
+    }
+
+    @Test
+    public void shouldAddStarWhenPhraseExists() throws NotFoundException {
+        Long phraseId = 1L;
+        String userId = "abc";
+        PhraseStarRequest request = new PhraseStarRequest();
+        request.setPhraseId(phraseId);
+        request.setUserId(userId);
+
+        Phrase phrase = new Phrase();
+        phrase.setObjectId(2L);
+        expect(phraseRepository.findOne(phraseId)).andReturn(phrase);
+        StarredPhrase value = new StarredPhrase();
+        expect(repository.save((StarredPhrase) anyObject())).andReturn(value);
+
+        replayAll();
+        service.addStar(request);
+        verifyAll();
+
+        Assert.assertNotNull(value);
     }
 
     @Test
@@ -79,6 +101,20 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
         Long phraseId = 1L;
 
         expect(repository.countByUserIdAndPhraseId(userId, phraseId)).andReturn(1L);
+
+        replayAll();
+        Long count = service.countStar(userId, phraseId);
+        verifyAll();
+
+        Assert.assertThat(count, is(1L));
+    }
+
+    @Test
+    public void shouldCountStarGivenUserIdAndPhraseIdIsZero() {
+        String userId = "abc";
+        Long phraseId = 0L;
+
+        expect(repository.countByUserId(userId)).andReturn(1L);
 
         replayAll();
         Long count = service.countStar(userId, phraseId);

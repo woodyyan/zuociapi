@@ -35,9 +35,8 @@ public class PhraseLikeService {
                 addInspirationLike(phraseLikeRequest);
                 break;
             case InterestingLike:
-                addInterestingLike(phraseLikeRequest);
-                break;
             default:
+                addInterestingLike(phraseLikeRequest);
                 break;
         }
     }

@@ -1,6 +1,7 @@
 package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Authority;
+import com.easystudio.api.zuoci.entity.AuthorityName;
 import com.easystudio.api.zuoci.entity.User;
 import com.easystudio.api.zuoci.security.JwtUser;
 import org.joda.time.LocalDateTime;
@@ -26,6 +27,10 @@ public class JwtUserFactoryTest {
         user.setAppKey("name");
         user.setLastSecretResetDate(LocalDateTime.now());
         List<Authority> arthritis = new ArrayList<>();
+        Authority authority = new Authority();
+        authority.setId(1L);
+        authority.setName(AuthorityName.ROLE_USER);
+        arthritis.add(authority);
         user.setAuthorities(arthritis);
         JwtUser jwtUser = JwtUserFactory.create(user);
 
@@ -33,7 +38,13 @@ public class JwtUserFactoryTest {
         Assert.assertThat(jwtUser.getPassword(), is(user.getAppSecret()));
         Assert.assertThat(jwtUser.getDescription(), is(user.getDescription()));
         Assert.assertThat(jwtUser.getId(), is(user.getId()));
-        Assert.assertThat(jwtUser.getAuthorities().size(), is(0));
+        Assert.assertThat(jwtUser.getAuthorities().size(), is(1));
         Assert.assertThat(jwtUser.getLastSecretResetDate(), lessThanOrEqualTo(new Date()));
+    }
+
+    @Test
+    public void shouldCreateJwtUserFactory() {
+        JwtUserFactory factory = new JwtUserFactory();
+        Assert.assertNotNull(factory);
     }
 }

@@ -2,12 +2,12 @@ apply plugin: 'jacoco'
 
 ext {
     limits = [
-            'instruction': 50,
-            'branch'     : 44,
-            'line'       : 60,
-            'complexity' : 60,
-            'method'     : 60,
-            'class'      : 70
+            'instruction': 95,
+            'branch'     : 95,
+            'line'       : 95,
+            'complexity' : 95,
+            'method'     : 95,
+            'class'      : 95
     ]
 }
 
@@ -21,7 +21,7 @@ jacocoTestReport {
     description = "Generate and check jacoco coverage reports after running tests."
 
     reports {
-        xml.enabled false
+        xml.enabled true
         html.enabled true
         csv.enabled false
     }
@@ -29,7 +29,9 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: ['**/ZuociApplication**',
-                                        '**/leancloud/**'])
+                                        '**/leancloud/**',
+                                        '**/entity/**',
+                                        '**/model/**'])
         })
     }
 
@@ -39,9 +41,6 @@ jacocoTestReport {
 }
 
 check.dependsOn jacocoTestReport
-
-import org.slf4j.Logger
-import static org.slf4j.LoggerFactory.getLogger
 
 class TestCoverage {
     private static Logger logger = getLogger(TestCoverage.class);
