@@ -42,6 +42,9 @@ jacocoTestReport {
 
 check.dependsOn jacocoTestReport
 
+import org.slf4j.Logger
+import static org.slf4j.LoggerFactory.getLogger
+
 class TestCoverage {
     private static Logger logger = getLogger(TestCoverage.class);
     def xmlReport
