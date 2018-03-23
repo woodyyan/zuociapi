@@ -78,6 +78,24 @@ dependencies {
     testRuntime 'org.slf4j:slf4j-api:1.7.25'
 }
 
+sourceSets {
+    test {
+        java {
+            srcDir 'src/test/unit/java'
+        }
+    }
+//    integrationTest {
+//        java {
+//            srcDir 'src/test/intg/java'
+//        }
+//        resources {
+//            srcDir 'src/test/intg/resources'
+//        }
+//        CompileClasspath += main.output + test.output
+//        runtimeClasspath += main.output + test.output
+//    }
+}
+
 springBoot {
     mainClass = "com.easystudio.api.zuoci.ZuociApplication"
 }
