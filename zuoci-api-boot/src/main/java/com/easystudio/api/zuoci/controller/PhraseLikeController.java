@@ -25,7 +25,7 @@ public class PhraseLikeController {
     @Autowired
     private PhraseLikeService service;
 
-    @RequestMapping(method = POST)
+    @RequestMapping(method = POST, consumes = "application/vnd.api+json")
     @ApiOperation(value = "Add phrase like", notes = "Add phrase like")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<?> addLike(@PathVariable Long phraseId,

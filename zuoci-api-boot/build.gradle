@@ -78,6 +78,9 @@ dependencies {
     testRuntime 'org.slf4j:slf4j-api:1.7.25'
 }
 
+//test.dependsOn integragtionTest
+//check.dependsOn -= integTest
+
 sourceSets {
     test {
         java {
@@ -95,6 +98,18 @@ sourceSets {
 //        runtimeClasspath += main.output + test.output
 //    }
 }
+
+//task integrationTests(type: Test) {
+//    dependsOn 'assemble', 'integrationTestClasses'
+//    testClassesDir = sourceSets.integrationTest.output.classesDir
+//    classpath = sourceSets.integrationTest.runtimeClasspath
+//}
+
+//task integrationTest(type: Test, dependsOn: 'test') {
+//    testClassesDir = sourceSets.integrationTest.output.classesDir
+//    classpath = sourceSets.integrationTest.runtimeClasspath
+//
+//}
 
 springBoot {
     mainClass = "com.easystudio.api.zuoci.ZuociApplication"
