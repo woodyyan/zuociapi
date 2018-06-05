@@ -34,7 +34,7 @@ public class ReportServiceTest extends EasyMockSupport {
         request.setReason("");
         request.setReporterId("");
         request.setReportType(ReportType.Phrase);
-        request.setTargetId(1);
+        request.setTargetId("1");
 
         ReportInfo report = new ReportInfo();
         report.setDescription(request.getDescription());
@@ -61,7 +61,7 @@ public class ReportServiceTest extends EasyMockSupport {
         request.setReason("");
         request.setReporterId("");
         request.setReportType(ReportType.Phrase);
-        request.setTargetId(1);
+        request.setTargetId("1");
 
         ReportInfo report = new ReportInfo();
         report.setDescription(request.getDescription());

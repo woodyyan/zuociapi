@@ -12,7 +12,7 @@ public class ReportTranslatorTest {
     @Test
     public void shouldTranslateReportRequestToReportInfo() {
         ReportRequest request = new ReportRequest();
-        request.setTargetId(1);
+        request.setTargetId("5555");
         request.setReportType(ReportType.Phrase);
         request.setReporterId("123");
         request.setReason("reason");
@@ -24,7 +24,7 @@ public class ReportTranslatorTest {
         Assert.assertEquals("reason", reportInfo.getReason());
         Assert.assertEquals("123", reportInfo.getReporterId());
         Assert.assertEquals(ReportType.Phrase, reportInfo.getReportType());
-        Assert.assertEquals(1, reportInfo.getTargetId());
+        Assert.assertEquals("5555", reportInfo.getTargetId());
         Assert.assertNotNull(reportInfo.getCreatedTime());
         Assert.assertNull(reportInfo.getObjectId());
     }

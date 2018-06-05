@@ -20,7 +20,7 @@ public class ReportRequest {
     private String reporterId;
 
     @ApiModelProperty(value = "Target Id for Phrase, Lyric, Comment", required = true)
-    private int targetId;
+    private String targetId;
 
     public void setReportType(ReportType reportType) {
         this.reportType = reportType;
@@ -54,11 +54,11 @@ public class ReportRequest {
         return reporterId;
     }
 
-    public void setTargetId(int targetId) {
+    public void setTargetId(String targetId) {
         this.targetId = targetId;
     }
 
-    public int getTargetId() {
+    public String getTargetId() {
         return targetId;
     }
 }

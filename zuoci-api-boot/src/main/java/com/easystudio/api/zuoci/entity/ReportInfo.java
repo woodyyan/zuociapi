@@ -29,7 +29,7 @@ public class ReportInfo {
     private ReportType reportType;
 
     @Column(name = "target_id", nullable = false)
-    private Integer targetId;
+    private String targetId;
 
     @Column(name = "created_time", nullable = false)
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDateTime", parameters = {
@@ -69,11 +69,11 @@ public class ReportInfo {
         return reportType;
     }
 
-    public void setTargetId(Integer targetId) {
+    public void setTargetId(String targetId) {
         this.targetId = targetId;
     }
 
-    public int getTargetId() {
+    public String getTargetId() {
         return targetId;
     }
 

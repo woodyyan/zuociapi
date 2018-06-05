@@ -87,7 +87,8 @@ sourceSets {
             srcDir 'src/test/unit/java'
         }
     }
-//    integrationTest {
+    integration {
+//        java.srcDir 'src/test/intg/java'
 //        java {
 //            srcDir 'src/test/intg/java'
 //        }
@@ -96,19 +97,13 @@ sourceSets {
 //        }
 //        CompileClasspath += main.output + test.output
 //        runtimeClasspath += main.output + test.output
-//    }
+    }
 }
 
-//task integrationTests(type: Test) {
-//    dependsOn 'assemble', 'integrationTestClasses'
-//    testClassesDir = sourceSets.integrationTest.output.classesDir
-//    classpath = sourceSets.integrationTest.runtimeClasspath
-//}
-
 //task integrationTest(type: Test, dependsOn: 'test') {
-//    testClassesDir = sourceSets.integrationTest.output.classesDir
+//    dependsOn 'assemble', 'integrationTestClasses'
+//    testClassesDirs = sourceSets.integrationTest.output
 //    classpath = sourceSets.integrationTest.runtimeClasspath
-//
 //}
 
 springBoot {
