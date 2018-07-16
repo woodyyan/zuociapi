@@ -15,7 +15,7 @@
 <module name = "Checker">
     <property name="charset" value="UTF-8"/>
 
-    <property name="severity" value="warning"/>
+    <property name="severity" value="error"/>
 
     <!--<property name="fileExtensions" value="java, properties, xml"/>-->
     <!-- Checks for whitespace                               -->
@@ -37,10 +37,11 @@
             <property name="allowNonPrintableEscapes" value="true"/>
         </module>
         <module name="LineLength">
-            <property name="max" value="100"/>
+            <property name="max" value="150"/>
             <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
         </module>
-        <module name="AvoidStarImport"/>
+        <!--<module name="AvoidStarImport"/>-->
+        <module name="UnusedImports"/>
         <module name="OneTopLevelClass"/>
         <module name="NoLineWrap"/>
         <module name="EmptyBlock">
@@ -151,14 +152,14 @@
             <message key="ws.notPreceded"
                      value="GenericWhitespace ''{0}'' is not preceded with whitespace."/>
         </module>
-        <!--<module name="Indentation">-->
-            <!--<property name="basicOffset" value="2"/>-->
-            <!--<property name="braceAdjustment" value="0"/>-->
-            <!--<property name="caseIndent" value="2"/>-->
-            <!--<property name="throwsIndent" value="4"/>-->
-            <!--<property name="lineWrappingIndentation" value="4"/>-->
-            <!--<property name="arrayInitIndent" value="2"/>-->
-        <!--</module>-->
+        <module name="Indentation">
+            <property name="basicOffset" value="4"/>
+            <property name="braceAdjustment" value="0"/>
+            <property name="caseIndent" value="4"/>
+            <property name="throwsIndent" value="4"/>
+            <property name="lineWrappingIndentation" value="8"/>
+            <property name="arrayInitIndent" value="4"/>
+        </module>
         <module name="AbbreviationAsWordInName">
             <property name="ignoreFinal" value="false"/>
             <property name="allowedAbbreviationLength" value="1"/>
@@ -166,9 +167,9 @@
         <module name="OverloadMethodsDeclarationOrder"/>
         <module name="VariableDeclarationUsageDistance"/>
         <module name="CustomImportOrder">
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
+            <!--<property name="sortImportsInGroupAlphabetically" value="true"/>-->
             <property name="separateLineBetweenGroups" value="true"/>
-            <property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>
+            <!--<property name="customImportOrderRules" value="STATIC###THIRD_PARTY_PACKAGE"/>-->
         </module>
         <module name="MethodParamPad"/>
         <module name="ParenPad"/>
@@ -200,6 +201,8 @@
             <property name="allowMissingParamTags" value="true"/>
             <property name="allowMissingThrowsTags" value="true"/>
             <property name="allowMissingReturnTag" value="true"/>
+            <property name="allowMissingJavadoc" value="true"/>
+            <property name="allowMissingPropertyJavadoc" value="true"/>
             <property name="minLineCount" value="2"/>
             <property name="allowedAnnotations" value="Override, Test"/>
             <property name="allowThrowsTagsForSubclasses" value="true"/>
@@ -215,6 +218,6 @@
         <module name="EmptyCatchBlock">
             <property name="exceptionVariableName" value="expected"/>
         </module>
-        <module name="CommentsIndentation"/>
+        <!--<module name="CommentsIndentation"/>-->
     </module>
 </module>

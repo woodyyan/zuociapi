@@ -1,0 +1,111 @@
+version 'unspecified'
+
+buildscript {
+    ext {
+        springBootVersion = '1.5.9.RELEASE'
+    }
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+//		jcenter()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+ext['hibernate.version'] = '5.2.12.Final'
+
+apply plugin: 'org.springframework.boot'
+apply plugin: 'application'
+apply plugin: 'checkstyle'
+apply plugin: 'jacoco'
+apply from: 'jacoco.gradle'
+
+jar {
+    baseName = 'zuoci-api'
+    version = '1.0.0'
+    manifest {
+        attributes "Manifest-Version": 1.0,
+                'Main-Class': 'com.easystudio.api.zuoci.ZuociApplication'
+    }
+}
+
+checkstyle {
+    toolVersion = '7.8.2'
+}
+
+project.version = 1.0
+project.group = 'com.easystudio.zuoci'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+checkstyle {
+    configProperties.projectDir = project.projectDir
+    checkstyleMain.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-main.xml')
+    checkstyleTest.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-test.xml')
+//    checkstyleIntegrationTest.configFile = new File(project.projectDir, '/config/checkstyle/checkstyle-test.xml')
+}
+
+dependencies {
+    compile("cn.leancloud:java-sdk:0.2.1")
+    compile 'joda-time:joda-time:2.9.9'
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("org.springframework.boot:spring-boot-starter-data-rest")
+    compile("org.springframework.boot:spring-boot-starter")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jdbc")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile group: 'org.jadira.usertype', name: 'usertype.core', version: '6.0.1.GA'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.10.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+    compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-joda', version: '2.9.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'com.fasterxml.jackson.core:jackson-annotations'
+    runtime('org.hsqldb:hsqldb')
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.easymock:easymock:3.5.1')
+    testRuntime 'org.slf4j:slf4j-api:1.7.25'
+}
+
+//test.dependsOn integragtionTest
+//check.dependsOn -= integTest
+
+sourceSets {
+    test {
+        java {
+            srcDir 'src/test/unit/java'
+        }
+    }
+    integration {
+//        java.srcDir 'src/test/intg/java'
+//        java {
+//            srcDir 'src/test/intg/java'
+//        }
+//        resources {
+//            srcDir 'src/test/intg/resources'
+//        }
+//        CompileClasspath += main.output + test.output
+//        runtimeClasspath += main.output + test.output
+    }
+}
+
+//task integrationTest(type: Test, dependsOn: 'test') {
+//    dependsOn 'assemble', 'integrationTestClasses'
+//    testClassesDirs = sourceSets.integrationTest.output
+//    classpath = sourceSets.integrationTest.runtimeClasspath
+//}
+
+springBoot {
+    mainClass = "com.easystudio.api.zuoci.ZuociApplication"
+}
