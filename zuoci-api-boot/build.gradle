@@ -24,7 +24,7 @@ apply from: 'jacoco.gradle'
 
 jar {
     baseName = 'zuoci-api'
-    version = '1.0.0'
+    version = '1.0.1'
     manifest {
         attributes "Manifest-Version": 1.0,
                 'Main-Class': 'com.easystudio.api.zuoci.ZuociApplication'
