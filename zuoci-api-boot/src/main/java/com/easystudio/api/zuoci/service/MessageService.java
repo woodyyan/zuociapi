@@ -29,5 +29,7 @@ public class MessageService {
     }
 
     public void createMessage(MessageRequest messageRequest) {
+        Message message = translator.toMessageEntity(messageRequest);
+        repository.save(message);
     }
 }

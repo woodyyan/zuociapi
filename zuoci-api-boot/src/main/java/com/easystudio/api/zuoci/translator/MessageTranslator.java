@@ -2,8 +2,10 @@ package com.easystudio.api.zuoci.translator;
 
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
+import com.easystudio.api.zuoci.model.MessageRequest;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.model.PagingMeta;
+import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +39,19 @@ public class MessageTranslator {
         messages.setData(data);
 
         return messages;
+    }
+
+    public Message toMessageEntity(MessageRequest messageRequest) {
+        Message message = new Message();
+        message.setCreatedTime(LocalDateTime.now());
+        message.setLastModifiedTime(LocalDateTime.now());
+        message.setChannel(messageRequest.getData().getChannel());
+        message.setCommentId(messageRequest.getData().getCommentId());
+        message.setContent(messageRequest.getData().getContent());
+        message.setLyricId(messageRequest.getData().getLyricId());
+        message.setReceiverId(messageRequest.getData().getReceiverId());
+        message.setText(messageRequest.getData().getText());
+        message.setSenderId(messageRequest.getData().getSenderId());
+        return message;
     }
 }

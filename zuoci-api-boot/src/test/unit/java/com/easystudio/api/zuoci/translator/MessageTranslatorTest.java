@@ -1,6 +1,8 @@
 package com.easystudio.api.zuoci.translator;
 
 import com.easystudio.api.zuoci.entity.Message;
+import com.easystudio.api.zuoci.model.MessageData;
+import com.easystudio.api.zuoci.model.MessageRequest;
 import com.easystudio.api.zuoci.model.Messages;
 import org.joda.time.LocalDateTime;
 import org.junit.Assert;
@@ -47,5 +49,31 @@ public class MessageTranslatorTest {
         Assert.assertEquals("receiver", messages.getData().get(0).getReceiverId());
         Assert.assertEquals("sender", messages.getData().get(0).getSenderId());
         Assert.assertEquals("text", messages.getData().get(0).getText());
+    }
+
+    @Test
+    public void shouldTranslateMessageReuqestToMessageEntity() {
+        MessageRequest request = new MessageRequest();
+        MessageData data = new MessageData();
+        data.setText("text");
+        data.setContent("content");
+        data.setChannel("channel");
+        data.setLyricId("lyric");
+        data.setReceiverId("receiver");
+        data.setCommentId("comment");
+        data.setSenderId("sender");
+        request.setData(data);
+
+        Message message = translator.toMessageEntity(request);
+
+        Assert.assertEquals("channel", message.getChannel());
+        Assert.assertEquals("text", message.getText());
+        Assert.assertEquals("sender", message.getSenderId());
+        Assert.assertEquals("receiver", message.getReceiverId());
+        Assert.assertEquals("lyric", message.getLyricId());
+        Assert.assertEquals("content", message.getContent());
+        Assert.assertEquals("comment", message.getCommentId());
+        Assert.assertNotNull(message.getCreatedTime());
+        Assert.assertNotNull(message.getLastModifiedTime());
     }
 }

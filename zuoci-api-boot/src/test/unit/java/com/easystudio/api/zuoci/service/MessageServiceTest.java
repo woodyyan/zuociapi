@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
+import com.easystudio.api.zuoci.model.MessageRequest;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.repository.MessageRepository;
 import com.easystudio.api.zuoci.translator.MessageTranslator;
@@ -66,5 +67,11 @@ public class MessageServiceTest extends EasyMockSupport {
         Assert.assertEquals(receiverId, messages.getData().get(0).getReceiverId());
         Assert.assertEquals("sender", messages.getData().get(0).getSenderId());
         Assert.assertEquals("text", messages.getData().get(0).getText());
+    }
+
+    @Test
+    public void shouldDoNothingWhenCreateMessageSuccessfully() {
+        MessageRequest request = new MessageRequest();
+        service.createMessage(request);
     }
 }
