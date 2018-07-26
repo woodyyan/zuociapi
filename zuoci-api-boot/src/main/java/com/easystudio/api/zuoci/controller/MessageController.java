@@ -3,7 +3,6 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.model.MessageRequest;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.service.MessageService;
-import com.easystudio.api.zuoci.translator.MessageTranslator;
 import com.easystudio.api.zuoci.validate.MessageValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

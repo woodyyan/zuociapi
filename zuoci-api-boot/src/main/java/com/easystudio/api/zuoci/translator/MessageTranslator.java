@@ -13,14 +13,11 @@ import java.util.List;
 @Service
 public class MessageTranslator {
     public Messages toMessageResponse(Page<Message> pagedMessages) {
-        Messages messages = new Messages();
-
         PagingMeta meta = new PagingMeta();
         meta.setPageNumber(pagedMessages.getNumber());
         meta.setPageSize(pagedMessages.getSize());
         meta.setTotalElements(pagedMessages.getTotalElements());
         meta.setTotalPages(pagedMessages.getTotalPages());
-        messages.setMeta(meta);
 
         List<MessageData> data = new ArrayList<>();
         for (Message message : pagedMessages.getContent()) {
@@ -33,8 +30,10 @@ public class MessageTranslator {
             messageData.setContent(message.getContent());
             messageData.setText(message.getText());
             data.add(messageData);
-
         }
+
+        Messages messages = new Messages();
+        messages.setMeta(meta);
         messages.setData(data);
 
         return messages;
