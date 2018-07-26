@@ -1,9 +1,11 @@
 package com.easystudio.api.zuoci.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.joda.time.DateTime;
 
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +29,15 @@ public class MessageData {
     private String channel;
     private String lyricId;
     private String commentId;
+
+    @ApiModelProperty(value = "Last Modified Time")
+    @JsonFormat(timezone = "Asia/Shanghai")
+    private DateTime lastModifiedTime;
+
+    @ApiModelProperty(value = "Created Time")
+    @JsonFormat(timezone = "Asia/Shanghai")
+    private DateTime createdTime;
+
 
     public String getContent() {
         return content;
@@ -82,5 +93,21 @@ public class MessageData {
 
     public void setCommentId(String commentId) {
         this.commentId = commentId;
+    }
+
+    public DateTime getLastModifiedTime() {
+        return lastModifiedTime;
+    }
+
+    public void setLastModifiedTime(DateTime lastModifiedTime) {
+        this.lastModifiedTime = lastModifiedTime;
+    }
+
+    public DateTime getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(DateTime createdTime) {
+        this.createdTime = createdTime;
     }
 }

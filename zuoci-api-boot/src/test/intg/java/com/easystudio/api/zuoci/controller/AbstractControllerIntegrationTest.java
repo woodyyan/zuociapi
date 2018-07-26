@@ -1,6 +1,5 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.model.PhraseLikeRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.runner.RunWith;
@@ -43,7 +42,7 @@ public class AbstractControllerIntegrationTest {
                 .getResponse();
     }
 
-    MockHttpServletResponse performPostRequest(String url, PhraseLikeRequest body) throws Exception {
+    MockHttpServletResponse performPostRequest(String url, Object body) throws Exception {
         String bodyContent = objectMapper.writeValueAsString(body);
         return mockMvc.perform(post(url)
                 .header(AUTHORIZATION_HEADER, authorizationValue)

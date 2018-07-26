@@ -31,6 +31,8 @@ public class MessageTranslator {
             messageData.setChannel(message.getChannel());
             messageData.setContent(message.getContent());
             messageData.setText(message.getText());
+            messageData.setCreatedTime(message.getCreatedTime().toDateTime());
+            messageData.setLastModifiedTime(message.getLastModifiedTime().toDateTime());
             data.add(messageData);
         }
 

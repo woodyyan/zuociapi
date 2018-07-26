@@ -49,6 +49,8 @@ public class MessageTranslatorTest {
         Assert.assertEquals("receiver", messages.getData().get(0).getReceiverId());
         Assert.assertEquals("sender", messages.getData().get(0).getSenderId());
         Assert.assertEquals("text", messages.getData().get(0).getText());
+        Assert.assertNotNull(messages.getData().get(0).getCreatedTime());
+        Assert.assertNotNull(messages.getData().get(0).getLastModifiedTime());
     }
 
     @Test
