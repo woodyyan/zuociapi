@@ -1,7 +1,10 @@
 package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Message;
+import com.easystudio.api.zuoci.model.MessageData;
+import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.repository.MessageRepository;
+import com.easystudio.api.zuoci.translator.MessageTranslator;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -24,6 +27,9 @@ public class MessageServiceTest extends EasyMockSupport {
     @Mock
     private MessageRepository repository;
 
+    @Mock
+    private MessageTranslator translator;
+
     @Test
     public void shouldGetMessagesGivenReceiverIdAndPage() {
         String receiverId = "123";
@@ -31,33 +37,34 @@ public class MessageServiceTest extends EasyMockSupport {
         Pageable page = new PageRequest(0, 20, sort);
 
         List<Message> content = new ArrayList<>();
-        Message message = new Message();
-        message.setChannel("comment");
-        message.setCommentId("123");
-        message.setContent("content");
-        message.setLyricId("111");
-        message.setReceiverId(receiverId);
-        message.setText("text");
-        message.setSenderId("sender");
-        content.add(message);
-        Page<Message> expectedMessages = new PageImpl<>(content, new PageRequest(0, 1), 1);
+        Page<Message> expectedPages = new PageImpl<>(content, new PageRequest(0, 1), 1);
 
-        expect(repository.findByReceiverId(receiverId, page)).andReturn(expectedMessages);
+        Messages expectedMessages = new Messages();
+        List<MessageData> data = new ArrayList<>();
+        MessageData message = new MessageData();
+        message.setText("text");
+        message.setContent("content");
+        message.setChannel("comment");
+        message.setLyricId("111");
+        message.setCommentId("123");
+        message.setReceiverId(receiverId);
+        message.setSenderId("sender");
+        data.add(message);
+        expectedMessages.setData(data);
+
+        expect(repository.findByReceiverId(receiverId, page)).andReturn(expectedPages);
+        expect(translator.toMessageResponse(expectedPages)).andReturn(expectedMessages);
 
         replayAll();
-        Page<Message> messages = service.searchMessage(receiverId, page);
+        Messages messages = service.searchMessage(receiverId, page);
         verifyAll();
 
-        Assert.assertEquals(0, messages.getNumber());
-        Assert.assertEquals(1, messages.getSize());
-        Assert.assertEquals(1, messages.getTotalElements());
-        Assert.assertEquals(1, messages.getTotalPages());
-        Assert.assertEquals(1, messages.getContent().size());
-        Assert.assertEquals("comment", messages.getContent().get(0).getChannel());
-        Assert.assertEquals("content", messages.getContent().get(0).getContent());
-        Assert.assertEquals("111", messages.getContent().get(0).getLyricId());
-        Assert.assertEquals(receiverId, messages.getContent().get(0).getReceiverId());
-        Assert.assertEquals("sender", messages.getContent().get(0).getSenderId());
-        Assert.assertEquals("text", messages.getContent().get(0).getText());
+        Assert.assertEquals(1, messages.getData().size());
+        Assert.assertEquals("comment", messages.getData().get(0).getChannel());
+        Assert.assertEquals("content", messages.getData().get(0).getContent());
+        Assert.assertEquals("111", messages.getData().get(0).getLyricId());
+        Assert.assertEquals(receiverId, messages.getData().get(0).getReceiverId());
+        Assert.assertEquals("sender", messages.getData().get(0).getSenderId());
+        Assert.assertEquals("text", messages.getData().get(0).getText());
     }
 }
