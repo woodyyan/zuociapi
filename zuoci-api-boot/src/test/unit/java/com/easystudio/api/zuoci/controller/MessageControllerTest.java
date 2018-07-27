@@ -5,7 +5,6 @@ import com.easystudio.api.zuoci.model.MessageData;
 import com.easystudio.api.zuoci.model.MessageRequest;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.service.MessageService;
-import com.easystudio.api.zuoci.translator.MessageTranslator;
 import com.easystudio.api.zuoci.validate.MessageValidator;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -14,7 +13,6 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -61,12 +59,15 @@ public class MessageControllerTest extends EasyMockSupport {
         MessageRequest request = new MessageRequest();
 
         validator.validate(request);
-        service.createMessage(request);
+        Message message = new Message();
+        message.setObjectId(1L);
+        expect(service.createMessage(request)).andReturn(message);
 
         replayAll();
-        ResponseEntity<?> entity = controller.createMessage(request);
+        ResponseEntity<Message> entity = controller.createMessage(request);
         verifyAll();
 
         Assert.assertTrue(entity.getStatusCode() == HttpStatus.CREATED);
+        Assert.assertTrue(entity.getBody().getObjectId() == 1);
     }
 }

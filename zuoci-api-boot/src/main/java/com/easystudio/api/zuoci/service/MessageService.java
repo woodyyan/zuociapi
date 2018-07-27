@@ -28,8 +28,8 @@ public class MessageService {
         return translator.toMessageResponse(pagedMessages);
     }
 
-    public void createMessage(MessageRequest messageRequest) {
+    public Message createMessage(MessageRequest messageRequest) {
         Message message = translator.toMessageEntity(messageRequest);
-        repository.save(message);
+        return repository.save(message);
     }
 }

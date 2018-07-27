@@ -24,6 +24,8 @@ public class MessageData {
     @ApiModelProperty(value = "Text", required = true)
     private String text;
 
+    private Long objectId;
+
     private String receiverId;
     private String senderId;
     private String channel;
@@ -109,5 +111,13 @@ public class MessageData {
 
     public void setCreatedTime(DateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public Long getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(Long objectId) {
+        this.objectId = objectId;
     }
 }

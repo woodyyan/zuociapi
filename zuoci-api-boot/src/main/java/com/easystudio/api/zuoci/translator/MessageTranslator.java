@@ -24,6 +24,7 @@ public class MessageTranslator {
         List<MessageData> data = new ArrayList<>();
         for (Message message : pagedMessages.getContent()) {
             MessageData messageData = new MessageData();
+            messageData.setObjectId(message.getObjectId());
             messageData.setSenderId(message.getSenderId());
             messageData.setCommentId(message.getCommentId());
             messageData.setReceiverId(message.getReceiverId());

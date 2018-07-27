@@ -74,6 +74,7 @@ public class MessageControllerIntegrationTest extends AbstractControllerIntegrat
         data.setSenderId("sender");
         data.setCommentId("comment");
         data.setReceiverId("receiver");
+        data.setObjectId(1L);
         data.setLyricId("lyric");
         data.setChannel("channel");
         data.setContent("content");
@@ -81,10 +82,30 @@ public class MessageControllerIntegrationTest extends AbstractControllerIntegrat
         messageRequest.setData(data);
         String url = "/message";
 
-        when(messageRepository.save(Mockito.any(Message.class))).thenReturn(null);
+        Message expectedMessage = new Message();
+        expectedMessage.setObjectId(1L);
+        expectedMessage.setChannel("channel");
+        expectedMessage.setLastModifiedTime(LocalDateTime.now());
+        expectedMessage.setCreatedTime(LocalDateTime.now());
+        expectedMessage.setCommentId("comment");
+        expectedMessage.setContent("content");
+        expectedMessage.setLyricId("lyric");
+        expectedMessage.setReceiverId("receiver");
+        expectedMessage.setText("text");
+        expectedMessage.setSenderId("sender");
+        when(messageRepository.save(Mockito.any(Message.class))).thenReturn(expectedMessage);
 
         MockHttpServletResponse response = performPostRequest(url, messageRequest);
 
         Assert.assertEquals(201, response.getStatus());
+        Message message = objectMapper.readValue(response.getContentAsString(), Message.class);
+        Assert.assertEquals("channel", message.getChannel());
+        Assert.assertEquals("text", message.getText());
+        Assert.assertEquals("sender", message.getSenderId());
+        Assert.assertEquals("receiver", message.getReceiverId());
+        Assert.assertEquals("lyric", message.getLyricId());
+        Assert.assertEquals("content", message.getContent());
+        Assert.assertEquals("comment", message.getCommentId());
+        Assert.assertTrue(message.getObjectId() == 1L);
     }
 }
