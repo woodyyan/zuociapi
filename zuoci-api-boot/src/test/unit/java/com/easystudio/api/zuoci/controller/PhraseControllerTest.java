@@ -1,9 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.*;
 import com.easystudio.api.zuoci.service.PhraseService;
-import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -12,8 +10,6 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -35,13 +31,10 @@ public class PhraseControllerTest extends EasyMockSupport {
     private PhraseService service;
 
     @Mock
-    private PhraseTranslator translator;
-
-    @Mock
     private PhraseValidator validator;
 
     @Test
-    public void shouldGetPhrasesGivenLimit() throws Exception {
+    public void shouldGetPhrasesGivenLimit() {
         Pageable page = new PageRequest(0, 20);
         Phrases phrases = new Phrases();
         List<PhraseData> data = new ArrayList<>();
@@ -50,13 +43,9 @@ public class PhraseControllerTest extends EasyMockSupport {
         phraseData.setObjectId(123L);
         data.add(phraseData);
         phrases.setData(data);
-        List<Phrase> content = new ArrayList<>();
-        Page<Phrase> pagedPhrases = new PageImpl<>(content, page, 100);
         String authorId = "abc";
 
-        expect(service.searchPhrase(true, true, authorId, page)).andReturn(pagedPhrases);
-        ResponseEntity<Phrases> response = new ResponseEntity<>(phrases, HttpStatus.OK);
-        expect(translator.toPhraseResponse(pagedPhrases)).andReturn(response);
+        expect(service.searchPhrase(true, true, authorId, page)).andReturn(phrases);
 
         replayAll();
         ResponseEntity<Phrases> actual = controller.searchPhrase(true, true, authorId, page);
@@ -120,13 +109,11 @@ public class PhraseControllerTest extends EasyMockSupport {
     public void shouldGetPhraseGivenObjectId() {
         Long objectId = 1L;
 
-        Phrase phrase = new Phrase();
         PhraseData data = new PhraseData();
         data.setContent("content");
 
         validator.validate(objectId);
-        expect(service.getPhrase(objectId)).andReturn(phrase);
-        expect(translator.toPhraseData(phrase)).andReturn(data);
+        expect(service.getPhrase(objectId)).andReturn(data);
 
         replayAll();
         ResponseEntity<PhraseData> phraseEntity = controller.getPhrase(objectId);

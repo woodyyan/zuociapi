@@ -4,6 +4,7 @@ import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.ViewCountOperation;
 import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
@@ -13,7 +14,6 @@ import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
-import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,53 +42,65 @@ public class PhraseServiceTest extends EasyMockSupport {
     private PhraseTranslator translator;
 
     @Test
-    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsNull() throws Exception {
+    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsNull() {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(0, 20, sort);
 
         List<Phrase> content = new ArrayList<>();
-        Phrase phrase = new Phrase();
-        phrase.setContent("content");
-        content.add(phrase);
         Page<Phrase> pagedPhrases = new PageImpl<>(content);
 
+        Phrases phrases = new Phrases();
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        phrases.getData().add(data);
+        phrases.getMeta().setTotalElements(1);
+        phrases.getMeta().setTotalPages(1);
+        phrases.getMeta().setPageNumber(0);
+        phrases.getMeta().setPageSize(1);
         expect(repository.findAll(anyObject(), anyObject(Pageable.class))).andReturn(pagedPhrases);
+        expect(translator.toPhrases(pagedPhrases)).andReturn(phrases);
 
         replayAll();
-        Page<Phrase> actual = service.searchPhrase(true, true, null, pageable);
+        Phrases actual = service.searchPhrase(true, true, null, pageable);
         verifyAll();
 
-        Assert.assertThat(actual.getTotalElements(), is(1L));
-        Assert.assertThat(actual.getTotalPages(), is(1));
-        Assert.assertThat(actual.getNumber(), is(0));
-        Assert.assertThat(actual.getNumberOfElements(), is(1));
-        Assert.assertThat(actual.getContent().size(), is(1));
-        Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
+        Assert.assertThat(actual.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(actual.getMeta().getTotalPages(), is(1L));
+        Assert.assertThat(actual.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(actual.getMeta().getPageSize(), is(1L));
+        Assert.assertThat(actual.getData().size(), is(1));
+        Assert.assertThat(actual.getData().get(0).getContent(), is("content"));
     }
 
     @Test
-    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsEmpty() throws Exception {
+    public void shouldSearchPhraseGivenIsValidAndIsVisibleAndPageWhenUserIdIsEmpty() {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(0, 20, sort);
 
         List<Phrase> content = new ArrayList<>();
-        Phrase phrase = new Phrase();
-        phrase.setContent("content");
-        content.add(phrase);
         Page<Phrase> pagedPhrases = new PageImpl<>(content);
 
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        Phrases phrases = new Phrases();
+        phrases.getMeta().setTotalElements(1);
+        phrases.getMeta().setTotalPages(1);
+        phrases.getMeta().setPageNumber(0);
+        phrases.getMeta().setPageSize(1);
+        phrases.getData().add(data);
         expect(repository.findAll(anyObject(), anyObject(Pageable.class))).andReturn(pagedPhrases);
+        expect(translator.toPhrases(pagedPhrases)).andReturn(phrases);
 
         replayAll();
-        Page<Phrase> actual = service.searchPhrase(true, true, "", pageable);
+        Phrases actual = service.searchPhrase(true, true, "", pageable);
         verifyAll();
 
-        Assert.assertThat(actual.getTotalElements(), is(1L));
-        Assert.assertThat(actual.getTotalPages(), is(1));
-        Assert.assertThat(actual.getNumber(), is(0));
-        Assert.assertThat(actual.getNumberOfElements(), is(1));
-        Assert.assertThat(actual.getContent().size(), is(1));
-        Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
+        Assert.assertThat(actual.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(actual.getMeta().getTotalPages(), is(1L));
+        Assert.assertThat(actual.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(actual.getMeta().getPageSize(), is(1L));
+        Assert.assertThat(actual.getData().size(), is(1));
+        Assert.assertThat(actual.getData().get(0).getContent(), is("content"));
     }
 
     @Test
@@ -98,23 +110,29 @@ public class PhraseServiceTest extends EasyMockSupport {
         String authorId = "abc";
 
         List<Phrase> content = new ArrayList<>();
-        Phrase phrase = new Phrase();
-        phrase.setContent("content");
-        content.add(phrase);
         Page<Phrase> pagedPhrases = new PageImpl<>(content);
 
+        Phrases phrases = new Phrases();
+        phrases.getMeta().setPageSize(1);
+        phrases.getMeta().setPageNumber(0);
+        phrases.getMeta().setTotalPages(1);
+        phrases.getMeta().setTotalElements(1);
+        PhraseData data = new PhraseData();
+        data.setContent("content");
+        phrases.getData().add(data);
         expect(repository.findAll(anyObject(), anyObject(Pageable.class))).andReturn(pagedPhrases);
+        expect(translator.toPhrases(pagedPhrases)).andReturn(phrases);
 
         replayAll();
-        Page<Phrase> actual = service.searchPhrase(true, true, authorId, pageable);
+        Phrases actual = service.searchPhrase(true, true, authorId, pageable);
         verifyAll();
 
-        Assert.assertThat(actual.getTotalElements(), is(1L));
-        Assert.assertThat(actual.getTotalPages(), is(1));
-        Assert.assertThat(actual.getNumber(), is(0));
-        Assert.assertThat(actual.getNumberOfElements(), is(1));
-        Assert.assertThat(actual.getContent().size(), is(1));
-        Assert.assertThat(actual.getContent().get(0).getContent(), is("content"));
+        Assert.assertThat(actual.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(actual.getMeta().getTotalPages(), is(1L));
+        Assert.assertThat(actual.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(actual.getMeta().getPageSize(), is(1L));
+        Assert.assertThat(actual.getData().size(), is(1));
+        Assert.assertThat(actual.getData().get(0).getContent(), is("content"));
     }
 
     @Test
@@ -220,13 +238,15 @@ public class PhraseServiceTest extends EasyMockSupport {
         Long objectId = 1L;
 
         Phrase value = new Phrase();
-        value.setContent("content");
         expect(repository.findOne(objectId)).andReturn(value);
+        PhraseData phraseData = new PhraseData();
+        phraseData.setContent("content");
+        expect(translator.toPhraseData(value)).andReturn(phraseData);
 
         replayAll();
-        Phrase phrase = service.getPhrase(objectId);
+        PhraseData data = service.getPhrase(objectId);
         verifyAll();
 
-        Assert.assertThat(phrase.getContent(), is("content"));
+        Assert.assertThat(data.getContent(), is("content"));
     }
 }

@@ -1,16 +1,13 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.PhraseComment;
 import com.easystudio.api.zuoci.model.CommentData;
 import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
-import com.easystudio.api.zuoci.translator.PhraseCommentTranslator;
 import com.easystudio.api.zuoci.validate.PhraseCommentValidator;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,19 +26,15 @@ public class PhraseCommentController {
     @Autowired
     private PhraseCommentService service;
 
-    @Autowired
-    private PhraseCommentTranslator translator;
-
     @RequestMapping(method = POST)
     @ApiOperation(value = "Create phrase comment", notes = "Create phrase comment")
     @ResponseStatus(value = HttpStatus.CREATED)
     public ResponseEntity<CommentData> createComment(@RequestBody PhraseCommentRequest phraseCommentRequest) {
         validator.validate(phraseCommentRequest);
 
-        PhraseComment comment = service.createComment(phraseCommentRequest.getData());
-        CommentData commentData = translator.toCommentData(comment);
+        CommentData comment = service.createComment(phraseCommentRequest.getData());
 
-        return new ResponseEntity<>(commentData, HttpStatus.CREATED);
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = GET)
@@ -60,8 +53,8 @@ public class PhraseCommentController {
                                                         @ApiParam(value = "Phrase is visible", defaultValue = "true")
                                                         @RequestParam(required = false, defaultValue = "true") boolean isVisible,
                                                         Pageable page) {
-        Page<PhraseComment> pagedComments = service.searchComment(phraseId, userId, isVisible, page);
-        return translator.toPhraseCommentResponse(pagedComments);
+        PhraseComments phraseComments = service.searchComment(phraseId, userId, isVisible, page);
+        return new ResponseEntity<>(phraseComments, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{objectId}", method = GET)
@@ -70,8 +63,7 @@ public class PhraseCommentController {
             @ApiParam(value = "Phrase id")
             @PathVariable Long objectId) {
 
-        PhraseComment comment = service.getComment(objectId);
-        CommentData commentData = translator.toCommentData(comment);
+        CommentData commentData = service.getComment(objectId);
         return new ResponseEntity<>(commentData, HttpStatus.OK);
     }
 

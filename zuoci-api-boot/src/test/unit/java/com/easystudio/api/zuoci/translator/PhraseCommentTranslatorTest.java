@@ -9,8 +9,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,15 +58,19 @@ public class PhraseCommentTranslatorTest {
         comment.setCreatedTime(LocalDateTime.now());
         comment.setLastModifiedTime(LocalDateTime.now());
         content.add(comment);
-        Page<PhraseComment> pagedComments = new PageImpl<>(content);
+        Pageable page = new PageRequest(0, 1);
+        Page<PhraseComment> pagedComments = new PageImpl<>(content, page, 1);
 
-        ResponseEntity<PhraseComments> response = translator.toPhraseCommentResponse(pagedComments);
+        PhraseComments comments = translator.toPhraseComments(pagedComments);
 
-        Assert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        Assert.assertThat(response.getBody().getData().size(), is(1));
-        Assert.assertThat(response.getBody().getData().get(0).getContent(), is("content"));
-        Assert.assertThat(response.getBody().getData().get(0).getCommentatorId(), is("123"));
-        Assert.assertThat(response.getBody().getData().get(0).getPhraseId(), is(123L));
+        Assert.assertThat(comments.getData().size(), is(1));
+        Assert.assertThat(comments.getData().get(0).getContent(), is("content"));
+        Assert.assertThat(comments.getData().get(0).getCommentatorId(), is("123"));
+        Assert.assertThat(comments.getData().get(0).getPhraseId(), is(123L));
+        Assert.assertThat(comments.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(comments.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(comments.getMeta().getPageSize(), is(1L));
+        Assert.assertThat(comments.getMeta().getTotalPages(), is(1L));
     }
 
     @Test

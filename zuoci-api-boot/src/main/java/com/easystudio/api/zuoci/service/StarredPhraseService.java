@@ -3,8 +3,10 @@ package com.easystudio.api.zuoci.service;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.entity.StarredPhrase;
 import com.easystudio.api.zuoci.model.PhraseStarRequest;
+import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.repository.StarredPhraseRepository;
+import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import javassist.NotFoundException;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class StarredPhraseService {
     @Autowired
     private PhraseRepository phraseRepository;
 
+    @Autowired
+    private PhraseTranslator translator;
+
     public void addStar(PhraseStarRequest request) throws NotFoundException {
         Phrase phrase = phraseRepository.findOne(request.getPhraseId());
         if (phrase != null) {
@@ -37,12 +42,13 @@ public class StarredPhraseService {
         }
     }
 
-    public Page<Phrase> searchStar(String userId, Pageable page) {
+    public Phrases searchStar(String userId, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
         Page<StarredPhrase> pagedStars = repository.findByUserId(userId, pageable);
         Stream<Phrase> phraseStream = pagedStars.getContent().stream().map(StarredPhrase::getPhrase);
-        return new PageImpl<>(phraseStream.collect(Collectors.toList()), pageable, pagedStars.getTotalElements());
+        PageImpl<Phrase> pagedPhrases = new PageImpl<>(phraseStream.collect(Collectors.toList()), pageable, pagedStars.getTotalElements());
+        return translator.toPhrases(pagedPhrases);
     }
 
     public void deleteStar(String userId, Long phraseId) {

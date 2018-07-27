@@ -6,7 +6,6 @@ import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.model.PhraseCommentRequest;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.service.PhraseCommentService;
-import com.easystudio.api.zuoci.translator.PhraseCommentTranslator;
 import com.easystudio.api.zuoci.validate.PhraseCommentValidator;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -15,8 +14,6 @@ import org.easymock.TestSubject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -40,18 +37,13 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     @Mock
     private PhraseCommentService service;
 
-    @Mock
-    private PhraseCommentTranslator translator;
-
     @Test
     public void createComment() {
         PhraseCommentRequest request = new PhraseCommentRequest();
-        PhraseComment comment = new PhraseComment();
         CommentData data = new CommentData();
 
         validator.validate(request);
-        expect(service.createComment(request.getData())).andReturn(comment);
-        expect(translator.toCommentData(comment)).andReturn(data);
+        expect(service.createComment(request.getData())).andReturn(data);
 
         replayAll();
         ResponseEntity<?> responseEntity = controller.createComment(request);
@@ -64,14 +56,10 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     @Test
     public void shouldSearchCommentGivenPhraseIdAndPage() {
         Pageable page = new PageRequest(0, 20);
-        List<PhraseComment> content = new ArrayList<>();
-        Page<PhraseComment> pagedComments = new PageImpl<>(content);
         PhraseComments phraseComments = new PhraseComments();
-        ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
         Long objectId = 1L;
 
-        expect(service.searchComment(objectId, null, true, page)).andReturn(pagedComments);
-        expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
+        expect(service.searchComment(objectId, null, true, page)).andReturn(phraseComments);
 
         replayAll();
         ResponseEntity<PhraseComments> comments = controller.searchComment(objectId, null, true, page);
@@ -84,13 +72,10 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     public void shouldSearchCommentGivenUserIdAndPage() {
         Pageable page = new PageRequest(0, 20);
         List<PhraseComment> content = new ArrayList<>();
-        Page<PhraseComment> pagedComments = new PageImpl<>(content);
         PhraseComments phraseComments = new PhraseComments();
-        ResponseEntity<PhraseComments> response = new ResponseEntity<>(phraseComments, HttpStatus.OK);
         String userId = "abc";
 
-        expect(service.searchComment(0L, userId, true, page)).andReturn(pagedComments);
-        expect(translator.toPhraseCommentResponse(pagedComments)).andReturn(response);
+        expect(service.searchComment(0L, userId, true, page)).andReturn(phraseComments);
 
         replayAll();
         ResponseEntity<PhraseComments> comments = controller.searchComment(0L, userId, true, page);
@@ -103,11 +88,9 @@ public class PhraseCommentControllerTest extends EasyMockSupport {
     public void shouldGetCommentGivenObjectId() {
         Long objectId = 1L;
 
-        PhraseComment phraseComment = new PhraseComment();
         CommentData data = new CommentData();
         data.setContent("content");
-        expect(service.getComment(objectId)).andReturn(phraseComment);
-        expect(translator.toCommentData(phraseComment)).andReturn(data);
+        expect(service.getComment(objectId)).andReturn(data);
 
         replayAll();
         ResponseEntity<CommentData> comment = controller.getComment(objectId);

@@ -1,16 +1,13 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.CountResponse;
 import com.easystudio.api.zuoci.model.PhraseStarRequest;
 import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.service.StarredPhraseService;
-import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseStarValidator;
 import io.swagger.annotations.*;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +22,6 @@ public class PhraseStarController {
 
     @Autowired
     private StarredPhraseService service;
-
-    @Autowired
-    private PhraseTranslator translator;
 
     @Autowired
     private PhraseStarValidator validator;
@@ -54,8 +48,8 @@ public class PhraseStarController {
     @ResponseStatus(value = HttpStatus.OK)
     public ResponseEntity<Phrases> searchStar(@ApiParam(value = "User ID")
                                               @RequestParam String userId, Pageable page) {
-        Page<Phrase> pagedPhrases = service.searchStar(userId, page);
-        return translator.toPhraseResponse(pagedPhrases);
+        Phrases phrases = service.searchStar(userId, page);
+        return new ResponseEntity<>(phrases, HttpStatus.OK);
     }
 
     @RequestMapping(method = DELETE)

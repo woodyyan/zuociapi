@@ -2,9 +2,12 @@ package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.entity.StarredPhrase;
+import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.PhraseStarRequest;
+import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.repository.PhraseRepository;
 import com.easystudio.api.zuoci.repository.StarredPhraseRepository;
+import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import javassist.NotFoundException;
 import org.easymock.EasyMockRunner;
 import org.easymock.EasyMockSupport;
@@ -33,6 +36,9 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
 
     @Mock
     private PhraseRepository phraseRepository;
+
+    @Mock
+    private PhraseTranslator translator;
 
     @Test(expected = NotFoundException.class)
     public void shouldThrowNotFoundExceptionWhenPhraseIdIsNotExist() throws NotFoundException {
@@ -77,22 +83,26 @@ public class StarredPhraseServiceTest extends EasyMockSupport {
         Pageable pageable = new PageRequest(0, 20, sort);
 
         List<StarredPhrase> content = new ArrayList<>();
-        StarredPhrase star = new StarredPhrase();
-        star.setUserId(userId);
-        star.setPhrase(new Phrase());
-        content.add(star);
         Page<StarredPhrase> pagedStars = new PageImpl<>(content, pageable, 1);
+        Phrases expectedPhrases = new Phrases();
+        expectedPhrases.getMeta().setTotalElements(1);
+        expectedPhrases.getMeta().setTotalPages(1);
+        expectedPhrases.getMeta().setPageNumber(0);
+        expectedPhrases.getMeta().setPageSize(20);
+        PhraseData data = new PhraseData();
+        expectedPhrases.getData().add(data);
         expect(repository.findByUserId(userId, pageable)).andReturn(pagedStars);
+        expect(translator.toPhrases(anyObject())).andReturn(expectedPhrases);
 
         replayAll();
-        Page<Phrase> phrases = service.searchStar(userId, pageable);
+        Phrases phrases = service.searchStar(userId, pageable);
         verifyAll();
 
-        Assert.assertThat(phrases.getTotalPages(), is(1));
-        Assert.assertThat(phrases.getTotalElements(), is(1L));
-        Assert.assertThat(phrases.getSize(), is(20));
-        Assert.assertThat(phrases.getNumber(), is(0));
-        Assert.assertThat(phrases.getContent().size(), is(1));
+        Assert.assertThat(phrases.getMeta().getTotalPages(), is(1L));
+        Assert.assertThat(phrases.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(phrases.getMeta().getPageSize(), is(20L));
+        Assert.assertThat(phrases.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(phrases.getData().size(), is(1));
     }
 
     @Test

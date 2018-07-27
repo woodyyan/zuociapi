@@ -4,6 +4,7 @@ import com.easystudio.api.zuoci.entity.DeletedPhrase;
 import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.PhraseData;
+import com.easystudio.api.zuoci.model.Phrases;
 import com.easystudio.api.zuoci.model.ViewCountRequest;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.repository.DeletedPhraseRepository;
@@ -39,10 +40,11 @@ public class PhraseService {
         repository.save(phrase);
     }
 
-    public Page<Phrase> searchPhrase(Boolean isValid, Boolean isVisible, String authorId, Pageable page) {
+    public Phrases searchPhrase(Boolean isValid, Boolean isVisible, String authorId, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
-        return repository.findAll(new PhraseSpecification(isValid, isVisible, authorId), pageable);
+        Page<Phrase> pagedPhrases = repository.findAll(new PhraseSpecification(isValid, isVisible, authorId), pageable);
+        return translator.toPhrases(pagedPhrases);
     }
 
     public void deletePhrase(Long objectId) {
@@ -74,7 +76,8 @@ public class PhraseService {
         return repository.count(new PhraseCountSpecification(content, authorId, isVisible));
     }
 
-    public Phrase getPhrase(Long objectId) {
-        return repository.findOne(objectId);
+    public PhraseData getPhrase(Long objectId) {
+        Phrase phrase = repository.findOne(objectId);
+        return translator.toPhraseData(phrase);
     }
 }

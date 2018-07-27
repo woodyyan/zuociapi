@@ -6,8 +6,6 @@ import com.easystudio.api.zuoci.model.PagingMeta;
 import com.easystudio.api.zuoci.model.PhraseComments;
 import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class PhraseCommentTranslator {
         return comment;
     }
 
-    public ResponseEntity<PhraseComments> toPhraseCommentResponse(Page<PhraseComment> pagedComments) {
+    public PhraseComments toPhraseComments(Page<PhraseComment> pagedComments) {
         PhraseComments body = new PhraseComments();
 
         List<CommentData> data = new ArrayList<>();
@@ -45,7 +43,7 @@ public class PhraseCommentTranslator {
         meta.setTotalPages(pagedComments.getTotalPages());
         body.setMeta(meta);
 
-        return new ResponseEntity<>(body, HttpStatus.OK);
+        return body;
     }
 
     public CommentData toCommentData(PhraseComment comment) {

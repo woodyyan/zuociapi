@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.service;
 import com.easystudio.api.zuoci.entity.PhraseComment;
 import com.easystudio.api.zuoci.exception.ErrorException;
 import com.easystudio.api.zuoci.model.CommentData;
+import com.easystudio.api.zuoci.model.PhraseComments;
 import com.easystudio.api.zuoci.model.error.Error;
 import com.easystudio.api.zuoci.repository.PhraseCommentRepository;
 import com.easystudio.api.zuoci.translator.PhraseCommentTranslator;
@@ -30,18 +31,21 @@ public class PhraseCommentService {
     @Autowired
     private PhraseCommentTranslator translator;
 
-    public PhraseComment createComment(CommentData data) {
+    public CommentData createComment(CommentData data) {
         PhraseComment phraseComment = translator.toPhraseComment(data);
-        return repository.save(phraseComment);
+        PhraseComment comment = repository.save(phraseComment);
+        return translator.toCommentData(comment);
     }
 
-    public Page<PhraseComment> searchComment(Long phraseId, String userId, boolean isVisible, Pageable page) {
+    public PhraseComments searchComment(Long phraseId, String userId, boolean isVisible, Pageable page) {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
         if (isNullOrEmpty(userId)) {
-            return repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
+            Page<PhraseComment> pagedComments = repository.findByPhraseIdAndIsVisible(phraseId, isVisible, pageable);
+            return translator.toPhraseComments(pagedComments);
         } else {
-            return repository.findAll(getCommentSpec(userId, isVisible), pageable);
+            Page<PhraseComment> phraseComments = repository.findAll(getCommentSpec(userId, isVisible), pageable);
+            return translator.toPhraseComments(phraseComments);
         }
     }
 
@@ -67,8 +71,9 @@ public class PhraseCommentService {
         }
     }
 
-    public PhraseComment getComment(Long objectId) {
-        return repository.findOne(objectId);
+    public CommentData getComment(Long objectId) {
+        PhraseComment comment = repository.findOne(objectId);
+        return translator.toCommentData(comment);
     }
 
     public Long countComment(Long phraseId, String userId, boolean isVisible) {

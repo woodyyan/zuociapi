@@ -7,8 +7,6 @@ import com.easystudio.api.zuoci.model.PhraseData;
 import com.easystudio.api.zuoci.model.Phrases;
 import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class PhraseTranslator {
         return phrase;
     }
 
-    public ResponseEntity<Phrases> toPhraseResponse(Page<Phrase> pagedPhrases) {
+    public Phrases toPhrases(Page<Phrase> pagedPhrases) {
         Phrases phrases = new Phrases();
         List<PhraseData> data = new ArrayList<>();
         for (Phrase phrase : pagedPhrases.getContent()) {
@@ -43,7 +41,7 @@ public class PhraseTranslator {
         meta.setTotalElements(pagedPhrases.getTotalElements());
         meta.setTotalPages(pagedPhrases.getTotalPages());
         phrases.setMeta(meta);
-        return new ResponseEntity<>(phrases, HttpStatus.OK);
+        return phrases;
     }
 
     public PhraseData toPhraseData(Phrase phrase) {

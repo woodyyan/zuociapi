@@ -1,13 +1,10 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.Phrase;
 import com.easystudio.api.zuoci.model.*;
 import com.easystudio.api.zuoci.service.PhraseService;
-import com.easystudio.api.zuoci.translator.PhraseTranslator;
 import com.easystudio.api.zuoci.validate.PhraseValidator;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +19,6 @@ public class PhraseController {
 
     @Autowired
     private PhraseService service;
-
-    @Autowired
-    private PhraseTranslator translator;
 
     @Autowired
     private PhraseValidator validator;
@@ -45,8 +39,8 @@ public class PhraseController {
             @ApiParam(value = "Phrase's author id")
             @RequestParam(required = false) String authorId, Pageable page) {
 
-        Page<Phrase> pagedPhrases = service.searchPhrase(isValid, isVisible, authorId, page);
-        return translator.toPhraseResponse(pagedPhrases);
+        Phrases phrases = service.searchPhrase(isValid, isVisible, authorId, page);
+        return new ResponseEntity<>(phrases, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{objectId}", method = GET)
@@ -56,8 +50,7 @@ public class PhraseController {
             @PathVariable(required = false) Long objectId) {
 
         validator.validate(objectId);
-        Phrase phrase = service.getPhrase(objectId);
-        PhraseData phraseData = translator.toPhraseData(phrase);
+        PhraseData phraseData = service.getPhrase(objectId);
         return new ResponseEntity<>(phraseData, HttpStatus.OK);
     }
 

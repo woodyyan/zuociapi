@@ -12,8 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,19 +58,18 @@ public class PhraseTranslatorTest {
         content.add(phrase);
         Pageable page = new PageRequest(0, 20);
         Page<Phrase> pagedPhrases = new PageImpl<>(content, page, 1);
-        ResponseEntity<Phrases> actual = translator.toPhraseResponse(pagedPhrases);
+        Phrases actual = translator.toPhrases(pagedPhrases);
 
-        Assert.assertThat(actual.getStatusCode(), is(HttpStatus.OK));
-        Assert.assertThat(actual.getBody().getData().size(), is(1));
-        Assert.assertThat(actual.getBody().getData().get(0).getContent(), is("content"));
-        Assert.assertThat(actual.getBody().getData().get(0).getAuthorId(), is("123"));
-        Assert.assertThat(actual.getBody().getData().get(0).getLocation(), is("chengdu"));
-        Assert.assertThat(actual.getBody().getData().get(0).getViewCount(), is(100L));
-        Assert.assertThat(actual.getBody().getData().get(0).getObjectId(), is(111L));
-        Assert.assertThat(actual.getBody().getMeta().getPageNumber(), is(0L));
-        Assert.assertThat(actual.getBody().getMeta().getPageSize(), is(20L));
-        Assert.assertThat(actual.getBody().getMeta().getTotalElements(), is(1L));
-        Assert.assertThat(actual.getBody().getMeta().getTotalPages(), is(1L));
+        Assert.assertThat(actual.getData().size(), is(1));
+        Assert.assertThat(actual.getData().get(0).getContent(), is("content"));
+        Assert.assertThat(actual.getData().get(0).getAuthorId(), is("123"));
+        Assert.assertThat(actual.getData().get(0).getLocation(), is("chengdu"));
+        Assert.assertThat(actual.getData().get(0).getViewCount(), is(100L));
+        Assert.assertThat(actual.getData().get(0).getObjectId(), is(111L));
+        Assert.assertThat(actual.getMeta().getPageNumber(), is(0L));
+        Assert.assertThat(actual.getMeta().getPageSize(), is(20L));
+        Assert.assertThat(actual.getMeta().getTotalElements(), is(1L));
+        Assert.assertThat(actual.getMeta().getTotalPages(), is(1L));
     }
 
     @Test
