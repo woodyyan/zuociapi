@@ -1,7 +1,10 @@
 package com.easystudio.api.zuoci.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class LyricRequest {
-    private LyricData data;
+    private LyricData data = new LyricData();
 
     public LyricData getData() {
         return data;
