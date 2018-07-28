@@ -1,7 +1,7 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.service.MessageService;
 import com.easystudio.api.zuoci.validate.MessageValidator;
@@ -41,9 +41,9 @@ public class MessageController {
 
     @RequestMapping(method = POST)
     @ApiOperation(value = "Create message", notes = "Create message")
-    public ResponseEntity<Message> createMessage(@RequestBody MessageRequest messageRequest) {
+    public ResponseEntity<MessageResponse> createMessage(@RequestBody MessageRequest messageRequest) {
         validator.validate(messageRequest);
-        Message message = service.createMessage(messageRequest);
+        MessageResponse message = service.createMessage(messageRequest);
         return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 }

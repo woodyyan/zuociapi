@@ -1,8 +1,8 @@
 package com.easystudio.api.zuoci.controller;
 
-import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.service.MessageService;
 import com.easystudio.api.zuoci.validate.MessageValidator;
@@ -59,15 +59,15 @@ public class MessageControllerTest extends EasyMockSupport {
         MessageRequest request = new MessageRequest();
 
         validator.validate(request);
-        Message message = new Message();
-        message.setObjectId(1L);
-        expect(service.createMessage(request)).andReturn(message);
+        MessageResponse expectedMessage = new MessageResponse();
+        expectedMessage.getData().setObjectId(1L);
+        expect(service.createMessage(request)).andReturn(expectedMessage);
 
         replayAll();
-        ResponseEntity<Message> entity = controller.createMessage(request);
+        ResponseEntity<MessageResponse> entity = controller.createMessage(request);
         verifyAll();
 
         Assert.assertTrue(entity.getStatusCode() == HttpStatus.CREATED);
-        Assert.assertTrue(entity.getBody().getObjectId() == 1);
+        Assert.assertTrue(entity.getBody().getData().getObjectId() == 1);
     }
 }

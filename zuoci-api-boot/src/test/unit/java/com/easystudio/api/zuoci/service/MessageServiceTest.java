@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.service;
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.repository.MessageRepository;
 import com.easystudio.api.zuoci.translator.MessageTranslator;
@@ -54,7 +55,7 @@ public class MessageServiceTest extends EasyMockSupport {
         expectedMessages.setData(data);
 
         expect(repository.findByReceiverId(receiverId, page)).andReturn(expectedPages);
-        expect(translator.toMessageResponse(expectedPages)).andReturn(expectedMessages);
+        expect(translator.toMessages(expectedPages)).andReturn(expectedMessages);
 
         replayAll();
         Messages messages = service.searchMessage(receiverId, page);
@@ -72,6 +73,19 @@ public class MessageServiceTest extends EasyMockSupport {
     @Test
     public void shouldDoNothingWhenCreateMessageSuccessfully() {
         MessageRequest request = new MessageRequest();
-        service.createMessage(request);
+
+        Message message = new Message();
+        Message savedMessage = new Message();
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.getData().setObjectId(1L);
+        expect(translator.toMessageEntity(request)).andReturn(message);
+        expect(repository.save(message)).andReturn(savedMessage);
+        expect(translator.toMessageResponse(savedMessage)).andReturn(messageResponse);
+
+        replayAll();
+        MessageResponse response = service.createMessage(request);
+        verifyAll();
+
+        Assert.assertTrue(response.getData().getObjectId() == 1);
     }
 }

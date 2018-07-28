@@ -1,10 +1,7 @@
 package com.easystudio.api.zuoci.translator;
 
 import com.easystudio.api.zuoci.entity.Message;
-import com.easystudio.api.zuoci.model.MessageData;
-import com.easystudio.api.zuoci.model.MessageRequest;
-import com.easystudio.api.zuoci.model.Messages;
-import com.easystudio.api.zuoci.model.PagingMeta;
+import com.easystudio.api.zuoci.model.*;
 import org.joda.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,7 @@ import java.util.List;
 
 @Service
 public class MessageTranslator {
-    public Messages toMessageResponse(Page<Message> pagedMessages) {
+    public Messages toMessages(Page<Message> pagedMessages) {
         PagingMeta meta = new PagingMeta();
         meta.setPageNumber(pagedMessages.getNumber());
         meta.setPageSize(pagedMessages.getSize());
@@ -56,5 +53,9 @@ public class MessageTranslator {
         message.setText(messageRequest.getData().getText());
         message.setSenderId(messageRequest.getData().getSenderId());
         return message;
+    }
+
+    public MessageResponse toMessageResponse(Message savedMessage) {
+        return null;
     }
 }

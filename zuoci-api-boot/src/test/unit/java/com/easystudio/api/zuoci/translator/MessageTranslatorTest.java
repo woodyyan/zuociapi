@@ -35,7 +35,7 @@ public class MessageTranslatorTest {
         message.setObjectId(123L);
         content.add(message);
         Page<Message> pagedMessage = new PageImpl<>(content, page, 1);
-        Messages messages = translator.toMessageResponse(pagedMessage);
+        Messages messages = translator.toMessages(pagedMessage);
 
         Assert.assertEquals(0, messages.getMeta().getPageNumber());
         Assert.assertEquals(1L, messages.getMeta().getTotalElements());

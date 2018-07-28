@@ -2,6 +2,7 @@ package com.easystudio.api.zuoci.service;
 
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.repository.MessageRepository;
 import com.easystudio.api.zuoci.translator.MessageTranslator;
@@ -25,11 +26,12 @@ public class MessageService {
         Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
         Pageable pageable = new PageRequest(page.getPageNumber(), page.getPageSize(), sort);
         Page<Message> pagedMessages = repository.findByReceiverId(receiverId, pageable);
-        return translator.toMessageResponse(pagedMessages);
+        return translator.toMessages(pagedMessages);
     }
 
-    public Message createMessage(MessageRequest messageRequest) {
+    public MessageResponse createMessage(MessageRequest messageRequest) {
         Message message = translator.toMessageEntity(messageRequest);
-        return repository.save(message);
+        Message savedMessage = repository.save(message);
+        return translator.toMessageResponse(savedMessage);
     }
 }
