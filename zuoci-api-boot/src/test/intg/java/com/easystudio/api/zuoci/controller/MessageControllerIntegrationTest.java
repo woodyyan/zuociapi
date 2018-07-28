@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.controller;
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.repository.MessageRepository;
 import org.joda.time.LocalDateTime;
@@ -98,14 +99,14 @@ public class MessageControllerIntegrationTest extends AbstractControllerIntegrat
         MockHttpServletResponse response = performPostRequest(url, messageRequest);
 
         Assert.assertEquals(201, response.getStatus());
-        Message message = objectMapper.readValue(response.getContentAsString(), Message.class);
-        Assert.assertEquals("channel", message.getChannel());
-        Assert.assertEquals("text", message.getText());
-        Assert.assertEquals("sender", message.getSenderId());
-        Assert.assertEquals("receiver", message.getReceiverId());
-        Assert.assertEquals("lyric", message.getLyricId());
-        Assert.assertEquals("content", message.getContent());
-        Assert.assertEquals("comment", message.getCommentId());
-        Assert.assertTrue(message.getObjectId() == 1L);
+        MessageResponse message = objectMapper.readValue(response.getContentAsString(), MessageResponse.class);
+        Assert.assertEquals("channel", message.getData().getChannel());
+        Assert.assertEquals("text", message.getData().getText());
+        Assert.assertEquals("sender", message.getData().getSenderId());
+        Assert.assertEquals("receiver", message.getData().getReceiverId());
+        Assert.assertEquals("lyric", message.getData().getLyricId());
+        Assert.assertEquals("content", message.getData().getContent());
+        Assert.assertEquals("comment", message.getData().getCommentId());
+        Assert.assertTrue(message.getData().getObjectId() == 1L);
     }
 }

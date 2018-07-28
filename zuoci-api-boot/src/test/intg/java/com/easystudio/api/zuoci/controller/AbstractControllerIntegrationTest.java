@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @Import(MockMvcAutoConfiguration.class)
 @ActiveProfiles("test")
 //@TestPropertySource(locations = "classpath:/application-test.properties")
-public class AbstractControllerIntegrationTest {
+public abstract class AbstractControllerIntegrationTest {
     protected static final String JSON_API = "application/vnd.api+json";
     protected static final String AUTHORIZATION_HEADER = "Authorization";
 

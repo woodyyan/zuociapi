@@ -55,7 +55,19 @@ public class MessageTranslator {
         return message;
     }
 
-    public MessageResponse toMessageResponse(Message savedMessage) {
-        return null;
+    public MessageResponse toMessageResponse(Message message) {
+        MessageResponse messageResponse = new MessageResponse();
+        messageResponse.getData().setObjectId(message.getObjectId());
+        messageResponse.getData().setText(message.getText());
+        messageResponse.getData().setContent(message.getContent());
+        messageResponse.getData().setChannel(message.getChannel());
+        messageResponse.getData().setLyricId(message.getLyricId());
+        messageResponse.getData().setReceiverId(message.getReceiverId());
+        messageResponse.getData().setCommentId(message.getCommentId());
+        messageResponse.getData().setSenderId(message.getSenderId());
+        messageResponse.getData().setLastModifiedTime(message.getLastModifiedTime().toDateTime());
+        messageResponse.getData().setCreatedTime(message.getCreatedTime().toDateTime());
+
+        return messageResponse;
     }
 }

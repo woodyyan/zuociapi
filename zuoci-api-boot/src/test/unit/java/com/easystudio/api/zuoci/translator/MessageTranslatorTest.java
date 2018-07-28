@@ -3,6 +3,7 @@ package com.easystudio.api.zuoci.translator;
 import com.easystudio.api.zuoci.entity.Message;
 import com.easystudio.api.zuoci.model.MessageData;
 import com.easystudio.api.zuoci.model.MessageRequest;
+import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import org.joda.time.LocalDateTime;
 import org.junit.Assert;
@@ -78,5 +79,34 @@ public class MessageTranslatorTest {
         Assert.assertEquals("comment", message.getCommentId());
         Assert.assertNotNull(message.getCreatedTime());
         Assert.assertNotNull(message.getLastModifiedTime());
+    }
+
+    @Test
+    public void shouldGetMessageResponseGivenMessage() {
+        Message message = new Message();
+        message.setObjectId(1L);
+        message.setSenderId("sender");
+        message.setText("text");
+        message.setReceiverId("receiver");
+        message.setLyricId("lyric");
+        message.setContent("content");
+        message.setCommentId("comment");
+        LocalDateTime now = LocalDateTime.now();
+        message.setCreatedTime(now);
+        message.setChannel("channel");
+        message.setLastModifiedTime(now);
+
+        MessageResponse messageResponse = translator.toMessageResponse(message);
+
+        Assert.assertTrue(messageResponse.getData().getObjectId() == 1);
+        Assert.assertTrue(messageResponse.getData().getContent().equals("content"));
+        Assert.assertTrue(messageResponse.getData().getText().equals("text"));
+        Assert.assertTrue(messageResponse.getData().getChannel().equals("channel"));
+        Assert.assertTrue(messageResponse.getData().getLyricId().equals("lyric"));
+        Assert.assertTrue(messageResponse.getData().getReceiverId().equals("receiver"));
+        Assert.assertTrue(messageResponse.getData().getSenderId().equals("sender"));
+        Assert.assertTrue(messageResponse.getData().getCommentId().equals("comment"));
+        Assert.assertTrue(messageResponse.getData().getCreatedTime().equals(now.toDateTime()));
+        Assert.assertTrue(messageResponse.getData().getLastModifiedTime().equals(now.toDateTime()));
     }
 }
