@@ -5,6 +5,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 
 @Entity
 @Table(name = "lyric")
@@ -17,12 +18,15 @@ public class Lyric {
     private String objectId;
 
     @Column(name = "title", nullable = false)
+    @Max(value = 255)
     private String title;
 
     @Column(name = "author_id", nullable = false)
     private String authorId;
 
-    @Column(name = "content", nullable = false)
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "content", nullable = false, length = 16777215)
     private String content;
 
     @Column(name = "location", length = 20)
@@ -38,6 +42,7 @@ public class Lyric {
     private boolean isDeleted;
 
     @Column(name = "creative_background")
+    @Max(value = 255)
     private String creativeBackground;
 
     @Column(name = "last_modified_time", nullable = false)
