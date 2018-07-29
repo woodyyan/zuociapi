@@ -17,8 +17,9 @@ public class PhraseCommentTranslator {
         PhraseComment comment = new PhraseComment();
         comment.setContent(data.getContent());
         comment.setCommentatorId(data.getCommentatorId());
-        comment.setCreatedTime(LocalDateTime.now());
-        comment.setLastModifiedTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        comment.setCreatedTime(now);
+        comment.setLastModifiedTime(now);
         comment.setParentCommentId(data.getParentCommentId());
         comment.setPhraseAuthorId(data.getPhraseAuthorId());
         comment.setPhraseId(data.getPhraseId());

@@ -25,8 +25,9 @@ public class DailyWordTranslator {
 
     public DailyWord toDailyWordEntity(DailyWordModel dailyWordModel) {
         DailyWord dailyWord = new DailyWord();
-        dailyWord.setCreatedTime(LocalDateTime.now());
-        dailyWord.setLastModifiedTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        dailyWord.setCreatedTime(now);
+        dailyWord.setLastModifiedTime(now);
         dailyWord.setDescription(dailyWordModel.getDescription());
         dailyWord.setExplanation(dailyWordModel.getExplanation());
         dailyWord.setExplanationTitle(dailyWordModel.getExplanationTitle());

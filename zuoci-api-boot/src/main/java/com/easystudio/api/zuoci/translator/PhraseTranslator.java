@@ -19,8 +19,9 @@ public class PhraseTranslator {
         phrase.setLocation(data.getLocation());
         phrase.setAuthorId(data.getAuthorId());
         phrase.setContent(data.getContent());
-        phrase.setCreatedTime(LocalDateTime.now());
-        phrase.setLastModifiedTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        phrase.setCreatedTime(now);
+        phrase.setLastModifiedTime(now);
         phrase.setValid(true);
         phrase.setViewCount(0L);
         phrase.setVisible(true);

@@ -43,8 +43,9 @@ public class MessageTranslator {
 
     public Message toMessageEntity(MessageRequest messageRequest) {
         Message message = new Message();
-        message.setCreatedTime(LocalDateTime.now());
-        message.setLastModifiedTime(LocalDateTime.now());
+        LocalDateTime now = LocalDateTime.now();
+        message.setCreatedTime(now);
+        message.setLastModifiedTime(now);
         message.setChannel(messageRequest.getData().getChannel());
         message.setCommentId(messageRequest.getData().getCommentId());
         message.setContent(messageRequest.getData().getContent());

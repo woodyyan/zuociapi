@@ -15,6 +15,10 @@ public class LyricData {
     @ApiModelProperty(value = "Lyric title", required = true)
     private String title;
 
+    @NotNull(message = "Author ID should not be null")
+    @ApiModelProperty(value = "Author Id", required = true)
+    private String authorId;
+
     @NotNull(message = "Content should not be null")
     @ApiModelProperty(value = "Lyric content", required = true)
     private String content;
@@ -121,5 +125,13 @@ public class LyricData {
 
     public void setObjectId(String objectId) {
         this.objectId = objectId;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(String authorId) {
+        this.authorId = authorId;
     }
 }
