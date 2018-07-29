@@ -5,7 +5,7 @@ import org.hibernate.annotations.Type;
 import org.joda.time.LocalDateTime;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "lyric")
@@ -15,10 +15,11 @@ public class Lyric {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
     @Column(name = "object_id", nullable = false, unique = true)
+    @Size(max = 36)
     private String objectId;
 
     @Column(name = "title", nullable = false)
-    @Max(value = 255)
+    @Size(max = 255)
     private String title;
 
     @Column(name = "author_id", nullable = false)
@@ -42,7 +43,7 @@ public class Lyric {
     private boolean isDeleted;
 
     @Column(name = "creative_background")
-    @Max(value = 255)
+    @Size(max = 255)
     private String creativeBackground;
 
     @Column(name = "last_modified_time", nullable = false)
