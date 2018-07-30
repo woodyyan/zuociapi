@@ -5,9 +5,7 @@ import com.easystudio.api.zuoci.model.MessageResponse;
 import com.easystudio.api.zuoci.model.Messages;
 import com.easystudio.api.zuoci.service.MessageService;
 import com.easystudio.api.zuoci.validate.MessageValidator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -32,6 +30,12 @@ public class MessageController {
 
     @RequestMapping(method = GET)
     @ApiOperation(value = "Search message", notes = "Search message by receiver id")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "The index of the page requested",
+                    defaultValue = "0", dataType = "integer", paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "The number of elements per page",
+                    defaultValue = "20", dataType = "integer", paramType = "query")
+    })
     public ResponseEntity<Messages> searchMessage(@ApiParam(value = "Receiver Id")
                                                   @RequestParam(required = false) String receiverId,
                                                   Pageable page) {

@@ -32,10 +32,6 @@ public abstract class AbstractControllerIntegrationTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    @Before
-    public void setUp() {
-    }
-
     MockHttpServletResponse performGetRequest(String url) throws Exception {
         return mockMvc.perform(get(url).accept(JSON_API).header(AUTHORIZATION_HEADER, authorizationValue))
                 .andReturn()
