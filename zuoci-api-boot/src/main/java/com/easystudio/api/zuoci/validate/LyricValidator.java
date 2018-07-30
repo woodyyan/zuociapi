@@ -22,4 +22,11 @@ public class LyricValidator {
             throw new ErrorException(HttpStatus.BAD_REQUEST, error);
         }
     }
+
+    public void validate(String objectId) {
+        if (Strings.isNullOrEmpty(objectId)) {
+            Error error = buildInvalidParameterError("Lyric id should not be empty.");
+            throw new ErrorException(HttpStatus.BAD_REQUEST, error);
+        }
+    }
 }

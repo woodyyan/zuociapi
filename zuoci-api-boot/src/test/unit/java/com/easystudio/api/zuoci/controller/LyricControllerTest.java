@@ -43,4 +43,20 @@ public class LyricControllerTest extends EasyMockSupport {
         Assert.assertEquals(HttpStatus.CREATED, response.getStatusCode());
         Assert.assertNotNull(response.getBody());
     }
+
+    @Test
+    public void shouldGetLyricGivenObjectId() {
+        String objectId = "123";
+        LyricResponse response = new LyricResponse();
+
+        validator.validate(objectId);
+        expect(service.getLyric(objectId)).andReturn(response);
+
+        replayAll();
+        ResponseEntity<LyricResponse> lyric = controller.getLyric(objectId);
+        verifyAll();
+
+        Assert.assertEquals(HttpStatus.OK, lyric.getStatusCode());
+        Assert.assertNotNull(lyric.getBody());
+    }
 }

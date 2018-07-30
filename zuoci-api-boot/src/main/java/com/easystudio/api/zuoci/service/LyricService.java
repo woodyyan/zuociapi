@@ -21,4 +21,9 @@ public class LyricService {
         Lyric savedLyric = repository.save(lyric);
         return translator.toLyricResponse(savedLyric);
     }
+
+    public LyricResponse getLyric(String objectId) {
+        Lyric lyric = repository.findOneByObjectId(objectId);
+        return translator.toLyricResponse(lyric);
+    }
 }

@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LyricRepository extends PagingAndSortingRepository<Lyric, Long>, JpaSpecificationExecutor<Lyric> {
+    Lyric findOneByObjectId(String objectId);
 }

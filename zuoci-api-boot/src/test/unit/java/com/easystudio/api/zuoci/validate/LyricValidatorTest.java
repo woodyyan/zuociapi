@@ -41,4 +41,21 @@ public class LyricValidatorTest {
         request.getData().setContent("content");
         validator.validate(request);
     }
+
+    @Test
+    public void shouldThrowBadRequestWhenObjectIdIsEmpty() {
+        String objectId = "";
+        try {
+            validator.validate(objectId);
+            Assert.assertTrue(false);
+        } catch (ErrorException ex) {
+            Assert.assertEquals(HttpStatus.BAD_REQUEST, ex.getStatus());
+            Assert.assertEquals("Lyric id should not be empty.", ex.getError().getDetails());
+        }
+    }
+
+    @Test
+    public void shouldDoNothingWhenObjectIdIsNotEmpty() {
+        validator.validate("123");
+    }
 }

@@ -45,4 +45,19 @@ public class LyricServiceTest {
         Assert.assertEquals("title", lyricResponse.getData().getTitle());
         Assert.assertEquals("id", lyricResponse.getData().getObjectId());
     }
+
+    @Test
+    public void shouldGetLyricResponseGivenObjectId() {
+        String objectId = "123";
+
+        Lyric lyric = new Lyric();
+        LyricResponse response = new LyricResponse();
+        response.getData().setContent("content");
+        when(repository.findOneByObjectId(objectId)).thenReturn(lyric);
+        when(translator.toLyricResponse(lyric)).thenReturn(response);
+
+        LyricResponse lyricResponse = service.getLyric(objectId);
+
+        Assert.assertEquals("content", lyricResponse.getData().getContent());
+    }
 }

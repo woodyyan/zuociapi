@@ -6,14 +6,13 @@ import com.easystudio.api.zuoci.service.LyricService;
 import com.easystudio.api.zuoci.validate.LyricValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
@@ -36,5 +35,15 @@ public class LyricController {
         LyricResponse response = service.createLyric(lyricRequest.getData());
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{objectId}", method = GET)
+    @ApiOperation(value = "Get lyric", notes = "Get lyric by id")
+    @ResponseStatus(value = HttpStatus.OK)
+    public ResponseEntity<LyricResponse> getLyric(@ApiParam(value = "Lyric id")
+                                                  @PathVariable(required = false) String objectId) {
+        validator.validate(objectId);
+        LyricResponse lyricResponse = service.getLyric(objectId);
+        return new ResponseEntity<>(lyricResponse, HttpStatus.OK);
     }
 }
