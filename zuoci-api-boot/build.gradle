@@ -76,10 +76,8 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.easymock:easymock:3.5.1')
     testRuntime 'org.slf4j:slf4j-api:1.7.25'
+    testRuntime('org.hsqldb:hsqldb:2.4.1')
 }
-
-//test.dependsOn integragtionTest
-//check.dependsOn -= integTest
 
 sourceSets {
     test {
@@ -88,24 +86,7 @@ sourceSets {
             srcDir 'src/test/intg/java'
         }
     }
-    integration {
-//        java.srcDir 'src/test/intg/java'
-//        java {
-//            srcDir 'src/test/intg/java'
-//        }
-//        resources {
-//            srcDir 'src/test/intg/resources'
-//        }
-//        CompileClasspath += main.output + test.output
-//        runtimeClasspath += main.output + test.output
-    }
 }
-
-//task integrationTest(type: Test, dependsOn: 'test') {
-//    dependsOn 'assemble', 'integrationTestClasses'
-//    testClassesDirs = sourceSets.integrationTest.output
-//    classpath = sourceSets.integrationTest.runtimeClasspath
-//}
 
 springBoot {
     mainClass = "com.easystudio.api.zuoci.ZuociApplication"
