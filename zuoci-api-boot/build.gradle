@@ -22,11 +22,15 @@ apply plugin: 'checkstyle'
 apply plugin: 'jacoco'
 apply from: 'jacoco.gradle'
 
+ext {
+    apiVersion = '1.0.1'
+}
+
 jar {
     baseName = 'zuoci-api'
-    version = '1.0.1'
+    version = apiVersion
     manifest {
-        attributes "Manifest-Version": 1.0,
+        attributes "Manifest-Version": apiVersion,
                 'Main-Class': 'com.easystudio.api.zuoci.ZuociApplication'
     }
 }
@@ -35,7 +39,7 @@ checkstyle {
     toolVersion = '7.8.2'
 }
 
-project.version = 1.0
+project.version = apiVersion
 project.group = 'com.easystudio.zuoci'
 
 repositories {
